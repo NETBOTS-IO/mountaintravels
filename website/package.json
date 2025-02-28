@@ -1,0 +1,32 @@
+{
+  "name": "revelo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@iconscout/react-unicons": "^2.2.4",
+    "@mui/icons-material": "^6.4.5",
+    "@mui/material": "^6.4.5",
+    "aos": "^2.3.4",
+    "framer-motion": "^12.4.7",
+    "next": "14.2.7",
+    "rc-slider": "^11.1.5",
+    "react": "^18",
+    "react-bootstrap": "^1.6.1",
+    "react-countup": "^6.5.3",
+    "react-dom": "^18",
+    "react-nice-select": "^1.0.6",
+    "react-player": "^2.16.0",
+    "react-responsive-carousel": "^3.2.23",
+    "react-slick": "^0.29.0",
+    "react-visibility-sensor": "^5.1.1",
+    "slick-carousel": "^1.8.1"
+  }
+}

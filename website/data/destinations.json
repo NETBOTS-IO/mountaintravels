@@ -1,0 +1,77 @@
+{
+    "regions": [
+      {
+        "name": "Pakistan",
+        "description": "Pakistan, a land brimming with diversity, offers a rich tapestry of cultural and natural attractions across its provinces—Punjab, Sindh, Khyber Pakhtunkhwa, Balochistan, and the Northern Areas. With four distinct seasons, breathtaking landscapes, and historic treasures, Pakistan is a touristic haven.",
+        "image": "https://dummyimage.com/600x400/555/aaa&text=Pakistan",
+        "activities": [
+          "Experience all four seasons: summer, autumn, winter, and spring",
+          "Travel the historic Silk Route to Central Asia",
+          "Explore ancient civilizations like Gandhara and Moenjodaro",
+          "Marvel at the Karakoram and Himalayan mountain ranges",
+          "Discover the diverse cultural and ethnic traditions of the provinces"
+        ]
+      },
+      {
+        "name": "Sindh",
+        "description": "Sindh is renowned for its beautiful handicrafts and rich Sufi traditions. As the cradle of one of the world's oldest civilizations, it holds a unique distinction as the first region of Pakistan to embrace Islam in 712 AD. Karachi, its bustling capital, offers vibrant cultural landmarks and beautiful beaches.",
+        "image": "https://dummyimage.com/600x400/000/fff&text=Sindh",
+        "activities": [
+          "Explore the historic town of Thatta",
+          "Visit Shah Jahan's Mosque",
+          "Relax on Clifton Beach",
+          "Discover the tomb of Abdullah Shah Ghazi",
+          "Shop for Sindhi handicrafts"
+        ]
+      },
+      {
+        "name": "Balochistan",
+        "description": "Balochistan offers rugged terrain with mountains, deserts, and coastlines. Highlights include Quaid's summer residence in Ziarat and the emerging tourist hub of Gwadar. The region is also known for its colorful bazaars and unique Baluchi handicrafts.",
+        "image": "https://dummyimage.com/600x400/111/eee&text=Balochistan",
+        "activities": [
+          "Explore the bazaars of Quetta",
+          "Visit Hanna Lake",
+          "Experience the Gwadar coastline",
+          "Enjoy the horse and cattle fair",
+          "Buy Baluchi mirror-work handicrafts"
+        ]
+      },
+      {
+        "name": "Khyber Pakhtunkhwa",
+        "description": "Known for its hospitable people and diverse landscapes, Khyber Pakhtunkhwa is the cradle of the Gandharan civilization. Tourists are drawn to its lush valleys, historic Khyber Pass, and unique arts and crafts.",
+        "image": "https://dummyimage.com/600x400/222/ddd&text=KPK",
+        "activities": [
+          "Visit the Khyber Pass",
+          "Explore the Gandharan Buddhist ruins",
+          "Hike in the lush valleys",
+          "Admire local arts and crafts",
+          "Discover cultural festivals"
+        ]
+      },
+      {
+        "name": "Punjab",
+        "description": "Punjab is celebrated for its Mughal monuments, vibrant culture, and warm hospitality. With historical cities like Lahore and Multan, the region offers a rich cultural experience alongside beautiful landscapes like the Cholistan Desert and Murree hills.",
+        "image": "https://dummyimage.com/600x400/333/ccc&text=Punjab",
+        "activities": [
+          "Visit Lahore Fort and Badshahi Mosque",
+          "Explore the Shalimar Gardens",
+          "Experience the horse and cattle show",
+          "Admire Multan's shrines",
+          "Relax in Murree's alpine hills"
+        ]
+      },
+      {
+        "name": "Gilgit-Baltistan",
+        "description": "The Northern Areas of Pakistan offer majestic mountains, including K2 and Nanga Parbat, alongside serene valleys like Hunza. The region is a haven for adventure, nature, and cultural tourism.",
+        "image": "https://dummyimage.com/600x400/444/bbb&text=Northern+Areas",
+        "activities": [
+          "Trek in the Deosai Plateau",
+          "Attend the Shandur Polo Festival",
+          "Explore Hunza Valley",
+          "Visit ancient forts and shrines",
+          "Enjoy skiing and skating competitions"
+        ]
+      }
+    ]
+  }
+  
