@@ -17,8 +17,37 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middlewares
-app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"] }));
+const allowedOrigins = [
+  "http://147.93.94.137",
+  "httpa://147.93.94.137",
+  
+  "http://mountaintravels.site",
+  "https://mountaintravels.site",
+  "http://dashboard.mountaintravels.site",
+  "https://dashboard.mountaintravels.site",
+  "http://api.mountaintravels.site",
+  "https://api.mountaintravels.site",
 
+  "http://mountaintravels.com",
+  "https://mountaintravels.com",
+  "http://dashboard.mountaintravels.com",
+  "https://dashboard.mountaintravels.com",
+  "http://api.mountaintravels.com",
+  "https://api.mountaintravels.com",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  })
+);
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
