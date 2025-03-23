@@ -4,6 +4,10 @@ import upload from '../utils/multerConfig.js'; // Remove { } since it's a defaul
 export const getAllTours = async (req, res) => {
   try {
     const tours = await Tour.find();
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("ETag", Date.now().toString()); // Ensure new data each time
     res.json({
       success: true,
       message: 'Tours fetched successfully',
@@ -27,6 +31,10 @@ export const getTourById = async (req, res) => {
         message: 'Tour not found'
       });
     }
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("ETag", Date.now().toString()); // Ensure new data each time
     res.json({
       success: true,
       message: 'Tour fetched successfully',
@@ -86,6 +94,10 @@ export const createTour = async (req, res) => {
 
     // Create Tour Entry in DB
     const tour = await Tour.create(tourData);
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("ETag", Date.now().toString()); // Ensure new data each time
     res.status(201).json({ success: true, message: 'Tour created successfully', data: tour });
   } catch (error) {
     // Log and respond with error information
@@ -144,7 +156,10 @@ export const updateTour = async (req, res) => {
       console.log("Tour not found");
       return res.status(404).json({ success: false, message: "Tour not found" });
     }
-
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("ETag", Date.now().toString()); // Ensure new data each time
     res.json({ success: true, message: "Tour updated successfully", data: tour });
   } catch (error) {
     console.log("Error in updating tour", error.message);
@@ -163,6 +178,10 @@ export const deleteTour = async (req, res) => {
     if (!tour) {
       return res.status(404).json({ success: false, message: 'Tour not found' });
     }
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("ETag", Date.now().toString()); // Ensure new data each time
     res.json({ success: true, message: 'Tour deleted successfully' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error deleting tour', error: error.message });
@@ -185,6 +204,10 @@ export const searchTours = async (req, res) => {
     }
 
     const tours = await Tour.find(query);
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("ETag", Date.now().toString()); // Ensure new data each time
     res.json({
       success: true,
       message: 'Tours searched successfully',
