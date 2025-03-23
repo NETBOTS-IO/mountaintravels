@@ -1,4 +1,6 @@
-/** @type {import('next').NextConfig} */
+import { NextConfig } from 'next';
+
+/** @type {NextConfig} */
 const nextConfig = {
   reactStrictMode: true, // Enable React Strict Mode for development
   images: {
@@ -12,6 +14,24 @@ const nextConfig = {
   },
   // Enable SWC minification for improved performance
   swcMinify: true,
+
+  // Configure caching headers to prevent 304 issues
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "Cache-Control", value: "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0" },
+          { key: "Pragma", value: "no-cache" },
+          { key: "Expires", value: "0" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        ],
+      },
+    ];
+  },
+
   // Configure redirects if needed
   async redirects() {
     return [
@@ -21,36 +41,16 @@ const nextConfig = {
       //   destination: '/new-page',
       //   permanent: true,
       // },
-    ]
+    ];
   },
-  // Configure headers if needed
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "Referrer-Policy",
-            value: "strict-origin-when-cross-origin",
-          },
-        ],
-      },
-    ]
-  },
-  // Customize webpack config if needed
+
+  // Customize Webpack configuration if needed
   webpack: (config, { isServer }) => {
-    // Add custom webpack configurations here if required
-    return config
+    if (!isServer) {
+      config.cache = false; // Disable Webpack caching on the client-side to prevent stale responses
+    }
+    return config;
   },
-}
+};
 
-module.exports = nextConfig
-
+export default nextConfig;
