@@ -17,17 +17,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middlewares
+
 const allowedOrigins = [
   "http://147.93.94.137",
-  "httpa://147.93.94.137",
-  
+  "https://147.93.94.137",
   "http://mountaintravels.site",
   "https://mountaintravels.site",
   "http://dashboard.mountaintravels.site",
   "https://dashboard.mountaintravels.site",
   "http://api.mountaintravels.site",
   "https://api.mountaintravels.site",
-
   "http://mountaintravels.com",
   "https://mountaintravels.com",
   "http://dashboard.mountaintravels.com",
@@ -35,6 +34,22 @@ const allowedOrigins = [
   "http://api.mountaintravels.com",
   "https://api.mountaintravels.com",
 ];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 
 app.use(
   cors({
@@ -51,6 +66,15 @@ app.use(
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
+
+app.use((req, res, next) => {
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  next();
+});
+
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

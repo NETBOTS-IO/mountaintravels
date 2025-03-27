@@ -51,13 +51,8 @@ export default function ToursPage() {
       setLoading(true);
       setError("");
       try {
-        const response = await axios.get(`${BASE_URL}/api/tours`, {
-          headers: {
-            "Cache-Control": "no-cache, no-store, must-revalidate",
-            Pragma: "no-cache",
-            Expires: "0",
-          },
-        });        
+        const response = await axios.get(`${BASE_URL}/api/tours`);
+        console.log("Fetched tours:", response.data.data);
         setTours(response.data.data);
       } catch (error) {
         console.error("Failed to fetch tours:", error);
