@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useCallback, useRef } from "react"
-import Link from "next/link"
-import Image from "next/image"
+import { useState, useEffect, useCallback, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Calendar,
@@ -22,16 +22,16 @@ import {
   Star,
   Quote,
   ArrowUpRight,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { heroSection, aboutPreview } from "@/data/homeContent"
-import { tourCategories } from "@/data/tourPackages"
-import { useMobile } from "@/hooks/use-mobile"
-import axios from "axios"
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { heroSection, aboutPreview } from "@/data/homeContent";
+import { tourCategories } from "@/data/tourPackages";
+import { useMobile } from "@/hooks/use-mobile";
+import axios from "axios";
 
-import { BASE_URL } from "@/app/Var"
+import { BASE_URL } from "@/app/Var";
 // Enhanced tour data with more details
 const enhancedTours = [
   {
@@ -114,7 +114,7 @@ const enhancedTours = [
       "Explore the Deosai Plains, one of the highest plateaus in the world and home to diverse wildlife including the Himalayan brown bear. Camp under star-filled skies and trek through wildflower-covered meadows.",
     image: "/placeholder.svg?height=600&width=800",
   },
-]
+];
 
 const testimonials = [
   {
@@ -125,7 +125,7 @@ const testimonials = [
     text: "The complete success of our expedition has to be credited to the overall quality of the preparation done by Mountain Travels Pakistan.",
     tour: "Swiss Expedition",
     date: "July 1990",
-    rating: 5
+    rating: 5,
   },
   {
     id: 2,
@@ -135,7 +135,7 @@ const testimonials = [
     text: "Without the kind assistance of Mountain Travels Pakistan, Mr. Hiroki Fujita (renowned Japanese photographer), could not have accomplished his work in the high-altitude mountains of Pakistan.",
     tour: "Photography Expedition",
     date: "December 1990",
-    rating: 5
+    rating: 5,
   },
   {
     id: 3,
@@ -145,7 +145,7 @@ const testimonials = [
     text: "Ghulam brings energy and excitement to any outdoor adventure... his enthusiasm is infectious, keeping his fellow travellers in high spirits.",
     tour: "Adventure Travel",
     date: "Unknown",
-    rating: 5
+    rating: 5,
   },
   {
     id: 4,
@@ -155,7 +155,7 @@ const testimonials = [
     text: "Taking a group of junior and senior high school students into the Northern Areas of Pakistan is a challenge, to say the least! With Ghulam and his friendly and efficient team at Mountain Travels Pakistan in charge though, I’m always 100% confident.",
     tour: "School Trek",
     date: "September 1998",
-    rating: 5
+    rating: 5,
   },
   {
     id: 5,
@@ -165,7 +165,7 @@ const testimonials = [
     text: "On my recent spring 2000 expedition to Nanga Parbat, I was happy to work with Mountain Travels Pakistan. The quality of the service and knowledge of the guides was excellent.",
     tour: "Nanga Parbat Expedition",
     date: "October 1997",
-    rating: 5
+    rating: 5,
   },
   {
     id: 6,
@@ -175,7 +175,7 @@ const testimonials = [
     text: "Ghulam and his team of highly-experienced guides and support staff stand apart from all the other operators that I’ve used on account of their unswerving drive to satisfy their customers, whilst having a lot of fun on the way.",
     tour: "Adventure Trekking",
     date: "July 1998",
-    rating: 5
+    rating: 5,
   },
   {
     id: 7,
@@ -185,7 +185,7 @@ const testimonials = [
     text: "We visited Northern Pakistan for filming an educational documentary on the natural beauty and people of Baltistan in 2000 and appreciate the efforts of all the highly professional team members organized by Mountain Travels Pakistan.",
     tour: "Educational Documentary",
     date: "September 2000",
-    rating: 5
+    rating: 5,
   },
   {
     id: 8,
@@ -195,7 +195,7 @@ const testimonials = [
     text: "Mountain Travels Pakistan surprised us with a very well-organized trek to Baltoro and Gondogoro La. You really have found the perfect combination between professionalism and local insight and culture. Friendly, compassionate!",
     tour: "Baltoro & Gondogoro La Trek",
     date: "July 2004",
-    rating: 5
+    rating: 5,
   },
   {
     id: 9,
@@ -205,7 +205,7 @@ const testimonials = [
     text: "I thank Hamid and his brothers for the excellent preparation and trek which they organized for me and my three teenage daughters. It was a wonderful experience which we will never forget.",
     tour: "Family Trek",
     date: "September 2004",
-    rating: 5
+    rating: 5,
   },
   {
     id: 10,
@@ -215,7 +215,7 @@ const testimonials = [
     text: "What a wonderful trek - the care and attention of Hamid and all the porters made a very tough trip extremely pleasant, safe, and not so intimidating.",
     tour: "Gondogoro La Trek",
     date: "July 2003",
-    rating: 5
+    rating: 5,
   },
   {
     id: 11,
@@ -225,10 +225,9 @@ const testimonials = [
     text: "With an excellent crew, beginning with our guide Ibrahim, the cook Ali who cooked in this area like in a gourmet restaurant, and also special Mr. Mahdi, who watched over us day and night, it was an unforgettable experience.",
     tour: "Karakoram Trekking",
     date: "August 2001",
-    rating: 5
-  }
+    rating: 5,
+  },
 ];
-
 
 // Popular destinations
 const popularDestinations = [
@@ -256,13 +255,14 @@ const popularDestinations = [
     description: "One of the highest plateaus in the world",
     tours: 6,
   },
-]
+];
 
 // Blog posts preview
 const blogPosts = [
   {
     title: "Best Time to Trek in Pakistan",
-    excerpt: "Learn about the optimal seasons for different trekking regions in Pakistan",
+    excerpt:
+      "Learn about the optimal seasons for different trekking regions in Pakistan",
     image: "/placeholder.svg?height=400&width=600",
     date: "June 15, 2023",
     slug: "best-time-to-trek-pakistan",
@@ -276,12 +276,13 @@ const blogPosts = [
   },
   {
     title: "Cultural Etiquette in Northern Pakistan",
-    excerpt: "Tips for respectful interactions with local communities during your travels",
+    excerpt:
+      "Tips for respectful interactions with local communities during your travels",
     image: "/placeholder.svg?height=400&width=600",
     date: "April 10, 2023",
     slug: "cultural-etiquette-northern-pakistan",
   },
-]
+];
 
 // Trusted companies
 const trustedCompanies = [
@@ -297,178 +298,205 @@ const trustedCompanies = [
     name: "Discovery Channel",
     logo: "/placeholder.svg?height=80&width=200",
   },
-
-]
+];
 
 // Hero slides data
 const heroSlides = [
   {
     image: "/assets/home/hero-1.jpg",
     title: "Explore Pakistan's Majestic Peaks",
-    description: "Join Mountain Travels Pakistan for an unforgettable adventure in the heart of the Himalayas and Karakoram.",
+    description:
+      "Join Mountain Travels Pakistan for an unforgettable adventure in the heart of the Himalayas and Karakoram.",
   },
   {
     image: "/assets/home/hero-2.jpg",
     title: "Expeditions & Treks Await",
-    description: "Embark on world-class trekking, mountaineering, and adventure tours with the experts at Mountain Travels Pakistan.",
+    description:
+      "Embark on world-class trekking, mountaineering, and adventure tours with the experts at Mountain Travels Pakistan.",
   },
   {
     image: "/assets/home/hero-3.jpg",
     title: "Your Journey, Our Expertise",
-    description: "From thrilling expeditions to scenic tours, we craft experiences that leave lasting memories.",
+    description:
+      "From thrilling expeditions to scenic tours, we craft experiences that leave lasting memories.",
   },
-]
-
-
+];
 
 export default function Home() {
   const [tours, setTours] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-
-  const isMobile = useMobile()
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [currentTourIndex, setCurrentTourIndex] = useState(0)
-  const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0)
-  const [currentBlogIndex, setCurrentBlogIndex] = useState(0)
-  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
+  const isMobile = useMobile();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentTourIndex, setCurrentTourIndex] = useState(0);
+  const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0);
+  const [currentBlogIndex, setCurrentBlogIndex] = useState(0);
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
 
   // Refs for scrollable containers
-  const toursScrollRef = useRef<HTMLDivElement>(null)
-  const destinationsScrollRef = useRef<HTMLDivElement>(null)
-  const blogsScrollRef = useRef<HTMLDivElement>(null)
+  const toursScrollRef = useRef<HTMLDivElement>(null);
+  const destinationsScrollRef = useRef<HTMLDivElement>(null);
+  const blogsScrollRef = useRef<HTMLDivElement>(null);
 
-  const toursPerPage = isMobile ? 1 : 3
-  const destinationsPerPage = isMobile ? 1 : 4
-  const blogsPerPage = isMobile ? 1 : 3
+  const toursPerPage = isMobile ? 1 : 3;
+  const destinationsPerPage = isMobile ? 1 : 4;
+  const blogsPerPage = isMobile ? 1 : 3;
 
   // Filter tours that are featured
-  const featuredToursOnly = enhancedTours.filter((tour) => tour.featured)
-  const totalTourPages = Math.ceil(tours.length / toursPerPage)
-  const totalDestinationPages = Math.ceil(popularDestinations.length / destinationsPerPage)
-  const totalBlogPages = Math.ceil(blogPosts.length / blogsPerPage)
+  const featuredToursOnly = enhancedTours.filter((tour) => tour.featured);
+  const totalTourPages = Math.ceil(tours.length / toursPerPage);
+  const totalDestinationPages = Math.ceil(
+    popularDestinations.length / destinationsPerPage
+  );
+  const totalBlogPages = Math.ceil(blogPosts.length / blogsPerPage);
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev === heroSlides.length - 1 ? 0 : prev + 1))
-  }, [])
+    setCurrentSlide((prev) => (prev === heroSlides.length - 1 ? 0 : prev + 1));
+  }, []);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1))
-  }, [])
+    setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
+  }, []);
 
   // Tours navigation// Tours navigation
-const nextTourSet = () => {
-  if (tours.length === 0) return // Prevent scrolling when no data
+  const nextTourSet = () => {
+    if (tours.length === 0) return; // Prevent scrolling when no data
 
-  if (isMobile && toursScrollRef.current) {
-    const scrollAmount = toursScrollRef.current.scrollLeft + toursScrollRef.current.offsetWidth
-    toursScrollRef.current.scrollTo({
-      left: scrollAmount,
-      behavior: "smooth",
-    })
-  } else {
-    setCurrentTourIndex((prev) => (prev + 1) % totalTourPages) // Loop through pages
-  }
-}
+    if (isMobile && toursScrollRef.current) {
+      const scrollAmount =
+        toursScrollRef.current.scrollLeft + toursScrollRef.current.offsetWidth;
+      toursScrollRef.current.scrollTo({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
+    } else {
+      setCurrentTourIndex((prev) => (prev + 1) % totalTourPages); // Loop through pages
+    }
+  };
 
-const prevTourSet = () => {
-  if (tours.length === 0) return // Prevent scrolling when no data
+  const prevTourSet = () => {
+    if (tours.length === 0) return; // Prevent scrolling when no data
 
-  if (isMobile && toursScrollRef.current) {
-    const scrollAmount = toursScrollRef.current.scrollLeft - toursScrollRef.current.offsetWidth
-    toursScrollRef.current.scrollTo({
-      left: scrollAmount,
-      behavior: "smooth",
-    })
-  } else {
-    setCurrentTourIndex((prev) => (prev - 1 + totalTourPages) % totalTourPages) // Loop backwards
-  }
-}
-
+    if (isMobile && toursScrollRef.current) {
+      const scrollAmount =
+        toursScrollRef.current.scrollLeft - toursScrollRef.current.offsetWidth;
+      toursScrollRef.current.scrollTo({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
+    } else {
+      setCurrentTourIndex(
+        (prev) => (prev - 1 + totalTourPages) % totalTourPages
+      ); // Loop backwards
+    }
+  };
 
   // Destinations navigation
   const nextDestinationSet = () => {
     if (isMobile && destinationsScrollRef.current) {
-      const scrollAmount = destinationsScrollRef.current.scrollLeft + destinationsScrollRef.current.offsetWidth
+      const scrollAmount =
+        destinationsScrollRef.current.scrollLeft +
+        destinationsScrollRef.current.offsetWidth;
       destinationsScrollRef.current.scrollTo({
         left: scrollAmount,
         behavior: "smooth",
-      })
+      });
     } else {
-      setCurrentDestinationIndex((prev) => (prev === totalDestinationPages - 1 ? 0 : prev + 1))
+      setCurrentDestinationIndex((prev) =>
+        prev === totalDestinationPages - 1 ? 0 : prev + 1
+      );
     }
-  }
+  };
 
   const prevDestinationSet = () => {
     if (isMobile && destinationsScrollRef.current) {
-      const scrollAmount = destinationsScrollRef.current.scrollLeft - destinationsScrollRef.current.offsetWidth
+      const scrollAmount =
+        destinationsScrollRef.current.scrollLeft -
+        destinationsScrollRef.current.offsetWidth;
       destinationsScrollRef.current.scrollTo({
         left: scrollAmount,
         behavior: "smooth",
-      })
+      });
     } else {
-      setCurrentDestinationIndex((prev) => (prev === 0 ? totalDestinationPages - 1 : prev - 1))
+      setCurrentDestinationIndex((prev) =>
+        prev === 0 ? totalDestinationPages - 1 : prev - 1
+      );
     }
-  }
+  };
 
   // Blogs navigation
   const nextBlogSet = () => {
     if (isMobile && blogsScrollRef.current) {
-      const scrollAmount = blogsScrollRef.current.scrollLeft + blogsScrollRef.current.offsetWidth
+      const scrollAmount =
+        blogsScrollRef.current.scrollLeft + blogsScrollRef.current.offsetWidth;
       blogsScrollRef.current.scrollTo({
         left: scrollAmount,
         behavior: "smooth",
-      })
+      });
     } else {
-      setCurrentBlogIndex((prev) => (prev === totalBlogPages - 1 ? 0 : prev + 1))
+      setCurrentBlogIndex((prev) =>
+        prev === totalBlogPages - 1 ? 0 : prev + 1
+      );
     }
-  }
+  };
 
   const prevBlogSet = () => {
     if (isMobile && blogsScrollRef.current) {
-      const scrollAmount = blogsScrollRef.current.scrollLeft - blogsScrollRef.current.offsetWidth
+      const scrollAmount =
+        blogsScrollRef.current.scrollLeft - blogsScrollRef.current.offsetWidth;
       blogsScrollRef.current.scrollTo({
         left: scrollAmount,
         behavior: "smooth",
-      })
+      });
     } else {
-      setCurrentBlogIndex((prev) => (prev === 0 ? totalBlogPages - 1 : prev - 1))
+      setCurrentBlogIndex((prev) =>
+        prev === 0 ? totalBlogPages - 1 : prev - 1
+      );
     }
-  }
+  };
 
   const nextTestimonial = () => {
-    setCurrentTestimonialIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
-  }
+    setCurrentTestimonialIndex((prev) =>
+      prev === testimonials.length - 1 ? 0 : prev + 1
+    );
+  };
 
   const prevTestimonial = () => {
-    setCurrentTestimonialIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
-  }
+    setCurrentTestimonialIndex((prev) =>
+      prev === 0 ? testimonials.length - 1 : prev - 1
+    );
+  };
 
   // Get current items to display based on pagination or all for mobile scrolling
   const currentTours = isMobile
     ? featuredToursOnly
-    : featuredToursOnly.slice(currentTourIndex * toursPerPage, (currentTourIndex + 1) * toursPerPage)
+    : featuredToursOnly.slice(
+        currentTourIndex * toursPerPage,
+        (currentTourIndex + 1) * toursPerPage
+      );
 
   const currentDestinations = isMobile
     ? popularDestinations
     : popularDestinations.slice(
         currentDestinationIndex * destinationsPerPage,
-        (currentDestinationIndex + 1) * destinationsPerPage,
-      )
+        (currentDestinationIndex + 1) * destinationsPerPage
+      );
 
   const currentBlogs = isMobile
     ? blogPosts
-    : blogPosts.slice(currentBlogIndex * blogsPerPage, (currentBlogIndex + 1) * blogsPerPage)
+    : blogPosts.slice(
+        currentBlogIndex * blogsPerPage,
+        (currentBlogIndex + 1) * blogsPerPage
+      );
   // Auto-rotate testimonials
   useEffect(() => {
     const timer = setInterval(() => {
-      nextSlide()
-      nextTestimonial()
-    }, 8000)
-    return () => clearInterval(timer)
-  }, [[nextSlide]])
-
+      nextSlide();
+      nextTestimonial();
+    }, 8000);
+    return () => clearInterval(timer);
+  }, [[nextSlide]]);
 
   useEffect(() => {
     async function fetchTours() {
@@ -561,11 +589,12 @@ const prevTourSet = () => {
         </div>
       </section>
 
-
       {/* Tour Categories */}
       <section className="py-8 md:py-16 bg-muted">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">Explore Tour Categories</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">
+            Explore Tour Categories
+          </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             {tourCategories
               .filter((category) => category.id !== "all")
@@ -587,9 +616,8 @@ const prevTourSet = () => {
         </div>
       </section>
 
-
-     {/* About Preview */}
-     <section className="py-8 md:py-16 bg-muted">
+      {/* About Preview */}
+      <section className="py-8 md:py-16 bg-muted">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="relative h-64 md:h-[400px] lg:h-[500px] rounded-lg overflow-hidden">
@@ -601,13 +629,21 @@ const prevTourSet = () => {
               />
             </div>
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">{aboutPreview.title}</h2>
-              <p className="text-muted-foreground text-sm md:text-base mb-6 md:mb-8">{aboutPreview.description}</p>
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                {aboutPreview.title}
+              </h2>
+              <p className="text-muted-foreground text-sm md:text-base mb-6 md:mb-8">
+                {aboutPreview.description}
+              </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
                 {aboutPreview.stats.map((stat, index) => (
                   <div key={index} className="text-center">
-                    <div className="text-2xl md:text-3xl font-bold text-primary mb-1">{stat.value}</div>
-                    <div className="text-xs md:text-sm text-muted-foreground">{stat.label}</div>
+                    <div className="text-2xl md:text-3xl font-bold text-primary mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-xs md:text-sm text-muted-foreground">
+                      {stat.label}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -621,65 +657,91 @@ const prevTourSet = () => {
           </div>
         </div>
       </section>
-{/* Featured Tours - Enhanced with Slider */}
-<section className="py-8 md:py-16">
-  <div className="container mx-auto px-4">
-    <div className="flex justify-between items-center mb-6 md:mb-8">
-      <h2 className="text-2xl md:text-3xl font-bold">Featured Tours</h2>
-      <div className="flex gap-2">
-        <Button variant="outline" size="icon" onClick={prevTourSet} className="rounded-full">
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <Button variant="outline" size="icon" onClick={nextTourSet} className="rounded-full">
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-      </div>
-    </div>
+      {/* Featured Tours - Enhanced with Slider */}
+      <section className="py-8 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-6 md:mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold">Featured Tours</h2>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={prevTourSet}
+                className="rounded-full"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={nextTourSet}
+                className="rounded-full"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
 
-    <div className="relative">
-      <div
-        ref={toursScrollRef}
-        className="flex overflow-x-scroll scroll-smooth pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-     {isMobile ? (
-  <div
-    ref={toursScrollRef}
-    className="flex overflow-x-scroll scroll-smooth pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
-    style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-  >
-    {tours.map((tour) => (
-      <div key={tour.id} className="flex-shrink-0 w-4/5 sm:w-1/2 md:w-1/3 lg:w-1/4 snap-center px-2">
-        <TourCard tour={tour} />
-      </div>
-    ))}
-  </div>
-) : (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 transition-all duration-500 ease-in-out">
-    {tours
-      .slice(currentTourIndex * toursPerPage, (currentTourIndex + 1) * toursPerPage)
-      .map((tour) => (
-        <TourCard key={tour.id} tour={tour} />
-      ))}
-  </div>
-)}
-
-      </div>
-    </div>
-  </div>
-</section>
-
+          <div className="relative">
+            <div
+              ref={toursScrollRef}
+              className="flex overflow-x-scroll scroll-smooth pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {isMobile ? (
+                <div
+                  ref={toursScrollRef}
+                  className="flex overflow-x-scroll scroll-smooth pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
+                  {tours.map((tour) => (
+                    <div
+                      key={tour.id}
+                      className="flex-shrink-0 w-4/5 sm:w-1/2 md:w-1/3 lg:w-1/4 snap-center px-2"
+                    >
+                      <TourCard tour={tour} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 transition-all duration-500 ease-in-out">
+                  {tours
+                    .slice(
+                      currentTourIndex * toursPerPage,
+                      (currentTourIndex + 1) * toursPerPage
+                    )
+                    .map((tour) => (
+                      <TourCard key={tour.id} tour={tour} />
+                    ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Popular Destinations */}
       <section className="py-8 md:py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-6 md:mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold">Popular Destinations</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">
+              Popular Destinations
+            </h2>
             <div className="flex gap-2">
-              <Button variant="outline" size="icon" onClick={prevDestinationSet} className="rounded-full">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={prevDestinationSet}
+                className="rounded-full"
+              >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" onClick={nextDestinationSet} className="rounded-full">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={nextDestinationSet}
+                className="rounded-full"
+              >
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
@@ -692,7 +754,10 @@ const prevTourSet = () => {
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {popularDestinations.map((destination, index) => (
-                <div key={index} className="flex-shrink-0 w-full snap-center pr-4">
+                <div
+                  key={index}
+                  className="flex-shrink-0 w-full snap-center pr-4"
+                >
                   <DestinationCard destination={destination} />
                 </div>
               ))}
@@ -707,16 +772,28 @@ const prevTourSet = () => {
         </div>
       </section>
 
-  {/* Blog Preview */}
-  <section className="py-8 md:py-16 bg-white">
+      {/* Blog Preview */}
+      <section className="py-8 md:py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-6 md:mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold">Travel Tips & Insights</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">
+              Travel Tips & Insights
+            </h2>
             <div className="flex gap-2">
-              <Button variant="outline" size="icon" onClick={prevBlogSet} className="rounded-full">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={prevBlogSet}
+                className="rounded-full"
+              >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" onClick={nextBlogSet} className="rounded-full">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={nextBlogSet}
+                className="rounded-full"
+              >
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
@@ -729,7 +806,10 @@ const prevTourSet = () => {
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {blogPosts.map((post, index) => (
-                <div key={index} className="flex-shrink-0 w-full snap-center pr-4">
+                <div
+                  key={index}
+                  className="flex-shrink-0 w-full snap-center pr-4"
+                >
                   <BlogCard post={post} />
                 </div>
               ))}
@@ -753,7 +833,6 @@ const prevTourSet = () => {
         </div>
       </section>
 
-
       {/* Testimonials - Enhanced Design */}
       <section className="py-8 md:py-16 bg-muted relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-5">
@@ -766,16 +845,21 @@ const prevTourSet = () => {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">What Our Travelers Say</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
+            What Our Travelers Say
+          </h2>
           <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Read genuine reviews from our customers who have experienced our tours and services
+            Read genuine reviews from our customers who have experienced our
+            tours and services
           </p>
 
           <div className="relative max-w-4xl mx-auto">
             <div className="overflow-hidden">
               <div
                 className="flex transition-transform duration-700 ease-in-out"
-                style={{ transform: `translateX(-${currentTestimonialIndex * 100}%)` }}
+                style={{
+                  transform: `translateX(-${currentTestimonialIndex * 100}%)`,
+                }}
               >
                 {testimonials.map((testimonial, index) => (
                   <div key={index} className="w-full flex-shrink-0 px-4">
@@ -785,13 +869,20 @@ const prevTourSet = () => {
                       </div> */}
 
                       <div className="pt-4 text-center mb-6">
-                        <p className="text-gray-700 italic mb-6">{testimonial.text}</p>
+                        <p className="text-gray-700 italic mb-6">
+                          {testimonial.text}
+                        </p>
                         <div className="flex justify-center mb-2">
                           {[...Array(testimonial.rating)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                            <Star
+                              key={i}
+                              className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                            />
                           ))}
                         </div>
-                        <p className="text-sm text-primary font-medium">Tour: {testimonial.tour}</p>
+                        <p className="text-sm text-primary font-medium">
+                          Tour: {testimonial.tour}
+                        </p>
                       </div>
 
                       <div className="flex items-center justify-center border-t pt-4">
@@ -804,10 +895,15 @@ const prevTourSet = () => {
                           />
                         </div>
                         <div>
-                          <h3 className="font-bold text-lg">{testimonial.name}</h3>
-                          <p className="text-gray-600 text-sm">{testimonial.location}</p>
-                          <p className="text-gray-600 text-sm">{testimonial.date}</p>
-
+                          <h3 className="font-bold text-lg">
+                            {testimonial.name}
+                          </h3>
+                          <p className="text-gray-600 text-sm">
+                            {testimonial.location}
+                          </p>
+                          <p className="text-gray-600 text-sm">
+                            {testimonial.date}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -822,7 +918,9 @@ const prevTourSet = () => {
                   key={index}
                   onClick={() => setCurrentTestimonialIndex(index)}
                   className={`w-3 h-3 rounded-full transition-colors ${
-                    currentTestimonialIndex === index ? "bg-primary" : "bg-gray-300"
+                    currentTestimonialIndex === index
+                      ? "bg-primary"
+                      : "bg-gray-300"
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -847,18 +945,23 @@ const prevTourSet = () => {
         </div>
       </section>
 
-
       {/* Trusted By Companies */}
       <section className="py-8 md:py-12 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">Trusted By</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
+            Trusted By
+          </h2>
           <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-            We're proud to be featured and recommended by these leading travel publications and organizations
+            We're proud to be featured and recommended by these leading travel
+            publications and organizations
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
             {trustedCompanies.map((company, index) => (
-              <div key={index} className="grayscale hover:grayscale-0 transition-all duration-300">
+              <div
+                key={index}
+                className="grayscale hover:grayscale-0 transition-all duration-300"
+              >
                 <Image
                   src={company.logo || "/placeholder.svg"}
                   alt={company.name}
@@ -872,14 +975,12 @@ const prevTourSet = () => {
         </div>
       </section>
 
- 
-
-    
-
       {/* CTA Section */}
       <section className="py-8 md:py-16 bg-primary text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4">Ready for Your Next Adventure?</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4">
+            Ready for Your Next Adventure?
+          </h2>
           <p className="text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto">
             Contact us today to start planning your perfect Pakistan adventure
           </p>
@@ -904,7 +1005,7 @@ const prevTourSet = () => {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
 // Tour Card Component
@@ -914,13 +1015,15 @@ function TourCard({ tour }) {
       <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-full group transform hover:-translate-y-1">
         <div className="relative h-48 md:h-64">
           <Image
-            src={tour.image || "/placeholder.svg"}
+            src={`${BASE_URL}${tour.images[0]}` || "/placeholder.svg"}
             alt={tour.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover"
           />
           <div className="absolute top-2 right-2 md:top-4 md:right-4">
-            <Badge className="bg-secondary text-white text-xs md:text-sm">{tour.difficulty}</Badge>
+            <Badge className="bg-secondary text-white text-xs md:text-sm">
+              {tour.difficulty}
+            </Badge>
           </div>
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
             <div className="flex items-center text-white mb-1">
@@ -938,7 +1041,9 @@ function TourCard({ tour }) {
             <MapPin className="w-4 h-4 mr-1 text-primary" />
             <span>{tour.location}</span>
           </div>
-          <p className="text-muted-foreground text-sm md:text-base mb-4 line-clamp-2">{tour.description}</p>
+          <p className="text-muted-foreground text-sm md:text-base mb-4 line-clamp-2">
+            {tour.description}
+          </p>
           <div className="grid grid-cols-2 gap-2 mb-4">
             <div className="flex items-center text-xs md:text-sm">
               <Calendar className="h-3 w-3 md:h-4 md:w-4 mr-1 text-primary" />
@@ -972,7 +1077,7 @@ function TourCard({ tour }) {
         </CardContent>
       </Card>
     </Link>
-  )
+  );
 }
 
 // Destination Card Component
@@ -987,15 +1092,17 @@ function DestinationCard({ destination }) {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
       <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-        <h3 className="text-xl md:text-2xl font-bold text-white mb-1">{destination.name}</h3>
+        <h3 className="text-xl md:text-2xl font-bold text-white mb-1">
+          {destination.name}
+        </h3>
         <p className="text-white/80 text-sm mb-2">{destination.description}</p>
         <div className="flex items-center justify-between">
           <span className="text-white text-sm">{destination.tours} tours</span>
-          <Link 
-          // href={`/tours?destination=${destination.name.toLowerCase()}
-          
-          // `}
-          href={`#`}
+          <Link
+            // href={`/tours?destination=${destination.name.toLowerCase()}
+
+            // `}
+            href={`#`}
           >
             <Button variant="secondary" size="sm" className="text-xs">
               Explore
@@ -1005,52 +1112,55 @@ function DestinationCard({ destination }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // Blog Card Component
 function BlogCard({ post }) {
   return (
     // <Link href={`/blogs/${post.slug}`}>
-      <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-        <div className="relative h-48">
-          <Image
-            src={post.image || "/placeholder.svg"}
-            alt={post.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
+    <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+      <div className="relative h-48">
+        <Image
+          src={post.image || "/placeholder.svg"}
+          alt={post.title}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+      <CardContent className="p-4 md:p-6">
+        <div className="text-sm text-gray-500 mb-2">{post.date}</div>
+        <h3 className="font-bold text-lg mb-2 hover:text-primary transition-colors">
+          {post.title}
+        </h3>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+          {post.excerpt}
+        </p>
+        <div className="flex items-center text-primary font-medium text-sm">
+          Read More
+          <ArrowUpRight className="ml-1 h-4 w-4" />
         </div>
-        <CardContent className="p-4 md:p-6">
-          <div className="text-sm text-gray-500 mb-2">{post.date}</div>
-          <h3 className="font-bold text-lg mb-2 hover:text-primary transition-colors">{post.title}</h3>
-          <p className="text-gray-600 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
-          <div className="flex items-center text-primary font-medium text-sm">
-            Read More
-            <ArrowUpRight className="ml-1 h-4 w-4" />
-          </div>
-        </CardContent>
-      </Card>
+      </CardContent>
+    </Card>
     // </Link>
-  )
+  );
 }
 
 function getIcon(icon: string) {
   switch (icon) {
     case "hiking":
-      return <Compass className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+      return <Compass className="h-6 w-6 md:h-8 md:w-8 text-primary" />;
     case "mountain":
-      return <Mountain className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+      return <Mountain className="h-6 w-6 md:h-8 md:w-8 text-primary" />;
     case "bike":
-      return <Bike className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+      return <Bike className="h-6 w-6 md:h-8 md:w-8 text-primary" />;
     case "skiing":
-      return <Snowflake className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+      return <Snowflake className="h-6 w-6 md:h-8 md:w-8 text-primary" />;
     case "landmark":
-      return <Landmark className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+      return <Landmark className="h-6 w-6 md:h-8 md:w-8 text-primary" />;
     case "compass":
-      return <Tent className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+      return <Tent className="h-6 w-6 md:h-8 md:w-8 text-primary" />;
     default:
-      return null
+      return null;
   }
 }
-
