@@ -51,5 +51,6 @@ export const mainMenu = [
       path: `/tours?category=${category.id}`,
     })),
   { name: "About", path: "/about" },
+  { name: "Gallery", path: "/gallery" },
   { name: "Contact", path: "/contact" },
 ];

@@ -101,27 +101,32 @@ export const faqCategories = [
 export const officeLocations = [
   {
     city: "Islamabad",
-    address: "123 Mountain View Road, F-7, Islamabad",
-    phone: "+92 300 1234567",
-    email: "info@mountaintravels.com",
-    coordinates: { lat: 33.7294, lng: 73.0931 },
-    mainOffice: true,
+    address: "House 32, Street 177, G-13/3, Islamabad, Pakistan",
+    phone: "+92 346 8486900",
+    email: ["ghulam_mtp@hotmail.com", "info@mountaintravels.com"],
+    website: "http://www.mountaintravels.com",
+    coordinates: { lat: 33.6844, lng: 73.0479 },
+    mainOffice: false,
   },
   {
     city: "Skardu",
-    address: "45 Airport Road, Near PTDC Motel, Gilgit",
-    phone: "+92 346 8486900",
-    email: "gilgit@mtp.pk",
-    coordinates: { lat: 35.9221, lng: 74.3087 },
-    mainOffice: false,
+    address: "Ghangchan House, Aliabad Satellite Town, Skardu, Baltistan, Gilgit-Baltistan, Pakistan",
+    phone: ["+92 5831 52750", "+92 5831 58025"],
+    whatsapp: "+92 346 8486900",
+    email: ["ghulam_mtp@hotmail.com", "info@mountaintravels.com"],
+    website: "http://www.mountaintravels.com",
+    coordinates: { lat: 35.3354, lng: 75.5519 },
+    mainOffice: true,
   },
   {
-    city: "USA",
-    address: "78 Main Bazaar, Skardu",
-    phone: "+92 300 9876543",
-    email: "skardu@mtp.pk",
-    coordinates: { lat: 35.3197, lng: 75.5503 },
+    city: "Seattle, USA",
+    address: "412 S 325th Pl Apt S3, Federal Way, Washington 98003, USA",
+    phone: "+1 (206) 335-4272",
+    email: ["ghulam_mtp@hotmail.com", "info@mountaintravels.com"],
+    website: "http://www.mountaintravels.com",
+    coordinates: { lat: 47.3223, lng: -122.3126 },
     mainOffice: false,
   },
-]
+];
+
 

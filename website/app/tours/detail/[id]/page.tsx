@@ -242,8 +242,8 @@ ${siteConfig.name} Team`
           {/* Tour Details Section */}
           <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8">
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Tour Details</h2>
-            <Tabs defaultValue="overview" className="w-full">
-              <div style={{marginBottom: "100px"}}>
+            <Tabs defaultValue="itinerary" className="w-full">
+            <div style={{marginBottom: "100px"}}>
               <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-2 mb-8">
                 {["itinerary", "inclusions", "faqs", "terms", "map"].map((tab) => (
                   <TabsTrigger

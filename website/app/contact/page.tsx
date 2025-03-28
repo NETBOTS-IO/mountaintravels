@@ -154,6 +154,62 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+     {/* Office Locations */}
+     <section className="py-16">
+  <div className="container mx-auto px-4">
+    <h2 className="text-3xl font-bold mb-12 text-center">Our Offices</h2>
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {officeLocations.map((office, index) => (
+        <div key={index} className="border rounded-lg p-6">
+          <h3 className="text-xl font-bold mb-4">{office.city}</h3>
+          <p className="mb-2">{office.address}</p>
+
+          {/* Display multiple phone numbers */}
+          {Array.isArray(office.phone) ? (
+            office.phone.map((phone, idx) => (
+              <p key={idx} className="mb-2">
+                <Phone className="inline-block w-4 h-4 mr-2" />
+                <a href={`tel:${phone}`} className="hover:underline">
+                  {phone}
+                </a>
+              </p>
+            ))
+          ) : (
+            <p className="mb-2">
+              <Phone className="inline-block w-4 h-4 mr-2" />
+              <a href={`tel:${office.phone}`} className="hover:underline">
+                {office.phone}
+              </a>
+            </p>
+          )}
+
+          {/* Display multiple emails */}
+          {Array.isArray(office.email) ? (
+            office.email.map((email, idx) => (
+              <p key={idx} className="mb-2">
+                <Mail className="inline-block w-4 h-4 mr-2" />
+                <a href={`mailto:${email}`} className="hover:underline">
+                  {email}
+                </a>
+              </p>
+            ))
+          ) : (
+            <p className="mb-2">
+              <Mail className="inline-block w-4 h-4 mr-2" />
+              <a href={`mailto:${office.email}`} className="hover:underline">
+                {office.email}
+              </a>
+            </p>
+          )}
+
+          {office.mainOffice && (
+            <span className="bg-primary text-white px-2 py-1 rounded-full text-sm">Main Office</span>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* FAQs */}
       <section className="py-16 bg-muted">
@@ -177,35 +233,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Office Locations */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-12 text-center">Our Offices</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {officeLocations.map((office, index) => (
-              <div key={index} className="border rounded-lg p-6">
-                <h3 className="text-xl font-bold mb-4">{office.city}</h3>
-                <p className="mb-2">{office.address}</p>
-                {/* <p className="mb-2">
-                  <Phone className="inline-block w-4 h-4 mr-2" />
-                  <a href={`tel:${office.phone}`} className="hover:underline">
-                    {office.phone}
-                  </a>
-                </p>
-                <p className="mb-4">
-                  <Mail className="inline-block w-4 h-4 mr-2" />
-                  <a href={`mailto:${office.email}`} className="hover:underline">
-                    {office.email}
-                  </a>
-                </p> */}
-                {office.mainOffice && (
-                  <span className="bg-primary text-white px-2 py-1 rounded-full text-sm">Main Office</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+ 
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent>

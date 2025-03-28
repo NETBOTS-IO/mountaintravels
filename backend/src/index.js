@@ -19,6 +19,8 @@ const __dirname = path.dirname(__filename);
 // Middlewares
 
 const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
   "http://147.93.94.137",
   "https://147.93.94.137",
   "http://mountaintravels.site",
