@@ -746,7 +746,6 @@ const prevTipSet = () => {
       </section>
       <WhyChooseSection />
 
-      {/* Featured Tours - Enhanced with Slider */}
       <section className="py-8 md:py-16 bg-featured">
   <div className="container mx-auto px-4">
     {/* Header with arrows */}

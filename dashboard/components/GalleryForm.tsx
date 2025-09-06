@@ -45,7 +45,7 @@ export default function GalleryForm({ initialData, onSuccess }: GalleryFormProps
       setForm((prev) => ({
         ...prev,
         ...initialData,
-        images: [], // Don't preload files, only show previews for existing URLs
+        images: [],
         previews: initialData.src || [],
       }));
     }
