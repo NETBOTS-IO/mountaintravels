@@ -1,8 +1,10 @@
 import Tour from '../models/tourModel.js';
+import { Departure } from '../models/bookingModel.js';
 
 class TourService {
   async createTour(tourData) {
-    return await Tour.create(tourData);
+    const { price, nextDeparture, ...safeData } = tourData;
+    return await Tour.create(safeData);
   }
 
   async getAllTours(query = {}) {
@@ -18,8 +20,9 @@ class TourService {
     }
     if (search) {
       filter.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
+        { name: { $regex: search, $options: 'i' } },
+        { shortDescription: { $regex: search, $options: 'i' } },
+        { longDescription: { $regex: search, $options: 'i' } },
         { location: { $regex: search, $options: 'i' } }
       ];
     }
@@ -48,7 +51,8 @@ class TourService {
   }
 
   async updateTour(id, tourData) {
-    const tour = await Tour.findByIdAndUpdate(id, tourData, {
+    const { price, nextDeparture, ...safeData } = tourData;
+    const tour = await Tour.findByIdAndUpdate(id, safeData, {
       new: true,
       runValidators: true
     });
@@ -69,11 +73,32 @@ class TourService {
   async searchTours(searchQuery) {
     return await Tour.find({
       $or: [
-        { title: { $regex: searchQuery, $options: 'i' } },
-        { description: { $regex: searchQuery, $options: 'i' } },
+        { name: { $regex: searchQuery, $options: 'i' } },
+        { shortDescription: { $regex: searchQuery, $options: 'i' } },
+        { longDescription: { $regex: searchQuery, $options: 'i' } },
         { location: { $regex: searchQuery, $options: 'i' } }
       ]
     });
+  }
+
+  async updateTourPricingAndNextDeparture(tourId) {
+    // Find the cheapest departure
+    const cheapestDeparture = await Departure.findOne({ tripId: tourId })
+      .sort({ price: 1 });
+
+    // Find the next upcoming departure
+    const nextDeparture = await Departure.findOne({ tripId: tourId, date: { $gte: new Date() } })
+      .sort({ date: 1 });
+
+    // Update the tour with auto-calculated fields
+    return await Tour.findByIdAndUpdate(
+      tourId,
+      {
+        price: cheapestDeparture ? cheapestDeparture.price : undefined,
+        nextDeparture: nextDeparture ? nextDeparture.date : undefined,
+      },
+      { new: true }
+    );
   }
 }
 

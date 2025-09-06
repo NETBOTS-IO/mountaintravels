@@ -1,35 +1,57 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const sectionSchema = new mongoose.Schema({
-  subheading: { type: String, required: true },
-  image: { type: String },
-  paragraph: { type: String, required: true }
-});
-
-const blogSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true
+const blogSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
+    content: {
+      type: mongoose.Schema.Types.Mixed,
+      required: true,
+    },
+    author: {
+      name: { type: String, required: true, trim: true },
+      designation: { type: String, required: true, trim: true },
+      image: { type: String },
+      description: { type: String, required: true, trim: true },
+    },
+    coverImage: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+      enum: [
+        "Destinations",
+        "Travel Tips",
+        "Cultural Guides",
+        "Adventure",
+        "Food & Places",
+        "Luxury",
+        "Trekking",
+        "Wildlife",
+        "Culture",
+      ],
+    },
+    isFeatured: { type: Boolean, default: false },
+    status: {
+      type: String,
+      enum: ["draft", "published"],
+      default: "published",
+    },
+    summary: { type: String, required: true },
+    tags: { type: [String], index: true, default: [] },
+    readTime: { type: Number, required: true },
   },
-  sections: [sectionSchema],
-  author: {
-    type: String,
-    required: true
-  },
-  coverImage: {
-    type: String,
-    required: true
-  },
-  summary: { type: String, required: true },
-  tags: [{ type: String }],
-  readTime: { type: Number, required: true },
-  time: {
-    type: Date,
-    default: Date.now
+  {
+    timestamps: true,
   }
-}, {
-  timestamps: true
-});
+);
 
-export default mongoose.model('Blog', blogSchema); 
+export default mongoose.model("Blog", blogSchema);

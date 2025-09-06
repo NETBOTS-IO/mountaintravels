@@ -9,6 +9,20 @@ import { fileURLToPath } from 'url';
 
 import tourRoutes from './routes/tourRoutes.js';
 import entryRoutes from './routes/entriesRoutes.js';
+import galleryRoutes from './routes/galleryRoutes.js';
+import blogRoutes from './routes/blogRoutes.js';
+import testimonialRoutes from './routes/testimonialRoutes.js';
+import partnerFeedbackRoutes from "./routes/partnerFeedbackRoutes.js";
+import contactRoutes from './routes/contactRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import popularRoutes from './routes/popularRoutes.js';
+import tipsRoutes from './routes/tipsRoutes.js';
+import bookingRoutes from './routes/bookingRoutes.js';
+import trustedRoutes from './routes/trustedRoutes.js';
+
+
+
+
 
 dotenv.config();
 
@@ -20,21 +34,32 @@ const __dirname = path.dirname(__filename);
 
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://localhost:5000",
+  "http://localhost:5001",
+  "http://192.168.0.119:3000",
+  "http://192.168.0.119:3001",
   "http://localhost:3001",
+  "http://localhost:3002",
+
   "http://147.93.94.137",
   "https://147.93.94.137",
-  "http://mountaintravels.site",
   "https://mountaintravels.site",
-  "http://dashboard.mountaintravels.site",
-  "https://dashboard.mountaintravels.site",
-  "http://api.mountaintravels.site",
+  "https://www.mountaintravels.site",
   "https://api.mountaintravels.site",
-  "http://mountaintravels.com",
-  "https://mountaintravels.com",
+  "http://88.223.95.144:3000",
+  "https://88.223.95.144:3000",
+  "http://88.223.95.144",
+  "https://88.223.95.144",
+  "http://88.223.95.144:5000",
+  "https://88.223.95.144:5000",
+  "http://192.168.1.238:5000",
   "http://dashboard.mountaintravels.com",
   "https://dashboard.mountaintravels.com",
   "http://api.mountaintravels.com",
   "https://api.mountaintravels.com",
+  "http://api.mountaintravels.site",
+  "https://api.mountaintravels.site",
+
 ];
 
 app.use(
@@ -47,24 +72,11 @@ app.use(
       }
     },
     credentials: true,
-    methods: "GET,POST,PUT,DELETE",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  })
-);
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
@@ -82,18 +94,33 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
 
 
 // Routes
 app.get('/', (req, res)=>{
-    res.send('Mountain Travel Pakistan Server is running');
+    res.send('TourMaker Server is running');
 });
+
+// Authentication routes
+app.use('/api/auth', authRoutes);
+
+// Content management routes
 app.use('/api/tours', tourRoutes);
 app.use('/api/entry', entryRoutes);
+app.use('/api/gallery', galleryRoutes);
+app.use('/api/blogs', blogRoutes);
+app.use('/api/testimonials', testimonialRoutes);
+app.use("/api/partner-feedbacks", partnerFeedbackRoutes);
+app.use('/api/contacts', contactRoutes);
+app.use('/api/popular', popularRoutes);
+app.use('/api/tips', tipsRoutes);
+app.use('/api', bookingRoutes);
+app.use("/api/trusted", trustedRoutes);
 
-// app.use('/api/blogs', blogRoutes);
+
+
 // app.use('/api/inquiries', inquiryRoutes);
 // app.use('/api/contacts', contactRoutes);
 

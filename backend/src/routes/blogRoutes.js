@@ -1,23 +1,122 @@
-import express from 'express';
-import { getAllBlogs, getBlogById, deleteBlog } from '../controllers/blogController.js';
-import { blogValidation } from '../middlewares/validation.js';
-import { handleValidationErrors } from '../middlewares/errorHandler.js';
+import express from "express";
+import multer from "multer";
+import {
+  getAllBlogs,
+  getBlogById,
+  createBlog,
+  updateBlog,
+  deleteBlog,
+  searchBlogs,
+  getPopularBlogs,
+  getRelatedBlogs,
+} from "../controllers/blogController.js";
+import upload, { convertToAvif } from "../utils/multerConfig.js";
+
+import { parseJSONFields } from "../middlewares/parseJSONFields.js";
+import { blogValidation } from "../middlewares/validation.js";
+import { handleValidationErrors } from "../middlewares/errorHandler.js";
 
 const router = express.Router();
+// Multer error handling middleware
+const handleMulterError = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({
+      success: false,
+      message: `Multer error: ${err.message}`,
+      error: err.code,
+    });
+  }
+  next(err);
+};
 
-// Public routes
-router.get('/', getAllBlogs);
-router.get('/:id', getBlogById);
+// ------------------------
+// Public Routes
+// ------------------------
 
-// Protected routes
-// router.post('/', blogValidation, handleValidationErrors, createBlog);
-// router.put('/:id', blogValidation, handleValidationErrors, updateBlog);
-router.delete('/:id', deleteBlog);
+// Get all blogs (with pagination/filter/search)
+router.get("/", getAllBlogs);
 
-// GET /api/blogs - Get all blogs
-// GET /api/blogs/:id - Get blog by ID
-// POST /api/blogs - Create new blog
-// PUT /api/blogs/:id - Update blog
-// DELETE /api/blogs/:id - Delete blog
+// Get single blog by ID and increment views
+router.get("/:id", getBlogById);
 
-export default router; 
+// Search blogs
+router.get("/search", searchBlogs);
+
+// Get popular blogs by views
+router.get("/popular", getPopularBlogs);
+
+// Get related blogs by category
+router.get("/related/:id", getRelatedBlogs);
+
+// ------------------------
+// Protected Routes (optional: add auth middleware)
+// ------------------------
+
+// Upload inline Editor.js images
+router.post(
+  "/upload-editor-image",
+  upload.single("image"),
+  convertToAvif,  // ✅ convert editor images to AVIF
+  (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No image uploaded",
+      });
+    }
+
+    const imageUrl = `/uploads/blogs/${req.file.filename}`;
+    res.status(200).json({
+      success: 1,
+      file: {
+        url: imageUrl,
+      },
+    });
+  }
+);
+
+// Create blog post with cover image and author image
+router.post(
+  "/",
+  upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "authorImage", maxCount: 1 },
+  ]),
+  convertToAvif,            // ✅ run AVIF conversion for cover/author images
+  parseJSONFields,
+  blogValidation,
+  handleValidationErrors,
+  createBlog
+);
+
+// Update blog post (optionally update cover image and author image)
+router.put(
+  "/:id",
+  upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "authorImage", maxCount: 1 },
+  ]),
+  convertToAvif,            // ✅ run AVIF conversion if new images uploaded
+  parseJSONFields,
+  handleValidationErrors,
+  updateBlog
+);
+
+// Delete blog post
+router.delete("/:id", deleteBlog);
+
+// ------------------------
+// REST Reference
+// ------------------------
+// GET    /api/blogs                 -> list
+// GET    /api/blogs/:id            -> detail + views
+// POST   /api/blogs                -> create (with coverImage + authorImage)
+// PUT    /api/blogs/:id            -> update (with coverImage + authorImage)
+// DELETE /api/blogs/:id            -> delete
+// POST   /api/blogs/upload-editor-image -> inline editor image upload
+// GET    /api/blogs/search         -> search
+// GET    /api/blogs/popular        -> popular
+// GET    /api/blogs/related/:id    -> related
+// ------------------------
+
+export default router;

@@ -49,29 +49,25 @@ export const getTourById = async (req, res) => {
   }
 };
 
-
-
 export const createTour = async (req, res) => {
   try {
     // Ensure multer processed the files
-    console.log("Uploaded Files:", req.files);
+    // console.log("Uploaded Files:", req.files);
 
     // Validate tour data presence
-    if (!req.body.tourData) {
-      return res.status(400).json({ success: false, message: 'Tour data is required' });
-    }
-
     let tourData;
-    try {
-      // Parse the tour data JSON
-      tourData = JSON.parse(req.body.tourData);
-    } catch (parseError) {
-      return res.status(400).json({ success: false, message: 'Invalid JSON format', error: parseError.message });
+    if (req.body.tourData) {
+      try {
+        tourData = JSON.parse(req.body.tourData);
+      } catch (parseError) {
+        return res.status(400).json({ success: false, message: 'Invalid JSON format', error: parseError.message });
+      }
+    } else {
+      tourData = req.body;
     }
 
-    // Validate essential fields
-    if (!tourData.title || !tourData.description) {
-      return res.status(400).json({ success: false, message: 'Title and description are required' });
+    if (!tourData.name || (!tourData.shortDescription && !tourData.longDescription)) {
+      return res.status(400).json({ success: false, message: 'Name and at least one description (shortDescription or longDescription) are required' });
     }
 
     // Process Tour Images
@@ -80,7 +76,7 @@ export const createTour = async (req, res) => {
     }
 
     // Process Itinerary Images
-    if (req.files?.itineraryImages) {
+    if (req.files?.itineraryImages && Array.isArray(tourData.itineraries)) {
       let currentImageIndex = 0;
       tourData.itineraries = tourData.itineraries.map(itinerary => {
         const imageCount = itinerary.imageCount || 0;
@@ -91,6 +87,19 @@ export const createTour = async (req, res) => {
         return { ...itinerary, images: itineraryImages };
       });
     }
+
+    // Ensure new fields are handled (whyChoose, tags, relatedTrips, etc.)
+    tourData.whyChoose = tourData.whyChoose || [];
+    tourData.tags = tourData.tags || [];
+    tourData.relatedTrips = tourData.relatedTrips || [];
+    tourData.features = tourData.features || [];
+    tourData.highlights = tourData.highlights || [];
+    tourData.included = tourData.included || [];
+    tourData.inclusions = tourData.inclusions || [];
+    tourData.exclusions = tourData.exclusions || [];
+    tourData.faqs = tourData.faqs || [];
+    tourData.termsAndConditions = tourData.termsAndConditions || [];
+    tourData.policies = tourData.policies || [];
 
     // Create Tour Entry in DB
     const tour = await Tour.create(tourData);
@@ -106,28 +115,25 @@ export const createTour = async (req, res) => {
   }
 };
 
-
-
 export const updateTour = async (req, res) => {
   try {
     console.log("Update Tour API Endpoint Hit", req.body);
     
-    if (!req.body.tourData) {
-      console.log("Missing tour data");
-      return res.status(400).json({ success: false, message: "Missing tour data" });
-    }
-
     let tourData;
-    try {
-      tourData = JSON.parse(req.body.tourData);
-    } catch (parseError) {
-      console.log("Error in parsing JSON", parseError);
-      return res.status(400).json({ success: false, message: "Invalid JSON format", error: parseError.message });
+    if (req.body.tourData) {
+      try {
+        tourData = JSON.parse(req.body.tourData);
+      } catch (parseError) {
+        console.log("Error in parsing JSON", parseError);
+        return res.status(400).json({ success: false, message: "Invalid JSON format", error: parseError.message });
+      }
+    } else {
+      tourData = req.body;
     }
 
-    if (!tourData.title || !tourData.description) {
-      console.log("Title and Description are required");
-      return res.status(400).json({ success: false, message: "Title and description are required" });
+    if (!tourData.name || (!tourData.shortDescription && !tourData.longDescription)) {
+      console.log("Name and at least one description are required");
+      return res.status(400).json({ success: false, message: "Name and at least one description (shortDescription or longDescription) are required" });
     }
 
     // Process images from multer (req.files)
@@ -136,7 +142,7 @@ export const updateTour = async (req, res) => {
       tourData.images = [...(tourData.images || []), ...newImages];
     }
 
-    if (req.files?.itineraryImages) {
+    if (req.files?.itineraryImages && Array.isArray(tourData.itineraries)) {
       let currentImageIndex = 0;
       tourData.itineraries = tourData.itineraries.map((itinerary) => {
         const imageCount = itinerary.imageCount || 0;
@@ -150,6 +156,20 @@ export const updateTour = async (req, res) => {
         return itinerary;
       });
     }
+
+    // Ensure new fields are handled (whyChoose, tags, relatedTrips, etc.)
+    tourData.whyChoose = tourData.whyChoose || [];
+    tourData.tags = tourData.tags || [];
+    tourData.relatedTrips = tourData.relatedTrips || [];
+    tourData.features = tourData.features || [];
+    tourData.highlights = tourData.highlights || [];
+    tourData.included = tourData.included || [];
+    tourData.inclusions = tourData.inclusions || [];
+    tourData.exclusions = tourData.exclusions || [];
+    tourData.faqs = tourData.faqs || [];
+    tourData.termsAndConditions = tourData.termsAndConditions || [];
+    tourData.policies = tourData.policies || [];
+
     // Update the tour in MongoDB
     const tour = await Tour.findByIdAndUpdate(req.params.tourId, tourData, { new: true });
     if (!tour) {
@@ -166,7 +186,6 @@ export const updateTour = async (req, res) => {
     res.status(500).json({ success: false, message: "Error updating tour", error: error.message });
   }
 };
-
 
 export const deleteTour = async (req, res) => {
   try {
@@ -187,7 +206,6 @@ export const deleteTour = async (req, res) => {
     res.status(500).json({ success: false, message: 'Error deleting tour', error: error.message });
   }
 };
-
 
 export const searchTours = async (req, res) => {
   try {
@@ -219,5 +237,34 @@ export const searchTours = async (req, res) => {
       message: 'Error searching tours',
       error: error.message
     });
+  }
+}; 
+
+export const getRelatedTours = async (req, res) => {
+  try {
+    const tour = await Tour.findById(req.params.id);
+    if (!tour) {
+      return res.status(404).json({ success: false, message: 'Tour not found' });
+    }
+    // Find up to 3 tours with the same category, excluding the current tour
+    const relatedTours = await Tour.find({
+      category: tour.category,
+      _id: { $ne: tour._id }
+    }).limit(3);
+    res.json({ success: true, data: relatedTours });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error fetching related tours', error: error.message });
+  }
+}; 
+
+export const getTourCategories = async (req, res) => {
+  try {
+    const categories = await Tour.aggregate([
+      { $group: { _id: "$category", count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]);
+    res.json({ success: true, data: categories });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error fetching categories', error: error.message });
   }
 }; 

@@ -37,11 +37,8 @@ if (missingEnvVars.length === 0) {
 const wrapEmail = (body) => `
   <div style="font-family: Arial, sans-serif; max-width: 650px; margin: auto; background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
     <div style="background: #1e293b; padding: 10px; display: flex; justify-content: center; align-items: center;">
-    <div style="display: flex; align-items: center; padding: 5px;">
-    <span style="font-size: 20px; font-weight: bold; color: orange;">
-     From MountainTravels
-    </span>
-  </div>    </div>
+      // <img src="https://mountaintravels.site//logo.png" alt="Tour Maker Logo" style="max-height: 36px; width: auto; padding: 5px">
+    </div>
     <div style="padding: 20px; color: #1e293b; font-size: 16px; line-height: 1.6;">
       ${body}
     </div>
@@ -98,7 +95,7 @@ export const sendBookingEmails = async ({ booking, user, trip, departure }) => {
         <li><strong>Total Price:</strong> $${totalPrice}</li>
         <li><strong>Booking Number:</strong> ${booking.bookingNumber}</li>
       </ul>
-      <p>We look forward to your tour!</p>
+      <p>We look forward to your trip!</p>
     `;
 
     const adminBody = `
@@ -117,7 +114,7 @@ export const sendBookingEmails = async ({ booking, user, trip, departure }) => {
 
     // Send user confirmation
     await sendEmail({
-      from: `"MountainTravels" <${process.env.SMTP_USER || 'noreply@mountaintravels.com'}>`,
+      from: `"MountainTravels" <${process.env.SMTP_USER || 'noreply@mounatintravels.com'}>`,
       to: user.email,
       subject: "Booking Confirmation",
       html: wrapEmail(userBody),
@@ -125,7 +122,7 @@ export const sendBookingEmails = async ({ booking, user, trip, departure }) => {
 
     // Send admin notification
     await sendEmail({
-      from: `"MountainTravels" <${process.env.SMTP_USER || 'noreply@mountaintravels.com'}>`,
+      from: `"Tour Maker Pakistan" <${process.env.SMTP_USER || 'noreply@mountaintravels.com'}>`,
       to: process.env.ADMIN_EMAIL || 'admin@mountaintravels.com',
       subject: "New Booking Received",
       html: wrapEmail(adminBody),
@@ -158,7 +155,7 @@ export const sendBookingConfirmationEmail = async ({ booking, user, trip, depart
         <li><strong>Booking Number:</strong> ${booking.bookingNumber}</li>
         <li><strong>Status:</strong> CONFIRMED</li>
       </ul>
-      <p>Your tour is now confirmed and we're excited to have you join us!</p>
+      <p>Your trip is now confirmed and we're excited to have you join us!</p>
       <p>If you have any questions, please don't hesitate to contact us.</p>
     `;
 
@@ -168,7 +165,7 @@ export const sendBookingConfirmationEmail = async ({ booking, user, trip, depart
       <ul>
         <li><strong>Name:</strong> ${user.firstName} ${user.lastName}</li>
         <li><strong>Email:</strong> ${user.email}</li>
-        <li><strong>Tour:</strong> ${tripName}</li>
+        <li><strong>Trip:</strong> ${tripName}</li>
         <li><strong>Departure Date:</strong> ${departureDate}</li>
         <li><strong>Travelers:</strong> ${travelers}</li>
         <li><strong>Total Price:</strong> $${totalPrice}</li>
@@ -179,15 +176,15 @@ export const sendBookingConfirmationEmail = async ({ booking, user, trip, depart
 
     // Send user confirmation
     await sendEmail({
-      from: `"MountainTravels" <${process.env.SMTP_USER || 'noreply@mountaintravels.com'}>`,
+      from: `"Tour Maker Pakistan" <${process.env.SMTP_USER || 'noreply@mountaintravels.com'}>`,
       to: user.email,
-      subject: "Booking Confirmed - MountainTravels",
+      subject: "Booking Confirmed - Tour Maker Pakistan",
       html: wrapEmail(userBody),
     });
 
     // Send admin notification
     await sendEmail({
-      from: `"MountainTravels" <${process.env.SMTP_USER || 'noreply@mountaintravels.com'}>`,
+      from: `"Tour Maker Pakistan" <${process.env.SMTP_USER || 'noreply@mountaintravels.com'}>`,
       to: process.env.ADMIN_EMAIL || 'admin@mountaintravels.com',
       subject: "Booking Status Updated - CONFIRMED",
       html: wrapEmail(adminBody),
@@ -237,7 +234,7 @@ export const sendContactEmail = async ({
 
     // Send user confirmation
     await sendEmail({
-      from: `"MountainTravels" <${process.env.SMTP_USER || 'noreply@mountaintravels.com'}>`,
+      from: `"Tour Maker Pakistan" <${process.env.SMTP_USER || 'noreply@mountaintravels.com'}>`,
       to: email,
       subject: "We received your message",
       html: wrapEmail(userBody),
