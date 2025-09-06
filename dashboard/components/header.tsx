@@ -17,7 +17,7 @@ const mainMenu = [
       path: `/tours?category=${category.id}`,
     })),
   { name: "About", path: "/about" },
-  { name: "Contact", path: "/contact" },
+  { name: "Contactssss", path: "/contact" },
 ]
 
 export function Header() {

@@ -24,13 +24,13 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#1E8A95", // Teal from logo
+          DEFAULT: "#1E293B", // Blue from logo
           light: "#E6F3F5",
-          dark: "#14646C",
+          dark: "#1E293B",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#F28C38", // Orange from logo
+          DEFAULT: "#F3500A", // Orange from logo
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {

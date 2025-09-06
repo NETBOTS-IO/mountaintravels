@@ -5,13 +5,13 @@ import BlogForm from "@/components/BlogForm"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Add New Blog Post | Mountain Travels Pakistan",
-  description: "Create a new blog post for Mountain Travels Pakistan",
+  title: "Add New Blog Post | TourMaker",
+  description: "Create a new blog post for TourMaker",
   openGraph: {
-    title: "Add New Blog Post | Mountain Travels Pakistan",
-    description: "Create a new blog post for Mountain Travels Pakistan",
+    title: "Add New Blog Post | TourMaker",
+    description: "Create a new blog post for TourMaker",
     type: "website",
-    url: "https://mountaintravelspakistan.com/admin/blogs/add",
+    url: "https://tourmaker.com/admin/blogs/add",
   },
 }
 
