@@ -1,4 +1,5 @@
 "use client";
+import { Shield, Headphones,Medal, Leaf } from "lucide-react"
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
@@ -26,10 +27,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { heroSection, aboutPreview } from "@/data/homeContent";
+import { heroSection, aboutPreview,whyChoose } from "@/data/homeContent";
 import { tourCategories } from "@/data/tourPackages";
 import { useMobile } from "@/hooks/use-mobile";
 import axios from "axios";
+import { getPublicTravelTips,getPopularDestinations,getTrustedCompaniesPublic } from "@/data/utils"; // ✅ import your util
 
 import { BASE_URL } from "@/app/Var";
 // Enhanced tour data with more details
@@ -326,22 +328,28 @@ export default function Home() {
   const [tours, setTours] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const [testimonials, setTestimonials] = useState<any[]>([])
+  const [loadingTestimonials, setLoadingTestimonials] = useState(true); // 👈 add this
+  const [tips, setTips] = useState<any[]>([]); // ✅ new state
+  const [loadingTips, setLoadingTips] = useState(true);
   const isMobile = useMobile();
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentTourIndex, setCurrentTourIndex] = useState(0);
   const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0);
   const [currentBlogIndex, setCurrentBlogIndex] = useState(0);
+  const [trustedCompanies, setTrustedCompanies] = useState<any[]>([]);
+const [loadingCompanies, setLoadingCompanies] = useState(true);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
-
+  const [popularDestinations, setPopularDestinations] = useState<any[]>([]);
   // Refs for scrollable containers
   const toursScrollRef = useRef<HTMLDivElement>(null);
-  const destinationsScrollRef = useRef<HTMLDivElement>(null);
   const blogsScrollRef = useRef<HTMLDivElement>(null);
 
   const toursPerPage = isMobile ? 1 : 3;
   const destinationsPerPage = isMobile ? 1 : 4;
   const blogsPerPage = isMobile ? 1 : 3;
+  const destinationsScrollRef = useRef<HTMLDivElement>(null);
 
   // Filter tours that are featured
   const featuredToursOnly = enhancedTours.filter((tour) => tour.featured);
@@ -358,37 +366,109 @@ export default function Home() {
   const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
   }, []);
+// inside Home component
+const tipsScrollRef = useRef<HTMLDivElement>(null);
+
+const nextTipSet = () => {
+  if (isMobile && tipsScrollRef.current) {
+    const scrollAmount =
+      tipsScrollRef.current.scrollLeft + tipsScrollRef.current.offsetWidth;
+    tipsScrollRef.current.scrollTo({
+      left: scrollAmount,
+      behavior: "smooth",
+    });
+  } else {
+    setCurrentBlogIndex((prev) =>
+      prev === totalBlogPages - 1 ? 0 : prev + 1
+    );
+  }
+};
+
+const prevTipSet = () => {
+  if (isMobile && tipsScrollRef.current) {
+    const scrollAmount =
+      tipsScrollRef.current.scrollLeft - tipsScrollRef.current.offsetWidth;
+    tipsScrollRef.current.scrollTo({
+      left: scrollAmount,
+      behavior: "smooth",
+    });
+  } else {
+    setCurrentBlogIndex((prev) =>
+      prev === 0 ? totalBlogPages - 1 : prev - 1
+    );
+  }
+};
 
   // Tours navigation// Tours navigation
   const nextTourSet = () => {
-    if (tours.length === 0) return; // Prevent scrolling when no data
-
-    if (isMobile && toursScrollRef.current) {
-      const scrollAmount =
-        toursScrollRef.current.scrollLeft + toursScrollRef.current.offsetWidth;
-      toursScrollRef.current.scrollTo({
-        left: scrollAmount,
-        behavior: "smooth",
-      });
+    if (tours.length === 0) return;
+  
+    if (isMobile) {
+      setCurrentTourIndex((prev) => (prev + 1) % tours.length); // 👉 cycle 1-by-1
     } else {
-      setCurrentTourIndex((prev) => (prev + 1) % totalTourPages); // Loop through pages
+      setCurrentTourIndex((prev) => (prev + 1) % totalTourPages); // 👉 page-wise
     }
   };
+  useEffect(() => {
+    async function loadCompanies() {
+      const data = await getTrustedCompaniesPublic();
+      setTrustedCompanies(data);
+      setLoadingCompanies(false);
+    }
+    loadCompanies();
+  }, []);
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        setLoadingTestimonials(true); // start loading
+        const res = await fetch("http://localhost:5000/api/testimonials");
+        const data = await res.json();
+  
+        if (data.success) {
+          const mapped = data.data.map((t) => ({
+            id: t._id,
+            name: t.name,
+            location: t.location,
+            designation: t.designation,
+            rating: t.rating,
+            text: t.feedback,
+            image: t.image,
+            tour: t.tripName,
+            date: new Date(t.tripDate).toLocaleDateString(),
+          }));
+          setTestimonials(mapped);
+        }
+      } catch (err) {
+        console.error("Error fetching testimonials:", err);
+      } finally {
+        setLoadingTestimonials(false); // stop loading
+      }
+    };
+  
+    fetchTestimonials();
+  }, []);
 
+  useEffect(() => {
+    async function fetchTips() {
+      setLoadingTips(true);
+      const data = await getPublicTravelTips(); // use your util
+      setTips(data);
+      setLoadingTips(false);
+    }
+    fetchTips();
+  }, []);
+  useEffect(() => {
+    getPopularDestinations().then((data) => setPopularDestinations(data));
+  }, []);
   const prevTourSet = () => {
-    if (tours.length === 0) return; // Prevent scrolling when no data
-
-    if (isMobile && toursScrollRef.current) {
-      const scrollAmount =
-        toursScrollRef.current.scrollLeft - toursScrollRef.current.offsetWidth;
-      toursScrollRef.current.scrollTo({
-        left: scrollAmount,
-        behavior: "smooth",
-      });
+    if (tours.length === 0) return;
+  
+    if (isMobile) {
+      setCurrentTourIndex((prev) => (prev - 1 + tours.length) % tours.length);
     } else {
       setCurrentTourIndex(
         (prev) => (prev - 1 + totalTourPages) % totalTourPages
-      ); // Loop backwards
+      );
     }
   };
 
@@ -469,19 +549,20 @@ export default function Home() {
   };
 
   // Get current items to display based on pagination or all for mobile scrolling
-  const currentTours = isMobile
-    ? featuredToursOnly
-    : featuredToursOnly.slice(
-        currentTourIndex * toursPerPage,
-        (currentTourIndex + 1) * toursPerPage
-      );
+ const currentTours = isMobile
+  ? tours.slice(currentTourIndex, currentTourIndex + 1) // show 1 at a time
+  : tours.slice(
+      currentTourIndex * toursPerPage,
+      (currentTourIndex + 1) * toursPerPage
+    );
 
-  const currentDestinations = isMobile
-    ? popularDestinations
-    : popularDestinations.slice(
-        currentDestinationIndex * destinationsPerPage,
-        (currentDestinationIndex + 1) * destinationsPerPage
-      );
+
+      const currentDestinations = isMobile
+      ? popularDestinations
+      : popularDestinations.slice(
+          currentDestinationIndex * destinationsPerPage,
+          (currentDestinationIndex + 1) * destinationsPerPage
+        );
 
   const currentBlogs = isMobile
     ? blogPosts
@@ -515,6 +596,10 @@ export default function Home() {
     }
     fetchTours();
   }, []);
+
+
+
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -590,7 +675,7 @@ export default function Home() {
       </section>
 
       {/* Tour Categories */}
-      <section className="py-8 md:py-16 bg-muted">
+      <section className="py-8 md:py-16 bg-tour-categories">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">
             Explore Tour Categories
@@ -600,16 +685,17 @@ export default function Home() {
               .filter((category) => category.id !== "all")
               .map((category) => (
                 <Link key={category.id} href={`/tours?category=${category.id}`}>
-                  <Card className="hover:shadow-lg transition-shadow h-full group">
-                    <CardContent className="p-4 md:p-6 flex flex-col items-center text-center">
-                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary/10 flex items-center justify-center mb-2 md:mb-4 group-hover:bg-primary/20 transition-colors">
-                        {getIcon(category.icon)}
-                      </div>
-                      <h3 className="font-bold text-sm md:text-lg group-hover:text-primary transition-colors">
-                        {category.name}
-                      </h3>
-                    </CardContent>
-                  </Card>
+               <Card className="hover:shadow-lg transition-shadow h-full group border border-gray-200 hover:border-gray-300">
+  <CardContent className="p-4 md:p-6 flex flex-col items-center text-center">
+    <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary/10 flex items-center justify-center mb-2 md:mb-4 group-hover:bg-primary/20 transition-colors">
+      {getIcon(category.icon)}
+    </div>
+    <h3 className="font-bold text-sm md:text-lg group-hover:text-primary transition-colors">
+      {category.name}
+    </h3>
+  </CardContent>
+</Card>
+
                 </Link>
               ))}
           </div>
@@ -617,7 +703,7 @@ export default function Home() {
       </section>
 
       {/* About Preview */}
-      <section className="py-8 md:py-16 bg-muted">
+      <section className="py-8 md:py-16 bg-about">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="relative h-64 md:h-[400px] lg:h-[500px] rounded-lg overflow-hidden">
@@ -647,6 +733,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+              
               <Link href="/about">
                 <Button className="group text-sm md:text-base">
                   Learn More About Us
@@ -657,184 +744,235 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* Featured Tours - Enhanced with Slider */}
-      <section className="py-8 md:py-16">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-6 md:mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold">Featured Tours</h2>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={prevTourSet}
-                className="rounded-full"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={nextTourSet}
-                className="rounded-full"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+      <WhyChooseSection />
 
-          <div className="relative">
-            <div
-              ref={toursScrollRef}
-              className="flex overflow-x-scroll scroll-smooth pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
-              {isMobile ? (
-                <div
-                  ref={toursScrollRef}
-                  className="flex overflow-x-scroll scroll-smooth pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
-                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                >
-                  {tours.map((tour) => (
-                    <div
-                      key={tour.id}
-                      className="flex-shrink-0 w-4/5 sm:w-1/2 md:w-1/3 lg:w-1/4 snap-center px-2"
-                    >
-                      <TourCard tour={tour} />
-                    </div>
-                  ))}
+      {/* Featured Tours - Enhanced with Slider */}
+      <section className="py-8 md:py-16 bg-featured">
+  <div className="container mx-auto px-4">
+    {/* Header with arrows */}
+    <div className="flex justify-between items-center mb-6 md:mb-8">
+      <h2 className="text-2xl md:text-3xl font-bold">Featured Tour</h2>
+      <div className="flex gap-2">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={prevTourSet}
+          className="rounded-full"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={nextTourSet}
+          className="rounded-full"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+
+    {/* Slider container */}
+    <div className="relative">
+      <div className="flex pb-6 -mx-4 px-4">
+        {(
+          isMobile
+            ? [tours[currentTourIndex]] // 👉 only one item for mobile
+            : tours.slice(
+                currentTourIndex * toursPerPage,
+                (currentTourIndex + 1) * toursPerPage
+              )
+        ).map(
+          (tour) =>
+            tour && (
+              <div
+                key={tour.id}
+                className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 pr-4"
+              >
+                <div className="bg-white text-black rounded-xl shadow-sm hover:shadow-md border border-gray-200">
+                  <TourCard tour={tour} />
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 transition-all duration-500 ease-in-out">
-                  {tours
-                    .slice(
-                      currentTourIndex * toursPerPage,
-                      (currentTourIndex + 1) * toursPerPage
-                    )
-                    .map((tour) => (
-                      <TourCard key={tour.id} tour={tour} />
-                    ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+              </div>
+            )
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 
       {/* Popular Destinations */}
-      <section className="py-8 md:py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-6 md:mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold">
-              Popular Destinations
-            </h2>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={prevDestinationSet}
-                className="rounded-full"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={nextDestinationSet}
-                className="rounded-full"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
+      <section className="py-8 md:py-16 bg-gray-50">
+  <div className="container mx-auto px-4">
+    <div className="flex justify-between items-center mb-6 md:mb-8">
+      <h2 className="text-2xl md:text-3xl font-bold">
+        Popular Destinations
+      </h2>
+      <div className="flex gap-2">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={prevDestinationSet}
+          className="rounded-full border border-gray-300 p-2"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={nextDestinationSet}
+          className="rounded-full border border-gray-300 p-2"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+
+    {isMobile ? (
+      <div
+        ref={destinationsScrollRef}
+        className="flex overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {currentDestinations.map((dest) => (
+          <div
+            key={dest._id}
+            className="flex-shrink-0 w-full snap-center pr-4"
+          >
+            <div className="bg-white shadow rounded-lg p-4">
+              <img
+                src={`${BASE_URL}${dest.image}`}
+                alt={dest.name}
+                className="w-full h-48 object-cover rounded-md mb-4"
+              />
+              <h3 className="text-lg font-semibold">{dest.name}</h3>
+              <p className="text-gray-600">{dest.description}</p>
+              <span className="text-sm text-gray-400">
+                Tours: {dest.tours}
+              </span>
+              {/* ✅ View More Button */}
+              <Link href={`/destinations/${dest._id}`}>
+                <Button className="mt-4 w-full">View More</Button>
+              </Link>
             </div>
           </div>
+        ))}
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {currentDestinations.map((dest) => (
+          <div key={dest._id} className="bg-white shadow rounded-lg p-4">
+            <img
+              src={`${BASE_URL}${dest.image}`}
+              alt={dest.name}
+              className="w-full h-48 object-cover rounded-md mb-4"
+            />
+            <h3 className="text-lg font-semibold">{dest.name}</h3>
+            <p className="text-gray-600">{dest.description}</p>
+            {/* ✅ View More Button */}
+            <Link href={`/destinations/${dest._id}`}>
+  <Button
+    variant="outline"
+    className="text-primary border-primary hover:bg-primary hover:text-white transition-colors text-xs md:text-sm mt-4 px-4 py-1 h-8 mx-auto"
+  >
+    View More
+  </Button>
+</Link>
 
-          {isMobile ? (
-            <div
-              ref={destinationsScrollRef}
-              className="flex overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
-              {popularDestinations.map((destination, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-full snap-center pr-4"
-                >
-                  <DestinationCard destination={destination} />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {currentDestinations.map((destination, index) => (
-                <DestinationCard key={index} destination={destination} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
 
-      {/* Blog Preview */}
-      <section className="py-8 md:py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-6 md:mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold">
-              Travel Tips & Insights
-            </h2>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={prevBlogSet}
-                className="rounded-full"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={nextBlogSet}
-                className="rounded-full"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
+
+      <section className="py-8 md:py-16 bg-gray-50">
+  <div className="container mx-auto px-4">
+    <div className="flex justify-between items-center mb-6 md:mb-8">
+      <h2 className="text-2xl md:text-3xl font-bold">Travel Tips & Insights</h2>
+      <div className="flex gap-2">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={prevTipSet}
+          className="rounded-full"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={nextTipSet}
+          className="rounded-full"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+
+    {isMobile ? (
+      <div
+        ref={tipsScrollRef}
+        className="flex overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {tips.map((tip) => (
+          <div key={tip._id} className="flex-shrink-0 w-full snap-center pr-4">
+            <div className="bg-white shadow rounded-lg p-4">
+              <img
+                src={`${BASE_URL}${tip.image}`}
+                alt={tip.title}
+                className="w-full h-48 object-cover rounded-md mb-4"
+              />
+              <h3 className="text-lg font-semibold">{tip.title}</h3>
+              <p className="text-gray-600">{tip.excerpt}</p>
+              <span className="text-sm text-gray-400">
+                {new Date(tip.date).toLocaleDateString()}
+              </span>
+              {/* ✅ View More Button */}
+              <Link href={`/tips/${tip._id}`}>
+                <Button className="mt-4 w-full">View More</Button>
+              </Link>
             </div>
           </div>
+        ))}
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tips.map((tip) => (
+          <div key={tip._id} className="bg-white shadow rounded-lg p-4">
+            <img
+              src={`${BASE_URL}${tip.image}`}
+              alt={tip.title}
+              className="w-full h-48 object-cover rounded-md mb-4"
+            />
+            <h3 className="text-lg font-semibold">{tip.title}</h3>
+            <p className="text-gray-600">{tip.excerpt}</p>
+            <Link href={`/tips/${tip._id}`}>
+  <Button
+    variant="outline"
+    className="text-primary border-primary hover:bg-primary hover:text-white transition-colors text-xs md:text-sm mt-4 px-4 py-1 h-8 mx-auto"
+  >
+    View More
+  </Button>
+</Link>
 
-          {isMobile ? (
-            <div
-              ref={blogsScrollRef}
-              className="flex overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
-              {blogPosts.map((post, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-full snap-center pr-4"
-                >
-                  <BlogCard post={post} />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {currentBlogs.map((post, index) => (
-                <BlogCard key={index} post={post} />
-              ))}
-            </div>
-          )}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
 
-          {/* <div className="text-center mt-8">
-            <Link href="/blogs">
-              <Button variant="outline" className="text-primary border-primary">
-                View All Articles
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div> */}
-        </div>
-      </section>
+
+
+
 
       {/* Testimonials - Enhanced Design */}
-      <section className="py-8 md:py-16 bg-muted relative overflow-hidden">
+      <section className="py-8 md:py-16 bg-testimonials relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-5">
           <div className="absolute -top-10 -left-10 text-9xl text-primary">
             <Quote />
@@ -887,12 +1025,20 @@ export default function Home() {
 
                       <div className="flex items-center justify-center border-t pt-4">
                         <div className="relative w-16 h-16 rounded-full overflow-hidden mr-4">
-                          <Image
-                            src={testimonial.image || "/placeholder.svg"}
-                            alt={testimonial.name}
-                            fill
-                            className="object-cover"
-                          />
+   {testimonials.map((testimo) => (
+  <div key={testimo.id} className="flex items-center">
+    <div className="relative w-16 h-16 rounded-full overflow-hidden mr-4">
+      <img
+        src={`${BASE_URL}${testimo.image}`}   // ✅ works
+        alt={testimo.name}                              // ✅ also from testimo
+        className="w-16 h-16 object-cover rounded-full"
+      />
+    </div>
+  </div>
+))}
+
+
+
                         </div>
                         <div>
                           <h3 className="font-bold text-lg">
@@ -946,37 +1092,46 @@ export default function Home() {
       </section>
 
       {/* Trusted By Companies */}
-      <section className="py-8 md:py-12 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
-            Trusted By
-          </h2>
-          <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-            We're proud to be featured and recommended by these leading travel
-            publications and organizations
-          </p>
+      <section className="py-8 md:py-12 bg-trusted">
+  <div className="container mx-auto px-4">
+    <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
+      Trusted By
+    </h2>
+    <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
+      We're proud to be featured and recommended by these leading travel
+      publications and organizations
+    </p>
 
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            {trustedCompanies.map((company, index) => (
-              <div
-                key={index}
-                className="grayscale hover:grayscale-0 transition-all duration-300"
-              >
-                <Image
-                  src={company.logo || "/placeholder.svg"}
-                  alt={company.name}
-                  width={120}
-                  height={60}
-                  className="h-12 md:h-16 w-auto object-contain"
-                />
-              </div>
-            ))}
-          </div>
+    <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+      {trustedCompanies.map((company) => (
+        <div
+          key={company._id}
+          className="flex flex-col items-center text-center grayscale hover:grayscale-0 transition-all duration-300"
+        >
+          <Image
+            src={
+              company.image
+                ? `${BASE_URL}${company.image}`
+                : "/placeholder.svg"
+            }
+            alt={company.name}
+            width={120}
+            height={60}
+            className="h-12 md:h-16 w-auto object-contain mb-2"
+          />
+          <span className="text-sm md:text-base font-medium text-gray-700">
+            {company.name}
+          </span>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+
+
 
       {/* CTA Section */}
-      <section className="py-8 md:py-16 bg-primary text-white">
+      <section className="py-8 md:py-16 bg-cta">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4">
             Ready for Your Next Adventure?
@@ -1012,71 +1167,82 @@ export default function Home() {
 function TourCard({ tour }) {
   return (
     <Link href={`/tours/detail/${tour._id}`}>
-      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-full group transform hover:-translate-y-1">
-        <div className="relative h-48 md:h-64">
-          <Image
-            src={`${BASE_URL}${tour.images[0]}` || "/placeholder.svg"}
-            alt={tour.title}
-            fill
-            className="object-cover"
-          />
-          <div className="absolute top-2 right-2 md:top-4 md:right-4">
-            <Badge className="bg-secondary text-white text-xs md:text-sm">
-              {tour.difficulty}
-            </Badge>
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-            <div className="flex items-center text-white mb-1">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-              <span className="text-sm font-medium">{tour.rating}</span>
-              <span className="text-xs ml-1">({tour.reviews} reviews)</span>
-            </div>
-            <h3 className="font-bold text-lg md:text-xl text-white group-hover:text-secondary transition-colors">
-              {tour.title}
-            </h3>
-          </div>
-        </div>
-        <CardContent className="p-4 md:p-6">
-          <div className="flex items-center text-sm text-gray-600 mb-2">
-            <MapPin className="w-4 h-4 mr-1 text-primary" />
-            <span>{tour.location}</span>
-          </div>
-          <p className="text-muted-foreground text-sm md:text-base mb-4 line-clamp-2">
-            {tour.description}
-          </p>
-          <div className="grid grid-cols-2 gap-2 mb-4">
-            <div className="flex items-center text-xs md:text-sm">
-              <Calendar className="h-3 w-3 md:h-4 md:w-4 mr-1 text-primary" />
-              <span>{tour.days} Days</span>
-            </div>
-            <div className="flex items-center text-xs md:text-sm">
-              <Users className="h-3 w-3 md:h-4 md:w-4 mr-1 text-primary" />
-              <span>{tour.groupSize}</span>
-            </div>
-            <div className="flex items-center text-xs md:text-sm">
-              <Sun className="h-3 w-3 md:h-4 md:w-4 mr-1 text-primary" />
-              <span>{tour.bestSeason}</span>
-            </div>
-            <div className="flex items-center text-xs md:text-sm">
-              <Clock className="h-3 w-3 md:h-4 md:w-4 mr-1 text-primary" />
-              <span>Best Seller</span>
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="font-bold text-lg md:text-xl text-primary flex items-center">
-              <DollarSign className="h-4 w-4 md:h-5 md:w-5" />
-              {tour.price}
-            </span>
-            <Button
-              variant="outline"
-              className="text-primary border-primary hover:bg-primary hover:text-white transition-colors text-xs md:text-sm"
-            >
-              View Details
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
+ <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-[420px] w-[430px] flex flex-col group transform hover:-translate-y-1">
+  {/* Image Section */}
+  <div className="relative h-[250px]">
+    <Image
+      src={`${BASE_URL}${tour.images?.[0]}` || "/placeholder.svg"}
+      alt={tour.name}
+      fill
+      className="object-cover"
+    />
+    <div className="absolute top-2 right-2">
+      <Badge className="bg-secondary text-white text-xs md:text-sm">
+        {tour.difficulty}
+      </Badge>
+    </div>
+    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+      <div className="flex items-center text-white mb-1">
+        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+        <span className="text-sm font-medium">{tour.rating}</span>
+        <span className="text-xs ml-1">({tour.reviews} reviews)</span>
+      </div>
+      <h3 className="font-bold text-lg text-white group-hover:text-secondary transition-colors line-clamp-1">
+        {tour.name}
+      </h3>
+    </div>
+  </div>
+
+  {/* Content Section */}
+  <CardContent className="p-4 flex flex-col flex-1">
+    <div className="flex items-center text-sm text-gray-600 mb-2">
+      <MapPin className="w-4 h-4 mr-1 text-primary" />
+      <span className="truncate">{tour.location}, {tour.country}</span>
+    </div>
+
+    <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
+      {tour.shortDescription}
+    </p>
+
+    <div className="grid grid-cols-2 gap-2 mb-4 text-xs text-gray-600">
+      <div className="flex items-center">
+        <Calendar className="h-4 w-4 mr-1 text-primary" />
+        <span>{tour.days} Days</span>
+      </div>
+      <div className="flex items-center">
+        <Users className="h-4 w-4 mr-1 text-primary" />
+        <span>{tour.groupSize}</span>
+      </div>
+      <div className="flex items-center">
+        <Sun className="h-4 w-4 mr-1 text-primary" />
+        <span>{tour.bestTime}</span>
+      </div>
+      <div className="flex items-center">
+        <Clock className="h-4 w-4 mr-1 text-primary" />
+        <span>Best Seller</span>
+      </div>
+    </div>
+
+    {/* Footer */}
+    <div className="mt-auto flex items-center justify-between">
+      <span className="font-bold text-lg text-primary flex items-center">
+        <DollarSign className="h-4 w-4 mr-1" />
+        {tour.price}
+      </span>
+      <Button
+        variant="outline"
+        className="text-primary border-primary hover:bg-primary hover:text-white transition-colors text-xs"
+      >
+        View Details
+      </Button>
+    </div>
+  </CardContent>
+</Card>
+
+
+
+  </Link>
+  
   );
 }
 
@@ -1116,35 +1282,35 @@ function DestinationCard({ destination }) {
 }
 
 // Blog Card Component
-function BlogCard({ post }) {
-  return (
-    // <Link href={`/blogs/${post.slug}`}>
-    <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-      <div className="relative h-48">
-        <Image
-          src={post.image || "/placeholder.svg"}
-          alt={post.title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-      </div>
-      <CardContent className="p-4 md:p-6">
-        <div className="text-sm text-gray-500 mb-2">{post.date}</div>
-        <h3 className="font-bold text-lg mb-2 hover:text-primary transition-colors">
-          {post.title}
-        </h3>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-          {post.excerpt}
-        </p>
-        <div className="flex items-center text-primary font-medium text-sm">
-          Read More
-          <ArrowUpRight className="ml-1 h-4 w-4" />
-        </div>
-      </CardContent>
-    </Card>
-    // </Link>
-  );
-}
+// function BlogCard({ post }) {
+//   return (
+//     // <Link href={`/blogs/${post.slug}`}>
+//     <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+//       <div className="relative h-48">
+//         <Image
+//           src={post.image || "/placeholder.svg"}
+//           alt={post.title}
+//           fill
+//           className="object-cover transition-transform duration-500 group-hover:scale-105"
+//         />
+//       </div>
+//       <CardContent className="p-4 md:p-6">
+//         <div className="text-sm text-gray-500 mb-2">{post.date}</div>
+//         <h3 className="font-bold text-lg mb-2 hover:text-primary transition-colors">
+//           {post.title}
+//         </h3>
+//         <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+//           {post.excerpt}
+//         </p>
+//         <div className="flex items-center text-primary font-medium text-sm">
+//           Read More
+//           <ArrowUpRight className="ml-1 h-4 w-4" />
+//         </div>
+//       </CardContent>
+//     </Card>
+//     // </Link>
+//   );
+// }
 
 function getIcon(icon: string) {
   switch (icon) {
@@ -1163,4 +1329,48 @@ function getIcon(icon: string) {
     default:
       return null;
   }
+}
+function getWhyChooseIcon(icon: string) {
+  switch (icon) {
+    case "shield":
+      return <Shield className="h-6 w-6" />
+      case "users":
+        return <Medal className="h-6 w-6" /> // ✅ replaced Users with Medal for "expert users"
+      case "map-pin":
+      return <MapPin className="h-6 w-6" />
+    case "headphones":
+      return <Headphones className="h-6 w-6" />
+    case "leaf":
+      return <Leaf className="h-6 w-6" />
+      case "medal":
+        return <Users className="h-6 w-6" />
+    default:
+      return null
+  }
+}
+ function WhyChooseSection() {
+  return (
+    <section className="py-8 md:py-16 bg-background">
+      <div className="container mx-auto px-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-10">
+          {whyChoose.title}
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+          {whyChoose.reasons.map((reason) => (
+            <div
+              key={reason.id}
+              className="flex flex-col items-center text-center p-6 rounded-2xl bg-muted shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                {getWhyChooseIcon(reason.icon)}
+              </div>
+              <h3 className="text-lg font-semibold mb-2">{reason.title}</h3>
+              <p className="text-sm text-muted-foreground">{reason.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
 }

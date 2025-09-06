@@ -5,29 +5,19 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
-import {
-  Calendar,
-  Users,
-  Map,
-  Sun,
-  Mountain,
-  Compass,
-  Bike,
-  Snowflake,
-  Landmark,
-  Tent,
-} from "lucide-react";
+import { Calendar, Users, Map, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BASE_URL } from "@/app/Var";
 
 const categories = [
   "Trekking",
-  "Expedition",
+  "Expeditions",
   "Mountain Biking",
   "Cultural Tours",
   "Safari",
   "Hunting",
+  "Tour",
 ];
 
 export default function ToursPage() {
@@ -39,20 +29,23 @@ export default function ToursPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // ✅ Read category from URL on first load
   useEffect(() => {
     const category = searchParams.get("category");
     if (category) {
       setActiveCategory(category);
+    } else {
+      setActiveCategory("all");
     }
   }, [searchParams]);
 
+  // ✅ Fetch tours
   useEffect(() => {
     async function fetchTours() {
       setLoading(true);
       setError("");
       try {
         const response = await axios.get(`${BASE_URL}/api/tours`);
-        console.log("Fetched tours:", response.data.data);
         setTours(response.data.data);
       } catch (error) {
         console.error("Failed to fetch tours:", error);
@@ -64,16 +57,21 @@ export default function ToursPage() {
     fetchTours();
   }, []);
 
+  // ✅ Filter tours immediately when activeCategory or tours change
   useEffect(() => {
     if (activeCategory === "all") {
       setFilteredTours(tours);
     } else {
       setFilteredTours(
-        tours.filter((tour) => tour.category === activeCategory)
+        tours.filter(
+          (tour) =>
+            tour.category.toLowerCase() === activeCategory.toLowerCase()
+        )
       );
     }
   }, [activeCategory, tours]);
 
+  // ✅ Handle category button click
   const handleCategoryChange = (categoryId: string) => {
     setActiveCategory(categoryId);
     router.push(`/tours?category=${categoryId}`, { scroll: false });
@@ -81,7 +79,9 @@ export default function ToursPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Our Tours</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">
+        {activeCategory === "all" ? "Our Tours" : `${activeCategory} Tours`}
+      </h1>
 
       {/* Category Buttons */}
       <div className="flex flex-wrap justify-center gap-4 mb-8">
@@ -104,14 +104,14 @@ export default function ToursPage() {
         ))}
       </div>
 
-      {/* Loading State */}
+      {/* Loading */}
       {loading && (
         <div className="text-center py-12">
           <p className="text-2xl text-gray-600">Loading tours...</p>
         </div>
       )}
 
-      {/* Error State */}
+      {/* Error */}
       {error && (
         <div className="text-center py-12 text-red-500">
           <p className="text-2xl">{error}</p>
@@ -127,7 +127,7 @@ export default function ToursPage() {
                 <div className="relative h-64">
                   <Image
                     src={`${BASE_URL}${tour.images[0]}` || "/placeholder.svg"}
-                    alt={tour.title}
+                    alt={tour.name}
                     fill
                     className="object-cover"
                   />
@@ -147,16 +147,15 @@ export default function ToursPage() {
                 </div>
                 <div className="p-6">
                   <h3 className="font-bold text-2xl mb-2 text-primary line-clamp-2">
-                    {tour.title}
+                    {tour.name}
                   </h3>
-
                   <p className="text-gray-600 mb-4 line-clamp-2">
                     {tour.description}
                   </p>
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="flex items-center text-sm text-gray-600">
-                      <Map className="w-10 h-10 mr-2 text-primary" />
-                      {tour.location}
+                      <Map className="w-5 h-5 mr-2 text-primary" />
+                      {tour.country}
                     </div>
                     <div className="flex items-center text-sm text-gray-600">
                       <Calendar className="w-5 h-5 mr-2 text-primary" />
@@ -168,7 +167,7 @@ export default function ToursPage() {
                     </div>
                     <div className="flex items-center text-sm text-gray-600">
                       <Sun className="w-5 h-5 mr-2 text-primary" />
-                      {tour.bestSeason}
+                      {tour.bestTime}
                     </div>
                   </div>
                   <Button className="w-full text-lg">View Details</Button>

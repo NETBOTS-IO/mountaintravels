@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 export function Footer() {
-  console.log("Footer component rendered")
+  // console.log("Footer component rendered")
 
   const getIcon = (icon: string) => {
     switch (icon) {
@@ -130,11 +130,12 @@ export function Footer() {
             </p>
             <form className="space-y-2">
               <div className="flex">
-                <Input
-                  type="email"
-                  placeholder="Your email address"
-                  className="rounded-r-none text-black text-sm md:text-base"
-                />
+               <Input
+  type="email"
+  placeholder="Your email address"
+  className="bg-white text-black rounded-r-none text-sm md:text-base"
+/>
+
                 <Button
                   type="submit"
                   className="rounded-l-none bg-secondary hover:bg-secondary/90 text-sm md:text-base"
@@ -173,7 +174,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="underline hover:text-secondary"
             >
-              Netbots (SMC-Private) Limited
+              Net-bots (SMC-Private) Limited
             </a>
           </p>
         </div>

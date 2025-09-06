@@ -1,131 +1,104 @@
-import { useState } from "react";
-import { Document, Page, Text, View, StyleSheet, Image, pdf } from "@react-pdf/renderer";
+import jsPDF from "jspdf";
 
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: "column",
-    backgroundColor: "#ffffff",
-    padding: 30,
-  },
-  header: {
-    marginBottom: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  logo: {
-    width: 100,
-    height: 50,
-  },
-  companyInfo: {
-    fontSize: 10,
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
-  },
-  text: {
-    fontSize: 12,
-    marginBottom: 5,
-  },
-  footer: {
-    marginTop: "auto",
-    textAlign: "center",
-    fontSize: 10,
-    color: "grey",
-  },
-});
+export async function generateTourPDF(tour: any, siteConfig?: any) {
+  try {
+    const doc = new jsPDF();
+    let y = 20; // initial Y position
 
-const TourPDF = ({ tour, siteConfig }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Image style={styles.logo} src={siteConfig?.logoUrl || "/default-logo.png"} />
-        <View style={styles.companyInfo}>
-          <Text>{siteConfig?.name || "Company Name"}</Text>
-          <Text>{siteConfig?.contact?.address || "Address not available"}</Text>
-          <Text>{siteConfig?.contact?.phone || "Phone not available"}</Text>
-          <Text>{siteConfig?.contact?.email || "Email not available"}</Text>
-        </View>
-      </View>
+    // Helper to add wrapped text
+    const addWrappedText = (text: string, x: number, yPos: number, maxWidth = 180, lineHeight = 6) => {
+      const lines = doc.splitTextToSize(text, maxWidth);
+      doc.text(lines, x, yPos);
+      return lines.length * lineHeight;
+    };
 
-      {/* Title */}
-      <Text style={styles.title}>{tour?.title || "Tour Title"}</Text>
+    // Title
+    doc.setFontSize(18);
+    y += addWrappedText(tour?.title || "Tour Details", 10, y);
 
-      {/* Tour Details */}
-      <View style={styles.section}>
-        <Text style={styles.text}>Location: {tour?.location || "N/A"}</Text>
-        <Text style={styles.text}>Duration: {tour?.days || 0} Days</Text>
-        <Text style={styles.text}>Group Size: {tour?.groupSize || "N/A"}</Text>
-        <Text style={styles.text}>Difficulty: {tour?.difficulty || "N/A"}</Text>
-        <Text style={styles.text}>Price: ${tour?.price || 0}</Text>
-        <Text style={styles.text}>Best Season: {tour?.bestSeason || "N/A"}</Text>
-        <Text style={styles.text}>Description: {tour?.description || "No description available."}</Text>
-      </View>
+    // Description
+    doc.setFontSize(12);
+    y += 10;
+    y += addWrappedText(
+      `Description: ${tour?.description || "No description available."}`,
+      10,
+      y
+    );
 
-      {/* Itinerary */}
-      <View style={styles.section}>
-        <Text style={styles.text}>Itinerary:</Text>
-        {Array.isArray(tour?.itineraries) && tour.itineraries.length > 0 ? (
-          tour.itineraries.map((day, index) => (
-            <View key={index}>
-              <Text style={styles.text}>Day {day?.day || index + 1}: {day?.description || "No description"}</Text>
-              <Text style={styles.text}>Activities: {day?.activities || "N/A"}</Text>
-              <Text style={styles.text}>Accommodation: {day?.accommodation || "N/A"}</Text>
-              <Text style={styles.text}>Meals: {day?.meals || "N/A"}</Text>
-            </View>
-          ))
-        ) : (
-          <Text style={styles.text}>No itinerary available.</Text>
-        )}
-      </View>
+    // Basic details
+    y += 8;
+    y += addWrappedText(`Location: ${tour?.location || "N/A"}`, 10, y);
+    y += addWrappedText(`Duration: ${tour?.days || 0} Days`, 10, y);
+    y += addWrappedText(`Group Size: ${tour?.groupSize || "N/A"}`, 10, y);
+    y += addWrappedText(`Difficulty: ${tour?.difficulty || "N/A"}`, 10, y);
+    y += addWrappedText(`Price: $${tour?.price || 0}`, 10, y);
+    y += addWrappedText(`Best Season: ${tour?.bestSeason || "N/A"}`, 10, y);
 
-      {/* Footer */}
-      <Text style={styles.footer}>
-        © {new Date().getFullYear()} {siteConfig?.name || "Company Name"}. All rights reserved.
-      </Text>
-    </Page>
-  </Document>
-);
+    // Itinerary Section
+    y += 10;
+    doc.setFontSize(14);
+    y += addWrappedText("Itinerary:", 10, y);
 
-const generatePDF = async (tour, siteConfig) => {
-  const pdfDoc = <TourPDF tour={tour} siteConfig={siteConfig} />;
-  return pdf(pdfDoc).toBlob();
-};
+    doc.setFontSize(11);
+    if (Array.isArray(tour?.itineraries) && tour.itineraries.length > 0) {
+      tour.itineraries.forEach((day: any, index: number) => {
+        // Page break check
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
 
-const TourPDFDownloader = ({ tour, siteConfig }) => {
-  const [loading, setLoading] = useState(false);
+        // Day Title
+        y += 6;
+        y += addWrappedText(
+          `Day ${day?.day || index + 1}: ${day?.description || "No description"}`,
+          10,
+          y
+        );
 
-  const handleDownloadPDF = async () => {
-    try {
-      setLoading(true);
-      const pdfBlob = await generatePDF(tour, siteConfig);
-      const url = URL.createObjectURL(pdfBlob);
+        // Activities
+        y += addWrappedText(
+          `Activities: ${day?.activities || "N/A"}`,
+          15,
+          y
+        );
 
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${tour?.title || "Tour"} - Itinerary.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+        // Accommodation
+        y += addWrappedText(
+          `Accommodation: ${day?.accommodation || "N/A"}`,
+          15,
+          y
+        );
 
-      setLoading(false);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-      alert("An error occurred while generating the PDF. Please try again.");
-      setLoading(false);
+        // Meals
+        y += addWrappedText(
+          `Meals: ${day?.meals || "N/A"}`,
+          15,
+          y
+        );
+      });
+    } else {
+      y += addWrappedText("No itinerary available.", 10, y);
     }
-  };
 
+    // Footer
+    if (siteConfig?.name) {
+      if (y > 260) {
+        doc.addPage();
+        y = 20;
+      }
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text(
+        `© ${new Date().getFullYear()} ${siteConfig?.name || "Company Name"}. All rights reserved.`,
+        10,
+        290
+      );
+    }
 
-};
-
-export default TourPDFDownloader;
+    return doc;
+  } catch (err) {
+    console.error("PDF generation failed:", err);
+    throw err;
+  }
+}
