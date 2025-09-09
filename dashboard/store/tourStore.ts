@@ -1,35 +1,5 @@
 import { create } from "zustand";
-
-type Tour = {
-  id: string;
-  title: string;
-  category: string;
-  location: string;
-  days: number;
-  groupSize: string;
-  difficulty: "easy" | "moderate" | "hard";
-  price: number;
-  bestSeason: string;
-  description: string;
-  images: string[];
-  itineraries: {
-    day: number;
-    title: string;
-    description: string;
-    activities: string;
-    accommodation: string;
-    meals: string;
-    distance: string;
-    hours: string;
-    images: string[];
-  }[];
-  inclusions: string[];
-  exclusions: string[];
-  faqs: { question: string; answer: string }[];
-  termsAndConditions: string[];
-  policies: string[];
-  map: { latitude: number; longitude: number };
-};
+import type { Tour } from "@/lib/data-utils";
 
 interface TourStore {
   tour: Tour | null;

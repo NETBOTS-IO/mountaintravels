@@ -49,7 +49,7 @@ export default function TourDetailPage() {
         <ChevronLeft className="mr-2 h-4 w-4" /> Back
       </Button>
 
-      <h1 className="text-3xl font-bold mb-6">{tour.title}</h1>
+      <h1 className="text-3xl font-bold mb-6">{tour.name}</h1>
 
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
@@ -62,43 +62,128 @@ export default function TourDetailPage() {
         <TabsContent value="overview">
           <Card>
             <CardHeader>
-              <CardTitle>{tour.title}</CardTitle>
-              <CardDescription>{tour.description}</CardDescription>
+              <CardTitle>{tour.name}</CardTitle>
+              <CardDescription>{tour.shortDescription}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <strong>Category:</strong> {tour.category}
-                </div>
-                <div>
-                  <strong>Location:</strong> {tour.location}
-                </div>
-                <div>
-                  <strong>Duration:</strong> {tour.days} days
-                </div>
-                <div>
-                  <strong>Group Size:</strong> {tour.groupSize}
-                </div>
-                <div>
-                  <strong>Difficulty:</strong> {tour.difficulty}
-                </div>
-                <div>
-                  <strong>Price:</strong> ${tour.price}
-                </div>
-                <div>
-                  <strong>Best Season:</strong> {tour.bestSeason}
+              {/* General Info */}
+              <div className="mb-6">
+                <h3 className="font-semibold text-lg mb-2">General Information</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div><strong>Category:</strong> {tour.category}</div>
+                  <div><strong>Location:</strong> {tour.location}</div>
+                  <div><strong>Duration:</strong> {tour.days} days</div>
+                  <div><strong>Group Size:</strong> {tour.groupSize}</div>
+                  <div><strong>Difficulty:</strong> {tour.difficulty}</div>
+                  <div><strong>Price:</strong> <span className="text-green-700 font-semibold">${tour.price}</span></div>
+                  <div><strong>Original Price:</strong> ${tour.originalPrice}</div>
+                  <div><strong>Best Season:</strong> {tour.bestTime}</div>
+                  <div><strong>Featured:</strong> {tour.featured ? <span className="text-green-600 font-bold">Yes</span> : <span className="text-gray-400">No</span>}</div>
+                  <div><strong>Availability:</strong> {tour.availability ? <span className="text-green-600 font-bold">Available</span> : <span className="text-red-600 font-bold">Not Available</span>}</div>
+                  <div><strong>Next Departure:</strong> {tour.nextDeparture ? new Date(tour.nextDeparture).toLocaleDateString() : '-'}</div>
+                  <div><strong>Rating:</strong> {tour.rating} ⭐</div>
+                  <div><strong>Reviews:</strong> {tour.reviews}</div>
+                  <div><strong>Destination:</strong> {tour.destination}</div>
+                  <div><strong>Physical Requirements:</strong> {tour.physicalRequirements}</div>
+                  <div><strong>Distance:</strong> {tour.distance}</div>
+    <div><strong>Hours:</strong> {tour.hours}</div>
+                  <div><strong>Created At:</strong> {tour.createdAt ? new Date(tour.createdAt).toLocaleString() : '-'}</div>
+                  <div><strong>Updated At:</strong> {tour.updatedAt ? new Date(tour.updatedAt).toLocaleString() : '-'}</div>
                 </div>
               </div>
-              <div className="mt-4">
-                <strong>Images:</strong>
+
+              {/* Descriptions */}
+              <div className="mb-6">
+                <h3 className="font-semibold text-lg mb-2">Descriptions</h3>
+                <div className="mb-2"><strong>Overview:</strong> {tour.overview}</div>
+                <div className="mb-2"><strong>Short Description:</strong> {tour.shortDescription}</div>
+                <div><strong>Long Description:</strong>
+                  <div className="whitespace-pre-line bg-gray-50 p-2 rounded mt-1 text-sm text-gray-700">{tour.longDescription}</div>
+                </div>
+              </div>
+
+              {/* Tags, Features, Highlights, Related Trips */}
+              <div className="mb-6 grid grid-cols-2 gap-4">
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">Tags</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {tour.tags && tour.tags.length > 0 ? tour.tags.map((tag, idx) => (
+                      <span key={idx} className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">{tag}</span>
+                    )) : <span className="text-gray-400">-</span>}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">Related Trips</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {tour.relatedTrips && tour.relatedTrips.length > 0 ? tour.relatedTrips.map((trip, idx) => (
+                      <span key={idx} className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs">{trip}</span>
+                    )) : <span className="text-gray-400">-</span>}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">Features</h3>
+                  <ul className="list-disc list-inside ml-4">
+                    {tour.features && tour.features.length > 0 ? tour.features.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    )) : <li className="text-gray-400">-</li>}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">Highlights</h3>
+                  <ul className="list-disc list-inside ml-4">
+                    {tour.highlights && tour.highlights.length > 0 ? tour.highlights.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    )) : <li className="text-gray-400">-</li>}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Why Choose */}
+              <div className="mb-6">
+                <h3 className="font-semibold text-lg mb-2">Why Choose</h3>
+                <ul className="list-disc list-inside ml-4">
+                  {tour.whyChoose && tour.whyChoose.length > 0 ? tour.whyChoose.map((item, idx) => (
+                    <li key={idx}><strong>{item.title}:</strong> {item.description}</li>
+                  )) : <li className="text-gray-400">-</li>}
+                </ul>
+              </div>
+
+              {/* Terms, Policies, Map */}
+              <div className="mb-6 grid grid-cols-2 gap-4">
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">Terms & Conditions</h3>
+                  <ul className="list-disc list-inside ml-4">
+                    {tour.termsAndConditions && tour.termsAndConditions.length > 0 ? tour.termsAndConditions.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    )) : <li className="text-gray-400">-</li>}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">Policies</h3>
+                  <ul className="list-disc list-inside ml-4">
+                    {tour.policies && tour.policies.length > 0 ? tour.policies.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    )) : <li className="text-gray-400">-</li>}
+                  </ul>
+                </div>
+                <div className="col-span-2">
+                  <h3 className="font-semibold text-lg mb-2">Map Location</h3>
+                  {tour.map ? (
+                    <span>Latitude: <span className="font-mono">{tour.map.latitude}</span>, Longitude: <span className="font-mono">{tour.map.longitude}</span></span>
+                  ) : <span className="text-gray-400">-</span>}
+                </div>
+              </div>
+
+              {/* Images */}
+              <div className="mb-6">
+                <h3 className="font-semibold text-lg mb-2">Images</h3>
                 <div className="grid grid-cols-3 gap-2 mt-2">
                   {tour.images.map((image, index) => (
-                    console.log("image url", `${BASE_URL}${image}`),
                     <img
                       key={index}
                       src={`${BASE_URL}${image}` || "/placeholder.svg?height=200&width=300"}
                       alt={`Tour image ${index + 1}`}
-                      className="w-full h-24 object-cover rounded-md"
+                      className="w-full h-24 object-cover rounded-md border"
                     />
                   ))}
                 </div>
@@ -130,10 +215,10 @@ export default function TourDetailPage() {
                       <strong>Meals:</strong> {day.meals}
                     </div>
                     <div>
-                      <strong>Distance:</strong> {day.distance}
+                      <strong>Distance:</strong> {day.duration}
                     </div>
                     <div>
-                      <strong>Hours:</strong> {day.hours}
+                      <strong>Type:</strong> {day.type}
                     </div>
                   </div>
                 </div>

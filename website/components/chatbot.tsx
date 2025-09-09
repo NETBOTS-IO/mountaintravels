@@ -58,10 +58,10 @@ export function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsOpen(true), 4000)
-    return () => clearTimeout(timer)
-  }, [])
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setIsOpen(true), 4000)
+  //   return () => clearTimeout(timer)
+  // }, [])
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {

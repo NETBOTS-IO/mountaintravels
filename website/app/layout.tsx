@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ["Pakistan", "Travel", "Tours", "Trekking", "Expeditions", "Mountain Biking", "Skiing", "Cultural Tours"],
+  keywords: ["Pakistan", "Travel", "Tours", "Trekking", "Expeditions", "Mountain Biking", "Skiing", "Cultural Tours","Mountains","Karakoram"],
   authors: [{ name: "Mountain Travels Pakistan" }],
   creator: "Mountain Travels Pakistan",
   openGraph: {

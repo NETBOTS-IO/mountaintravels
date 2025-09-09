@@ -159,7 +159,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-white/20 mt-8 pt-8 text-center">
-          <p className="text-sm">&copy; {new Date().getFullYear()} Mountain Travels Pakistan. All rights reserved.</p>
+          <p className="text-sm">&copy; {new Date().getFullYear()} Mountain travel Pakistan. All rights reserved.</p>
           <p className="text-sm mt-2">
             Designed and developed by{" "}
             <a

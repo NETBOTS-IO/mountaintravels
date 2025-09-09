@@ -5,19 +5,18 @@ import Link from "next/link"
 import Image from "next/image"
 import { Facebook, Instagram, Twitter, Linkedin, Mail, Phone, Menu, X, ChevronDown } from "lucide-react"
 import { siteConfig, mainMenu } from "@/data/siteConfig"
-import { tourCategories } from "@/data/tourPackages"
 import { cn } from "@/lib/utils"
 
-// Remove the mainMenu definition here, as it's now imported from siteConfig
-
 export function Header() {
-  console.log("Header component rendered")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isToursDropdownOpen, setIsToursDropdownOpen] = useState(false)
+  const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null)
+  const [openDesktopDropdown, setOpenDesktopDropdown] = useState<string | null>(null)
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+  const toggleMobileDropdown = (name: string) =>
+    setOpenMobileDropdown(openMobileDropdown === name ? null : name)
+  const toggleDesktopDropdown = (name: string) =>
+    setOpenDesktopDropdown(openDesktopDropdown === name ? null : name)
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
@@ -84,15 +83,47 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
-            {mainMenu.map((item) => (
-              <Link
-                key={item.name}
-                href={item.path}
-                className="text-sm lg:text-base font-medium hover:text-primary transition-colors"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {mainMenu.map((item) =>
+              item.children ? (
+                <div key={item.name} className="relative">
+                  <button
+                    onClick={() => toggleDesktopDropdown(item.name)}
+                    className="text-sm lg:text-base font-medium hover:text-primary transition-colors flex items-center"
+                  >
+                    {item.name}
+                    <ChevronDown
+                      className={`ml-1 h-4 w-4 transition-transform ${
+                        openDesktopDropdown === item.name ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {openDesktopDropdown === item.name && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
+                      <ul className="py-2">
+                        {item.children.map((child) => (
+                          <li key={child.name}>
+                            <Link
+                              href={child.path}
+                              className="block px-4 py-2 text-sm hover:bg-gray-100"
+                            >
+                              {child.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={item.name}
+                  href={item.path}
+                  className="text-sm lg:text-base font-medium hover:text-primary transition-colors"
+                >
+                  {item.name}
+                </Link>
+              )
+            )}
           </nav>
         </div>
 
@@ -105,7 +136,7 @@ export function Header() {
         >
           <div className="flex justify-between items-center p-4 border-b">
             <Link href="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
-              <Image src="/logo.png" alt={siteConfig.name} width={40} height={40} className="h-8 w-auto" />
+              <Image src="/assets/logo/logo.png" alt={siteConfig.name} width={40} height={40} className="h-8 w-auto" />
               <span className="ml-2 font-bold text-lg text-primary">{siteConfig.shortName}</span>
             </Link>
             <button className="flex items-center" onClick={toggleMenu} aria-label="Close menu">
@@ -116,32 +147,32 @@ export function Header() {
             <ul className="space-y-4">
               {mainMenu.map((item) => (
                 <li key={item.name}>
-                  {item.name === "Tours" ? (
+                  {item.children ? (
                     <div>
                       <button
-                        onClick={() => setIsToursDropdownOpen(!isToursDropdownOpen)}
+                        onClick={() => toggleMobileDropdown(item.name)}
                         className="flex items-center justify-between w-full text-lg font-medium hover:text-primary transition-colors"
                       >
-                        Tours
+                        {item.name}
                         <ChevronDown
-                          className={`h-5 w-5 transition-transform ${isToursDropdownOpen ? "rotate-180" : ""}`}
+                          className={`h-5 w-5 transition-transform ${
+                            openMobileDropdown === item.name ? "rotate-180" : ""
+                          }`}
                         />
                       </button>
-                      {isToursDropdownOpen && (
+                      {openMobileDropdown === item.name && (
                         <ul className="pl-4 mt-2 space-y-2">
-                          {tourCategories
-                            .filter((category) => category.id !== "all")
-                            .map((category) => (
-                              <li key={category.id}>
-                                <Link
-                                  href={`/tours?category=${category.id}`}
-                                  className="text-base hover:text-primary transition-colors block"
-                                  onClick={() => setIsMenuOpen(false)}
-                                >
-                                  {category.name}
-                                </Link>
-                              </li>
-                            ))}
+                          {item.children.map((child) => (
+                            <li key={child.name}>
+                              <Link
+                                href={child.path}
+                                className="text-base hover:text-primary transition-colors block"
+                                onClick={() => setIsMenuOpen(false)}
+                              >
+                                {child.name}
+                              </Link>
+                            </li>
+                          ))}
                         </ul>
                       )}
                     </div>
@@ -163,4 +194,3 @@ export function Header() {
     </header>
   )
 }
-

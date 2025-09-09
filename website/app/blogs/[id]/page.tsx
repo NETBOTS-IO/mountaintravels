@@ -1,12 +1,28 @@
+// app/blogs/[id]/page.tsx
 import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { blogPosts } from "@/data/blogContent"
 
-export default function BlogDetailPage({ params }) {
-  const post = blogPosts.find((post) => post.id === params.id)
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+
+async function getBlog(id: string) {
+  try {
+    const res = await fetch(`${BASE_URL}/api/blogs/${id}`, { cache: "no-store" })
+    const data = await res.json()
+
+    if (data.success && data.data) {
+      return data.data
+    }
+  } catch (err) {
+    console.error(err)
+  }
+  return null
+}
+
+export default async function BlogDetailPage({ params }: { params: { id: string } }) {
+  const post = await getBlog(params.id)
 
   if (!post) {
     notFound()
@@ -15,29 +31,46 @@ export default function BlogDetailPage({ params }) {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[50vh]">
-        <Image src={post.image || "/placeholder.svg"} alt={post.title} fill className="object-cover" />
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-white text-center max-w-4xl px-4">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">{post.title}</h1>
-            <p className="text-xl mb-4">
-              By {post.author} |{" "}
-              {new Date(post.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-          </div>
-        </div>
-      </section>
+    {/* Hero Section */}
+{/* Hero Section */}
+<section className="relative h-[60vh] md:h-[70vh]">
+  {/* Blog Cover Image */}
+  <Image
+    src={`${BASE_URL}${post.coverImage}`}
+    alt={post.title}
+    fill
+    priority
+    className="object-cover"
+  />
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/50" />
+
+  {/* Content positioned very low */}
+  <div className="absolute inset-x-0 bottom-6 flex justify-center">
+    <div className="text-white text-center max-w-4xl px-4">
+      <h1 className="text-3xl md:text-6xl font-bold mb-3 drop-shadow-lg">
+        {post.title}
+      </h1>
+      <p className="text-base md:text-xl drop-shadow-md">
+        By {post.author?.name || "Unknown"} |{" "}
+        {new Date(post.createdAt).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </p>
+    </div>
+  </div>
+</section>
+
+
 
       {/* Blog Content */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="prose prose-lg" dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div className="max-w-3xl mx-auto prose prose-lg">
+            {/* Render your editorJS content here instead of summary */}
+            <p>{post.summary}</p>
           </div>
         </div>
       </section>
@@ -55,4 +88,3 @@ export default function BlogDetailPage({ params }) {
     </div>
   )
 }
-

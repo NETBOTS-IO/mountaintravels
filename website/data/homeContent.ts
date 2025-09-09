@@ -1,10 +1,59 @@
+
+
+
 export const heroSection = {
   title: "Discover Pakistan's Majestic Mountains",
   subtitle: "Experience the adventure of a lifetime with Mountain Travels Pakistan",
   cta: "Explore Tours",
   image: "/placeholder.svg",
 }
-
+export const whyChoose = {
+  title: "Why Choose Mountain Travels Pakistan",
+  reasons: [
+    {
+      id: "safety",
+      title: "Safety First",
+      description:
+        "Your safety is our top priority with certified guides, comprehensive insurance coverage, and rigorous safety protocols.",
+      icon: "shield",
+    },
+    {
+      id: "guides",
+      title: "Expert Guides",
+      description:
+        "Local experts with years of experience, deep destination knowledge, and passion for sharing their culture.",
+      icon: "users",
+    },
+    {
+      id: "exclusive",
+      title: "Exclusive Access",
+      description:
+        "Access to exclusive destinations, hidden gems, and off-the-beaten-path locations around the world.",
+      icon: "map-pin",
+    },
+    {
+      id: "support",
+      title: "24/7 Support",
+      description:
+        "Round-the-clock assistance before, during, and after your journey with dedicated support team.",
+      icon: "headphones",
+    },
+    {
+      id: "sustainability",
+      title: "Sustainable Travel",
+      description:
+        "Committed to responsible tourism that benefits local communities and preserves natural environments.",
+      icon: "leaf",
+    },
+    {
+      id: "smallgroup",
+      title: "Small Groups",
+      description:
+        "Committed to responsible tourism that benefits local communities and preserves natural environments.",
+      icon: "medal",
+    },
+  ],
+}
 export const featuredTours = [
   {
     id: "k2-base-camp-trek",

@@ -1,7 +1,7 @@
 export const tourCategories = [
   { id: "all", name: "All Tours", icon: "globe" },
   { id: "Trekking", name: "Trekking", icon: "hiking" },
-  { id: "Expedition", name: "Expedition", icon: "mountain" },
+  { id: "Expeditions", name: "Expeditions", icon: "mountain" },
   { id: "Mountain Biking", name: "Mountain Biking", icon: "bike" },
   { id: "Skiing", name: "Skiing", icon: "skiing" },
   { id: "Cultural Tours", name: "Cultural Tours", icon: "landmark" },
