@@ -404,9 +404,11 @@ const prevTipSet = () => {
     if (tours.length === 0) return;
   
     if (isMobile) {
-      setCurrentTourIndex((prev) => (prev + 1) % tours.length); // 👉 cycle 1-by-1
+      // 👉 cycle 1-by-1
+      setCurrentTourIndex((prev) => (prev + 1) % tours.length);
     } else {
-      setCurrentTourIndex((prev) => (prev + 1) % totalTourPages); // 👉 page-wise
+      // 👉 cycle page-wise
+      setCurrentTourIndex((prev) => (prev + 1) % totalTourPages);
     }
   };
   useEffect(() => {
@@ -421,7 +423,7 @@ const prevTipSet = () => {
     const fetchTestimonials = async () => {
       try {
         setLoadingTestimonials(true); // start loading
-        const res = await fetch("http://localhost:5000/api/testimonials");
+        const res = await fetch(`${BASE_URL}/api/testimonials`);
         const data = await res.json();
   
         if (data.success) {
@@ -466,9 +468,7 @@ const prevTipSet = () => {
     if (isMobile) {
       setCurrentTourIndex((prev) => (prev - 1 + tours.length) % tours.length);
     } else {
-      setCurrentTourIndex(
-        (prev) => (prev - 1 + totalTourPages) % totalTourPages
-      );
+      setCurrentTourIndex((prev) => (prev - 1 + totalTourPages) % totalTourPages);
     }
   };
 
@@ -676,31 +676,47 @@ const prevTipSet = () => {
 
       {/* Tour Categories */}
       <section className="py-8 md:py-16 bg-tour-categories">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">
-            Explore Tour Categories
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-            {tourCategories
-              .filter((category) => category.id !== "all")
-              .map((category) => (
-                <Link key={category.id} href={`/tours?category=${category.id}`}>
-               <Card className="hover:shadow-lg transition-shadow h-full group border border-gray-200 hover:border-gray-300">
-  <CardContent className="p-4 md:p-6 flex flex-col items-center text-center">
-    <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary/10 flex items-center justify-center mb-2 md:mb-4 group-hover:bg-primary/20 transition-colors">
-      {getIcon(category.icon)}
-    </div>
-    <h3 className="font-bold text-sm md:text-lg group-hover:text-primary transition-colors">
-      {category.name}
-    </h3>
-  </CardContent>
-</Card>
+  <div className="container mx-auto px-4">
+    <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">
+      Explore Tour Categories
+    </h2>
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+      {tourCategories
+        .filter((category) => category.id !== "all")
+        .map((category) => {
+          const key = category.id.toLowerCase().replace(/\s+/g, "-");
+          const styles = categoryStyles[key] || categoryStyles.default;
 
-                </Link>
-              ))}
-          </div>
-        </div>
-      </section>
+          return (
+            <Link key={category.id} href={`/tours?category=${category.id}`}>
+              <Card
+                className={`
+                  group border border-gray-200 rounded-full flex flex-col items-center justify-center 
+                  w-38 h-38 mx-auto p-6 
+                  transition-all duration-300 
+                  hover:shadow-2xl hover:scale-105
+                  ${styles.bg} ${styles.hoverBg}
+                `}
+              >
+                {/* Icon */}
+                <span className={`text-5xl transition-colors ${styles.icon}`}>
+                  {getIcon(category.icon)}
+                </span>
+
+                {/* Text */}
+                <h3
+                  className={`font-bold text-base mt-3 text-center transition-colors ${styles.text} ${styles.hoverText}`}
+                >
+                  {category.name}
+                </h3>
+              </Card>
+            </Link>
+          );
+        })}
+    </div>
+  </div>
+</section>
+
 
       {/* About Preview */}
       <section className="py-8 md:py-16 bg-about">
@@ -772,32 +788,41 @@ const prevTipSet = () => {
     </div>
 
     {/* Slider container */}
-    <div className="relative">
-      <div className="flex pb-6 -mx-4 px-4">
-        {(
-          isMobile
-            ? [tours[currentTourIndex]] // 👉 only one item for mobile
-            : tours.slice(
-                currentTourIndex * toursPerPage,
-                (currentTourIndex + 1) * toursPerPage
-              )
-        ).map(
-          (tour) =>
-            tour && (
+    <div className="overflow-hidden">
+      {isMobile ? (
+        // 👉 Mobile: 1 card
+        tours[currentTourIndex] && (
+          <div className="w-full">
+            <div className="bg-white text-black rounded-xl shadow-sm hover:shadow-md border border-gray-200">
+              <TourCard tour={tours[currentTourIndex]} />
+            </div>
+          </div>
+        )
+      ) : (
+        // 👉 Desktop: 3 cards
+        <div className="flex pb-6 -mx-4 px-4">
+          {tours
+            .slice(
+              currentTourIndex * toursPerPage,
+              (currentTourIndex + 1) * toursPerPage
+            )
+            .map((tour) => (
               <div
-                key={tour.id}
+                key={tour._id}
                 className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 pr-4"
               >
                 <div className="bg-white text-black rounded-xl shadow-sm hover:shadow-md border border-gray-200">
                   <TourCard tour={tour} />
                 </div>
               </div>
-            )
-        )}
-      </div>
+            ))}
+        </div>
+      )}
     </div>
   </div>
 </section>
+
+
 
 
 
@@ -1166,7 +1191,7 @@ const prevTipSet = () => {
 function TourCard({ tour }) {
   return (
     <Link href={`/tours/detail/${tour._id}`}>
- <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-[420px] w-[430px] flex flex-col group transform hover:-translate-y-1">
+ <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-[420px] w-[410px] flex flex-col group transform hover:-translate-y-1">
   {/* Image Section */}
   <div className="relative h-[250px]">
     <Image
@@ -1373,3 +1398,52 @@ function getWhyChooseIcon(icon: string) {
     </section>
   )
 }
+const categoryStyles: Record<
+  string,
+  { bg: string; hoverBg: string; icon: string; text: string; hoverText: string }
+> = {
+  expeditions: {
+    bg: "bg-red-300",
+    hoverBg: "group-hover:bg-red-200",
+    icon: "text-red-600 group-hover:text-red-700",
+    text: "text-red-700",
+    hoverText: "group-hover:text-red-800",
+  },
+  skiing: {
+    bg: "bg-blue-300",
+    hoverBg: "group-hover:bg-blue-200",
+    icon: "text-blue-600 group-hover:text-blue-700",
+    text: "text-blue-700",
+    hoverText: "group-hover:text-blue-800",
+  },
+  "cultural-tour": {
+    bg: "bg-indigo-300",
+    hoverBg: "group-hover:bg-indigo-200",
+    icon: "text-indigo-600 group-hover:text-indigo-700",
+    text: "text-indigo-700",
+    hoverText: "group-hover:text-indigo-800",
+  },
+  "mountain-biking": {
+    bg: "bg-green-300",
+    hoverBg: "group-hover:bg-green-200",
+    icon: "text-green-600 group-hover:text-green-700",
+    text: "text-green-700",
+    hoverText: "group-hover:text-green-800",
+  },
+  safari: {
+    bg: "bg-yellow-300",
+    hoverBg: "group-hover:bg-yellow-200",
+    icon: "text-yellow-600 group-hover:text-yellow-700",
+    text: "text-yellow-700",
+    hoverText: "group-hover:text-yellow-800",
+  },
+  default: {
+    bg: "bg-orange-300",
+    hoverBg: "group-hover:bg-gray-200",
+    icon: "text-gray-600 group-hover:text-gray-700",
+    text: "text-gray-700",
+    hoverText: "group-hover:text-gray-800",
+  },
+};
+
+

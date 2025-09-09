@@ -42,13 +42,13 @@ const menuItems = [
 
 
 
-  {  
+  // {  
 
-    icon: Handshake,
-    label: "Partner Feedbacks",
-    href: "/admin/partner-feedbacks",
-  },
-  { icon: MessageSquare, label: "Inquiries", href: "/admin/inquiries" },
+  //   icon: Handshake,
+  //   label: "Partner Feedbacks",
+  //   href: "/admin/partner-feedbacks",
+  // },
+  // { icon: MessageSquare, label: "Inquiries", href: "/admin/inquiries" },
   { icon: User, label: "Users", href: "/admin/users" },
 ];
 

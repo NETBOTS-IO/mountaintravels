@@ -40,7 +40,7 @@ const allowedOrigins = [
   "http://192.168.0.119:3001",
   "http://localhost:3001",
   "http://localhost:3002",
-
+ "http://10.55.40.136:3000",
   "http://147.93.94.137",
   "https://147.93.94.137",
   "https://mountaintravels.site",

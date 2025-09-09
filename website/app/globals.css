@@ -52,8 +52,9 @@
   }
   
   .bg-tour-categories {
-    @apply bg-orange-100 text-gray-800; /* light orange */
+    @apply bg-white text-gray-800; /* pure white */
   }
+  
   
   .bg-featured {
     @apply bg-slate-100 text-gray-800; /* light gray/stone */

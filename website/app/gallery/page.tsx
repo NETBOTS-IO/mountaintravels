@@ -7,8 +7,19 @@ import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { GalleryCard } from "@/components/gallery/gallery-card"
 import { Lightbox } from "@/components/gallery/lightbox"
+import { BASE_URL } from "@/app/Var"
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+// const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+
+// 🔹 helper to safely build image URLs
+const getImageUrl = (photo: any) => {
+  if (photo?.src && photo.src.length > 0) {
+    const first = photo.src[0]
+    if (first.startsWith("http")) return first
+    return `${BASE_URL}${first}`
+  }
+  return "/placeholder.png"
+}
 
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
@@ -25,7 +36,7 @@ export default function GalleryPage() {
         const res = await fetch(`${BASE_URL}/api/gallery`)
         const data = await res.json()
         if (data.success && Array.isArray(data.photos)) {
-          setGalleryImages(data.photos) // ✅ real photos array
+          setGalleryImages(data.photos)
         } else {
           setError("Failed to load gallery")
         }
@@ -49,7 +60,7 @@ export default function GalleryPage() {
     ).values()
   )
 
-  // Featured images → you can mark via API if needed (right now none in response)
+  // Featured images
   const featuredImages = galleryImages.filter((img) => img.featured)
 
   // Get images by category
@@ -57,7 +68,7 @@ export default function GalleryPage() {
     return galleryImages.filter((img) => img.category === categoryId)
   }
 
-  // Animation variants
+  // Animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
@@ -123,7 +134,12 @@ export default function GalleryPage() {
           {featuredImages.length > 0 && (
             <motion.div variants={itemVariants}>
               <h2 className="text-2xl font-bold mb-6">Featured Images</h2>
-              <FeaturedGallery images={featuredImages} />
+              <FeaturedGallery
+                images={featuredImages.map((img) => ({
+                  ...img,
+                  src: getImageUrl(img),
+                }))}
+              />
             </motion.div>
           )}
 
@@ -132,7 +148,10 @@ export default function GalleryPage() {
               <CategorySlider
                 title={category.title}
                 description={category.description}
-                images={getImagesByCategory(category.id)}
+                images={getImagesByCategory(category.id).map((img) => ({
+                  ...img,
+                  src: getImageUrl(img),
+                }))}
               />
             </motion.div>
           ))}
@@ -154,7 +173,7 @@ export default function GalleryPage() {
                       <GalleryCard
                         image={{
                           ...image,
-                          src: `${BASE_URL}${image.src[0]}`, // ✅ use first src
+                          src: getImageUrl(image),
                         }}
                         onClick={() => setSelectedImageIndex(index)}
                         className="h-full"
@@ -172,7 +191,7 @@ export default function GalleryPage() {
         <Lightbox
           images={getImagesByCategory(activeCategory).map((img) => ({
             ...img,
-            src: `${BASE_URL}${img.src[0]}`, // ✅ fix for array
+            src: getImageUrl(img),
           }))}
           initialIndex={selectedImageIndex}
           onClose={() => setSelectedImageIndex(null)}
