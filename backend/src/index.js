@@ -59,6 +59,8 @@ const allowedOrigins = [
   "https://api.mountaintravels.com",
   "http://api.mountaintravels.site",
   "https://api.mountaintravels.site",
+  "https://dashboard.mountaintravels.site",
+  "http://dashboard.mountaintravels.site",
 
 ];
 
@@ -100,7 +102,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.get('/', (req, res)=>{
-    res.send('TourMaker Server is running');
+    res.send('Mountaintravel Server is running');
 });
 
 // Authentication routes
