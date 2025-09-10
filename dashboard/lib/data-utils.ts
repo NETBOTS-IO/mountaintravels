@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import { BASE_URL } from "@/Var";
-import { Tour, Blog, GalleryPhoto, Inquiry, BlogAPIResponse, Testimonial, PartnerFeedback, PopularDestination,TravelTip ,BookingStats, ApiResponse, Departure } from "./types";
+import { Tour, Blog, GalleryPhoto, Inquiry, BlogAPIResponse, Testimonial, PartnerFeedback, PopularDestination,TravelTip ,BookingStats,Booking, ApiResponse, Departure } from "./types";
 
 const inquiriesData: Inquiry[] = [
   {

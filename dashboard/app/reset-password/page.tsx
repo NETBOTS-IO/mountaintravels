@@ -1,7 +1,8 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,8 +12,9 @@ import { toast } from "react-hot-toast";
 import Image from "next/image";
 import { Eye, EyeOff, Check, X } from "lucide-react";
 import axios from "axios";
+import { BASE_URL } from "@/Var";
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -58,7 +60,7 @@ export default function ResetPasswordPage() {
 
     try {
       // Replace with your actual reset password API call
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/reset-password`,
+      const response = await axios.post(`${BASE_URL}/api/auth/reset-password`,
          {token: resetToken, newPassword: password}
         );
       
@@ -205,6 +207,24 @@ export default function ResetPasswordPage() {
             </form>
           </CardContent>
         </Card>
+      </div>
+    </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="w-full flex flex-col items-center justify-center space-y-6">
+        <Image
+          src="/tourmaker-logo.png"
+          alt="TourMaker Logo"
+          width={200}
+          height={100}
+        />
+        <Suspense fallback={<p>Loading reset form...</p>}>
+          <ResetPasswordForm />
+        </Suspense>
       </div>
     </div>
   );

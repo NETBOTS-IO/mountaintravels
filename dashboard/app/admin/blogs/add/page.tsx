@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next"
 import { ChevronLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     title: "Add New Blog Post | TourMaker",
     description: "Create a new blog post for TourMaker",
     type: "website",
-    url: "https://tourmaker.com/admin/blogs/add",
+    url: "https://mountaintravels.site/admin/blogs/add",
   },
 }
 
@@ -28,4 +29,3 @@ export default function AddBlogPage() {
     </div>
   )
 }
-
