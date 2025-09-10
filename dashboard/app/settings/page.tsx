@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Switch } from "@/components/ui/switch"
+import  Switch  from "@/components/ui/switch"
 
 export default function Settings() {
   const [siteName, setSiteName] = useState("Mountain Travels Pakistan")
@@ -87,12 +87,12 @@ export default function Settings() {
                   <Switch
                     id="email-notifications"
                     checked={emailNotifications}
-                    onCheckedChange={setEmailNotifications}
+                    onChange={setEmailNotifications}
                   />
                 </div>
                 <div className="flex items-center justify-between">
                   <Label htmlFor="dark-mode">Dark Mode</Label>
-                  <Switch id="dark-mode" checked={darkMode} onCheckedChange={setDarkMode} />
+                  <Switch id="dark-mode" checked={darkMode} onChange={setDarkMode} />
                 </div>
               </div>
             </CardContent>

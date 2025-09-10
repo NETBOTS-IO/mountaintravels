@@ -19,7 +19,68 @@ export interface PopularDestination {
   createdAt?: string;
   updatedAt?: string;
 }
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data?: T;
+}
+export interface Departure {
+  _id?: string;
+  tripId: string; // ref: Tour
+  date: string; // ISO Date string
+  price: number;
+  maxSpots: number;
+  spotsLeft: number;
+  status: "AVAILABLE" | "LIMITED" | "SOLD_OUT" | "CANCELLED";
+  createdAt?: string;
+  updatedAt?: string;
+}
 
+// Booking type
+export interface Booking {
+  _id?: string;
+  bookingNumber: string;
+
+  // Trip details
+  tripId: string; // ref: Tour
+  departureId?: string; // ref: Departure
+
+  // Customer details
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+
+  // Booking details
+  travelers: number;
+  totalPrice: number;
+  status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
+
+  // Payment details
+  paymentStatus: "PENDING" | "PAID" | "REFUNDED" | "FAILED";
+  paymentMethod?: string;
+
+  // Special requests
+  specialRequests?: string;
+
+  // Additional tracking
+  ipAddress?: string;
+  userAgent?: string;
+
+  createdAt?: string;
+  updatedAt?: string;
+   pagination:string;
+  // Virtuals
+  fullName?: string;
+}
+
+// Booking stats type
+export interface BookingStats {
+  totalBookings: number;
+  pendingBookings: number;
+  confirmedBookings: number;
+  totalRevenue: number;
+}
 //==========Tour==========
 export interface Tour {
   id: string;
