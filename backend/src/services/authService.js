@@ -28,34 +28,42 @@ class AuthService {
 
   // ===== Login =====
   async login(email, password) {
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) throw new Error('Invalid credentials');
+    // Look for user with role 'admin'
+    const user = await User.findOne({ email: email.toLowerCase(), role: 'admin' });
+    if (!user) throw new Error('Invalid credentials'); // This now ensures only admins can login
+  
     if (!user.isActive) throw new Error('Account is deactivated');
     if (user.isLocked()) {
       const mins = Math.max(1, Math.ceil((user.lockedUntil - new Date()) / 1000 / 60));
       throw new Error(`Account is locked. Try again in ${mins} minutes`);
     }
-
+  
     const valid = await user.comparePassword(password);
     if (!valid) {
       await user.incrementFailedAttempts();
       throw new Error('Invalid credentials');
     }
     await user.resetFailedAttempts();
-
+  
     const accessToken = this.generateToken(user._id, user.role);
     const refreshToken = this.generateRefreshToken(user._id);
-
+  
     return {
       user: {
-        id: user._id, email: user.email, firstName: user.firstName,
-        lastName: user.lastName, role: user.role,
-        permissions: user.getPermissions(), fullName: user.fullName,
+        id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        permissions: user.getPermissions(),
+        fullName: user.fullName,
         emailVerified: user.emailVerified
       },
-      accessToken, refreshToken
+      accessToken,
+      refreshToken
     };
   }
+  
 
   // ===== Email Verification =====
   async sendVerificationEmail(email, firstName, token) {
