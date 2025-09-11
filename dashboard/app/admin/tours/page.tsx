@@ -9,9 +9,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Plus, Edit, Trash, Search, Eye } from "lucide-react"
 import { getTours, deleteTour } from "@/lib/data-utils"
-import {type Tour} from "@/lib/types";
+import { type Tour } from "@/lib/types"
 import { toast } from "react-hot-toast"
-import { useTourStore } from "@/store/tourStore";
+import { useTourStore } from "@/store/tourStore"
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -22,7 +22,7 @@ import {
   AlertDialogDescription,
   AlertDialogAction,
   AlertDialogCancel,
-} from "@/components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog"
 
 export default function TourListPage() {
   const [tourList, setTourList] = useState<Tour[]>([])
@@ -30,61 +30,66 @@ export default function TourListPage() {
   const [sortBy, setSortBy] = useState("name")
   const [filterDifficulty, setFilterDifficulty] = useState("all")
   const router = useRouter()
-  const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     const fetchTours = async () => {
       const tours = await getTours()
-      setTourList(tours)
+      setTourList(tours || [])
     }
     fetchTours()
   }, [])
-  
+
   const handleEdit = (tourId: string) => {
-    const selectedTour = tourList.find((tour) => tour.id === tourId);
+    const selectedTour = tourList.find((tour) => tour.id === tourId)
     if (selectedTour) {
-      useTourStore.getState().setTour(selectedTour); // Store the complete tour object
-     router.push(`/admin/tours/edit/${tourId}`);
+      useTourStore.getState().setTour(selectedTour)
+      router.push(`/admin/tours/edit/${tourId}`)
     } else {
-      toast.error("Tour not found!");
+      toast.error("Tour not found!")
     }
-  };
+  }
 
   const handleDelete = async () => {
-    if (!deleteId) return;
-    setIsDeleting(true);
-    const success = await deleteTour(deleteId);
-    setIsDeleting(false);
+    if (!deleteId) return
+    setIsDeleting(true)
+    const success = await deleteTour(deleteId)
+    setIsDeleting(false)
     if (success) {
-      setTourList((prevTours) => prevTours.filter((tour) => tour.id !== deleteId));
-      toast.success("Tour deleted successfully");
+      setTourList((prevTours) => prevTours.filter((tour) => tour.id !== deleteId))
+      toast.success("Tour deleted successfully")
     } else {
-      toast.error("Failed to delete tour");
+      toast.error("Failed to delete tour")
     }
-    setDeleteId(null);
-  };
-    
+    setDeleteId(null)
+  }
 
   const filteredTours = tourList
-    .filter((tour) => tour.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    .filter((tour) => filterDifficulty === "all" || tour.difficulty === filterDifficulty)
+    .filter(
+      (tour) =>
+        typeof tour.name === "string" &&
+        tour.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter(
+      (tour) =>
+        filterDifficulty === "all" ||
+        (typeof tour.difficulty === "string" && tour.difficulty === filterDifficulty)
+    )
     .sort((a, b) => {
-      if (sortBy === "price") {
-        return a.price - b.price
-      } else if (sortBy === "days") {
-        return a.days - b.days
-      } else {
-        return a.name.localeCompare(b.name)
-      }
+      if (sortBy === "price") return a.price - b.price
+      if (sortBy === "days") return a.days - b.days
+      return (a.name ?? "").localeCompare(b.name ?? "")
     })
-
 
   return (
     <div className="container">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Tour Packages</h1>
-        <Button className="bg-primary hover:bg-primary-dark text-white" onClick={() => router.push("/admin/tours/add")}>
+        <Button
+          className="bg-primary hover:bg-primary-dark text-white"
+          onClick={() => router.push("/admin/tours/add")}
+        >
           <Plus className="mr-2 h-4 w-4" /> Add New Tour
         </Button>
       </div>
@@ -129,7 +134,6 @@ export default function TourListPage() {
         <Table>
           <TableHeader>
             <TableRow>
-
               <TableHead>Package Title</TableHead>
               <TableHead>Duration</TableHead>
               <TableHead>Price</TableHead>
@@ -141,11 +145,11 @@ export default function TourListPage() {
           <TableBody>
             {filteredTours.map((tour) => (
               <TableRow key={tour.id} className="hover:bg-primary-light">
-                <TableCell>{tour.name}</TableCell>
-                <TableCell>{tour.days} days</TableCell>
-                <TableCell>${tour.price}</TableCell>
-                <TableCell>{tour.category}</TableCell>
-                <TableCell>{tour.difficulty}</TableCell>
+                <TableCell>{tour.name ?? "N/A"}</TableCell>
+                <TableCell>{tour.days ?? "N/A"} days</TableCell>
+                <TableCell>${tour.price ?? "N/A"}</TableCell>
+                <TableCell>{tour.category ?? "N/A"}</TableCell>
+                <TableCell>{tour.difficulty ?? "N/A"}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
                     <Link href={`/admin/tours/${tour.id}`}>
@@ -153,7 +157,11 @@ export default function TourListPage() {
                         <Eye className="h-4 w-4 mr-1" /> View
                       </Button>
                     </Link>
-                    <Button variant="outline" size="sm" onClick={(e) => handleEdit(tour.id)}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit(tour.id)}
+                    >
                       <Edit className="h-4 w-4 mr-1" /> Edit
                     </Button>
                     <AlertDialog>
@@ -201,4 +209,3 @@ export default function TourListPage() {
     </div>
   )
 }
-
