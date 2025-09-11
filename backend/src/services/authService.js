@@ -28,25 +28,41 @@ class AuthService {
 
   // ===== Login =====
   async login(email, password) {
-    // Look for user with role 'admin'
-    const user = await User.findOne({ email: email.toLowerCase(), role: 'admin' });
-    if (!user) throw new Error('Invalid credentials'); // This now ensures only admins can login
+    console.log("🔍 Login attempt:", email); // Log email (not password)
   
-    if (!user.isActive) throw new Error('Account is deactivated');
+    // Look for user with role 'admin'
+    const user = await User.findOne({ email: email.toLowerCase(), role: "admin" });
+    console.log("👤 User found:", user ? { id: user._id, email: user.email, role: user.role } : null);
+  
+    if (!user) throw new Error("Invalid credentials"); // Ensures only admins can login
+  
+    if (!user.isActive) {
+      console.warn("⚠️ User is deactivated:", user.email);
+      throw new Error("Account is deactivated");
+    }
+  
     if (user.isLocked()) {
       const mins = Math.max(1, Math.ceil((user.lockedUntil - new Date()) / 1000 / 60));
+      console.warn(`🔒 User account locked for ${mins} minutes:`, user.email);
       throw new Error(`Account is locked. Try again in ${mins} minutes`);
     }
   
     const valid = await user.comparePassword(password);
+    console.log("✅ Password valid?", valid);
+  
     if (!valid) {
+      console.warn("❌ Invalid password attempt for:", user.email);
       await user.incrementFailedAttempts();
-      throw new Error('Invalid credentials');
+      throw new Error("Invalid credentials");
     }
+  
     await user.resetFailedAttempts();
+    console.log("🔄 Failed attempts reset for:", user.email);
   
     const accessToken = this.generateToken(user._id, user.role);
     const refreshToken = this.generateRefreshToken(user._id);
+  
+    console.log("🎟️ Tokens generated for:", user.email);
   
     return {
       user: {
@@ -57,12 +73,13 @@ class AuthService {
         role: user.role,
         permissions: user.getPermissions(),
         fullName: user.fullName,
-        emailVerified: user.emailVerified
+        emailVerified: user.emailVerified,
       },
       accessToken,
-      refreshToken
+      refreshToken,
     };
   }
+  
   
 
   // ===== Email Verification =====
