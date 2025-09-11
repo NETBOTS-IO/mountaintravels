@@ -1,5 +1,6 @@
 "use client";
 import { Shield, Headphones,Medal, Leaf } from "lucide-react"
+import { motion } from "framer-motion"
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
@@ -24,6 +25,9 @@ import {
   Quote,
   ArrowUpRight,
 } from "lucide-react";
+import TourIcons from "@/app/touricons";
+import WhyChooseSection from "@/app/whychose"; // adjust path if needed
+ // adjust path if needed
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -675,47 +679,8 @@ const prevTipSet = () => {
       </section>
 
       {/* Tour Categories */}
-      <section className="py-8 md:py-16 bg-tour-categories">
-  <div className="container mx-auto px-4">
-    <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">
-      Explore Tour Categories
-    </h2>
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-      {tourCategories
-        .filter((category) => category.id !== "all")
-        .map((category) => {
-          const key = category.id.toLowerCase().replace(/\s+/g, "-");
-          const styles = categoryStyles[key] || categoryStyles.default;
+      <TourIcons />
 
-          return (
-            <Link key={category.id} href={`/tours?category=${category.id}`}>
-              <Card
-                className={`
-                  group border border-gray-200 rounded-full flex flex-col items-center justify-center 
-                  w-38 h-38 mx-auto p-6 
-                  transition-all duration-300 
-                  hover:shadow-2xl hover:scale-105
-                  ${styles.bg} ${styles.hoverBg}
-                `}
-              >
-                {/* Icon */}
-                <span className={`text-5xl transition-colors ${styles.icon}`}>
-                  {getIcon(category.icon)}
-                </span>
-
-                {/* Text */}
-                <h3
-                  className={`font-bold text-base mt-3 text-center transition-colors ${styles.text} ${styles.hoverText}`}
-                >
-                  {category.name}
-                </h3>
-              </Card>
-            </Link>
-          );
-        })}
-    </div>
-  </div>
-</section>
 
 
       {/* About Preview */}
@@ -1354,96 +1319,66 @@ function getIcon(icon: string) {
       return null;
   }
 }
-function getWhyChooseIcon(icon: string) {
-  switch (icon) {
-    case "shield":
-      return <Shield className="h-6 w-6" />
-      case "users":
-        return <Medal className="h-6 w-6" /> // ✅ replaced Users with Medal for "expert users"
-      case "map-pin":
-      return <MapPin className="h-6 w-6" />
-    case "headphones":
-      return <Headphones className="h-6 w-6" />
-    case "leaf":
-      return <Leaf className="h-6 w-6" />
-      case "medal":
-        return <Users className="h-6 w-6" />
-    default:
-      return null
-  }
-}
- function WhyChooseSection() {
-  return (
-    <section className="py-8 md:py-16 bg-background">
-      <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-10">
-          {whyChoose.title}
-        </h2>
+// 🎨 Color map for each icon type
+// const iconStyles: Record<string, string> = {
+//   shield: "bg-red-100 text-red-600 group-hover:bg-red-200",
+//   users: "bg-blue-100 text-blue-600 group-hover:bg-blue-200",
+//   "map-pin": "bg-green-100 text-green-600 group-hover:bg-green-200",
+//   headphones: "bg-yellow-100 text-yellow-600 group-hover:bg-yellow-200",
+//   leaf: "bg-teal-100 text-teal-600 group-hover:bg-teal-200",
+//   medal: "bg-indigo-100 text-indigo-600 group-hover:bg-indigo-200",
+// }
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-          {whyChoose.reasons.map((reason) => (
-            <div
-              key={reason.id}
-              className="flex flex-col items-center text-center p-6 rounded-2xl bg-muted shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                {getWhyChooseIcon(reason.icon)}
-              </div>
-              <h3 className="text-lg font-semibold mb-2">{reason.title}</h3>
-              <p className="text-sm text-muted-foreground">{reason.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-const categoryStyles: Record<
-  string,
-  { bg: string; hoverBg: string; icon: string; text: string; hoverText: string }
-> = {
-  expeditions: {
-    bg: "bg-red-300",
-    hoverBg: "group-hover:bg-red-200",
-    icon: "text-red-600 group-hover:text-red-700",
-    text: "text-red-700",
-    hoverText: "group-hover:text-red-800",
-  },
-  skiing: {
-    bg: "bg-blue-300",
-    hoverBg: "group-hover:bg-blue-200",
-    icon: "text-blue-600 group-hover:text-blue-700",
-    text: "text-blue-700",
-    hoverText: "group-hover:text-blue-800",
-  },
-  "cultural-tour": {
-    bg: "bg-indigo-300",
-    hoverBg: "group-hover:bg-indigo-200",
-    icon: "text-indigo-600 group-hover:text-indigo-700",
-    text: "text-indigo-700",
-    hoverText: "group-hover:text-indigo-800",
-  },
-  "mountain-biking": {
-    bg: "bg-green-300",
-    hoverBg: "group-hover:bg-green-200",
-    icon: "text-green-600 group-hover:text-green-700",
-    text: "text-green-700",
-    hoverText: "group-hover:text-green-800",
-  },
-  safari: {
-    bg: "bg-yellow-300",
-    hoverBg: "group-hover:bg-yellow-200",
-    icon: "text-yellow-600 group-hover:text-yellow-700",
-    text: "text-yellow-700",
-    hoverText: "group-hover:text-yellow-800",
-  },
-  default: {
-    bg: "bg-orange-300",
-    hoverBg: "group-hover:bg-gray-200",
-    icon: "text-gray-600 group-hover:text-gray-700",
-    text: "text-gray-700",
-    hoverText: "group-hover:text-gray-800",
-  },
-};
+// function getWhyChooseIcon(icon: string) {
+//   switch (icon) {
+//     case "shield":
+//       return <Shield className="h-7 w-7" />
+//     case "users":
+//       return <Users className="h-7 w-7" />
+//     case "map-pin":
+//       return <MapPin className="h-7 w-7" />
+//     case "headphones":
+//       return <Headphones className="h-7 w-7" />
+//     case "leaf":
+//       return <Leaf className="h-7 w-7" />
+//     case "medal":
+//       return <Medal className="h-7 w-7" />
+//     default:
+//       return null
+//   }
+// }
+
+// function WhyChooseSection() {
+//   return (
+//     <section className="py-8 md:py-16 bg-background">
+//       <div className="container mx-auto px-4">
+//         <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-10">
+//           {whyChoose.title}
+//         </h2>
+
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+//           {whyChoose.reasons.map((reason) => (
+//             <div
+//               key={reason.id}
+//               className="group flex flex-col items-center text-center p-6 rounded-2xl bg-muted shadow-sm hover:shadow-xl hover:scale-105 transition-all duration-300"
+//               >
+//               <div
+//                 className={`mb-4 flex h-12 w-12 items-center justify-center rounded-full ${
+//                   iconStyles[reason.icon] || "bg-primary/10 text-primary"
+//                 }`}
+//               >
+//                 {getWhyChooseIcon(reason.icon)}
+//               </div>
+//               <h3 className="text-lg font-semibold mb-2">{reason.title}</h3>
+//               <p className="text-sm text-muted-foreground">{reason.description}</p>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+
+
 
 
