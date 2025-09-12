@@ -18,12 +18,17 @@ interface GalleryFormProps {
 }
 
 const categories = [
+  "Expeditions",
+  "Safari",
+  "Skiing",
+  "Trekkings",
+  "Culture",
   "Mountains",
   "Wildlife",
-  "Culture",
   "Landscapes",
   "Adventure",
   "People",
+ 
 ];
 
 export default function GalleryForm({ initialData, onSuccess }: GalleryFormProps) {
