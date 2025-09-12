@@ -387,7 +387,6 @@ export default function BlogForm({ blogId, initialData }: BlogFormProps) {
                   }));
                 }
               }}
-              required
               className="mt-1"
             />
 

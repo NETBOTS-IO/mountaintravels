@@ -6,11 +6,11 @@ import BlogForm from "@/components/BlogForm"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Add New Blog Post | TourMaker",
-  description: "Create a new blog post for TourMaker",
+  title: "Add New Blog Post | MountainTravels",
+  description: "Create a new blog post for MountainTravels",
   openGraph: {
-    title: "Add New Blog Post | TourMaker",
-    description: "Create a new blog post for TourMaker",
+    title: "Add New Blog Post | MountainTravels",
+    description: "Create a new blog post for MountainTravels",
     type: "website",
     url: "https://mountaintravels.site/admin/blogs/add",
   },
@@ -21,7 +21,7 @@ export default function AddBlogPage() {
     <div className="container mx-auto px-4 py-8">
       <Link href="/admin/blogs">
         <Button variant="outline" className="mb-4">
-          <ChevronLeft className="mr-2 h-4 w-4" /> Back to Blogs
+          <ChevronLeft className="mr-2 h-4 w-4" /> Back to Blog lists
         </Button>
       </Link>
       <h1 className="text-3xl font-bold mb-6">Add New Blog Post</h1>

@@ -8,10 +8,6 @@ import { motion } from "framer-motion"
 import { GalleryCard } from "@/components/gallery/gallery-card"
 import { Lightbox } from "@/components/gallery/lightbox"
 import { BASE_URL } from "@/app/Var"
-
-// const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
-
-// 🔹 helper to safely build image URLs
 const getImageUrl = (photo: any) => {
   if (photo?.src && photo.src.length > 0) {
     const first = photo.src[0]

@@ -157,10 +157,7 @@ export default function TourPage() {
     )
   }
 
-  if (loading) return <div className="container mx-auto px-4 py-8">Loading......</div>
-
-  
-
+  if (loading) return <div className="container mx-auto px-4 py-8">Please wait! loading data......</div>
 
   if (!tour) {
     return <div className="container mx-auto px-4 py-8">Tour not found</div>
