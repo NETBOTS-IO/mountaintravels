@@ -8,6 +8,7 @@ import { motion } from "framer-motion"
 import { GalleryCard } from "@/components/gallery/gallery-card"
 import { Lightbox } from "@/components/gallery/lightbox"
 import { BASE_URL } from "@/app/Var"
+
 const getImageUrl = (photo: any) => {
   if (photo?.src && photo.src.length > 0) {
     const first = photo.src[0]
@@ -165,7 +166,12 @@ export default function GalleryPage() {
                 <p className="text-muted-foreground mb-6">{category.description}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {getImagesByCategory(category.id).map((image, index) => (
-                    <motion.div key={image._id} variants={itemVariants} className="overflow-hidden rounded-lg">
+                    <motion.div
+                      key={image._id}
+                      variants={itemVariants}
+                      className="overflow-hidden rounded-lg border border-gray-200 shadow-sm"
+                    >
+                      {/* Main Image */}
                       <GalleryCard
                         image={{
                           ...image,
@@ -174,6 +180,27 @@ export default function GalleryPage() {
                         onClick={() => setSelectedImageIndex(index)}
                         className="h-full"
                       />
+
+                      {/* Extra Info below image */}
+                      <div className="p-3 text-sm">
+                        {image.title && (
+                          <h3 className="font-semibold text-lg mb-1">{image.title}</h3>
+                        )}
+                        {image.description && (
+                          <p className="text-muted-foreground mb-2">{image.description}</p>
+                        )}
+                        {image.location && (
+                          <p className="text-orange-500 font-medium">📍 {image.location}</p>
+                        )}
+                        {image.photographer && (
+                          <p className="text-orange-500 font-medium">📸 {image.photographer}</p>
+                        )}
+                        {image.date && (
+                          <p className="text-xs text-gray-500 mt-1">
+                            {new Date(image.date).toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
                     </motion.div>
                   ))}
                 </div>
