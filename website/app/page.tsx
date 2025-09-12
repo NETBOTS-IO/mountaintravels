@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 import TourIcons from "@/app/touricons";
 import WhyChooseSection from "@/app/whychose";
-import ResponsiveCarousel from "@/components/ResponsiveCarousel";
+import ResponsiveCarousel from "@/components/responsivecarousel";
  // adjust path if needed
  // adjust path if needed
 import { Button } from "@/components/ui/button";
