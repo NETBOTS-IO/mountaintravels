@@ -26,7 +26,9 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import TourIcons from "@/app/touricons";
-import WhyChooseSection from "@/app/whychose"; // adjust path if needed
+import WhyChooseSection from "@/app/whychose";
+import ResponsiveCarousel from "@/components/ResponsiveCarousel";
+ // adjust path if needed
  // adjust path if needed
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -793,168 +795,46 @@ const prevTipSet = () => {
 
 
       {/* Popular Destinations */}
-      <section className="py-8 md:py-16 bg-gray-50">
-  <div className="container mx-auto px-4">
-    <div className="flex justify-between items-center mb-6 md:mb-8">
-      <h2 className="text-2xl md:text-3xl font-bold">
-        Popular Destinations
-      </h2>
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={prevDestinationSet}
-          className="rounded-full border border-gray-300 p-2"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={nextDestinationSet}
-          className="rounded-full border border-gray-300 p-2"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-      </div>
+      <ResponsiveCarousel
+  title="Popular Destinations"
+  items={popularDestinations}
+  renderCard={(dest) => (
+    <div className="h-[420px] w-[410px] p-4">
+      <img
+        src={`${BASE_URL}${dest.image}`}
+        alt={dest.name}
+        className="w-full h-48 object-cover rounded-md mb-4"
+      />
+      <h3 className="text-lg font-semibold">{dest.name}</h3>
+      <p className="text-gray-600 line-clamp-2">{dest.description}</p>
+      <span className="text-sm text-gray-400">Tours: {dest.tours}</span>
+      <Link href={`/destinations/${dest._id}`}>
+        <Button className="mt-4 w-full">View More</Button>
+      </Link>
     </div>
-
-    {isMobile ? (
-      <div
-        ref={destinationsScrollRef}
-        className="flex overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {currentDestinations.map((dest) => (
-          <div
-            key={dest._id}
-            className="flex-shrink-0 w-full snap-center pr-4"
-          >
-            <div className="bg-white shadow rounded-lg p-4">
-              <img
-                src={`${BASE_URL}${dest.image}`}
-                alt={dest.name}
-                className="w-full h-48 object-cover rounded-md mb-4"
-              />
-              <h3 className="text-lg font-semibold">{dest.name}</h3>
-              <p className="text-gray-600">{dest.description}</p>
-              <span className="text-sm text-gray-400">
-                Tours: {dest.tours}
-              </span>
-              {/* ✅ View More Button */}
-              <Link href={`/destinations/${dest._id}`}>
-                <Button className="mt-4 w-full">View More</Button>
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {currentDestinations.map((dest) => (
-          <div key={dest._id} className="bg-white shadow rounded-lg p-4">
-            <img
-              src={`${BASE_URL}${dest.image}`}
-              alt={dest.name}
-              className="w-full h-48 object-cover rounded-md mb-4"
-            />
-            <h3 className="text-lg font-semibold">{dest.name}</h3>
-            <p className="text-gray-600">{dest.description}</p>
-            {/* ✅ View More Button */}
-            <Link href={`/destinations/${dest._id}`}>
-  <Button
-    variant="outline"
-    className="text-primary border-primary hover:bg-primary hover:text-white transition-colors text-xs md:text-sm mt-4 px-4 py-1 h-8 mx-auto"
-  >
-    View More
-  </Button>
-</Link>
-
-          </div>
-        ))}
-      </div>
-    )}
-  </div>
-</section>
+  )}
+/>
 
 
-      <section className="py-8 md:py-16 bg-gray-50">
-  <div className="container mx-auto px-4">
-    <div className="flex justify-between items-center mb-6 md:mb-8">
-      <h2 className="text-2xl md:text-3xl font-bold">Travel Tips & Insights</h2>
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={prevTipSet}
-          className="rounded-full"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={nextTipSet}
-          className="rounded-full"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-      </div>
+
+<ResponsiveCarousel
+  title="Travel Tips & Insights"
+  items={tips}
+  renderCard={(tip) => (
+    <div className="h-[420px] w-[410px] p-4">
+      <img
+        src={`${BASE_URL}${tip.image}`}
+        alt={tip.title}
+        className="w-full h-48 object-cover rounded-md mb-4"
+      />
+      <h3 className="text-lg font-semibold">{tip.title}</h3>
+      <p className="text-gray-600 line-clamp-2">{tip.excerpt}</p>
+      <Link href={`/tips/${tip._id}`}>
+        <Button className="mt-4 w-full">View More</Button>
+      </Link>
     </div>
-
-    {isMobile ? (
-      <div
-        ref={tipsScrollRef}
-        className="flex overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {tips.map((tip) => (
-          <div key={tip._id} className="flex-shrink-0 w-full snap-center pr-4">
-            <div className="bg-white shadow rounded-lg p-4">
-              <img
-                src={`${BASE_URL}${tip.image}`}
-                alt={tip.title}
-                className="w-full h-48 object-cover rounded-md mb-4"
-              />
-              <h3 className="text-lg font-semibold">{tip.title}</h3>
-              <p className="text-gray-600">{tip.excerpt}</p>
-              <span className="text-sm text-gray-400">
-                {new Date(tip.date).toLocaleDateString()}
-              </span>
-              {/* ✅ View More Button */}
-              <Link href={`/tips/${tip._id}`}>
-                <Button className="mt-4 w-full">View More</Button>
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {tips.map((tip) => (
-          <div key={tip._id} className="bg-white shadow rounded-lg p-4">
-            <img
-              src={`${BASE_URL}${tip.image}`}
-              alt={tip.title}
-              className="w-full h-48 object-cover rounded-md mb-4"
-            />
-            <h3 className="text-lg font-semibold">{tip.title}</h3>
-            <p className="text-gray-600">{tip.excerpt}</p>
-            <Link href={`/tips/${tip._id}`}>
-  <Button
-    variant="outline"
-    className="text-primary border-primary hover:bg-primary hover:text-white transition-colors text-xs md:text-sm mt-4 px-4 py-1 h-8 mx-auto"
-  >
-    View More
-  </Button>
-</Link>
-
-          </div>
-        ))}
-      </div>
-    )}
-  </div>
-</section>
+  )}
+/>
 
 
 

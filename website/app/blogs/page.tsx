@@ -4,8 +4,9 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { BASE_URL } from "@/app/Var"
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+// const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
 interface Blog {
   _id: string
