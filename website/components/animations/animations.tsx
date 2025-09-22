@@ -35,7 +35,7 @@ const Animation: React.FC<AnimationProps> = ({ type, onComplete }) => {
         .then((data) => setAnimationData(data));
     }, [src]);
 
-    if (!animationData) return <p>Loading animation...</p>;
+    if (!animationData) return <p>Please Wait ! loading data....</p>;
 
     return (
       <Lottie
