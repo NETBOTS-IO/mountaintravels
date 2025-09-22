@@ -97,9 +97,9 @@ export default function TourDetailPage() {
                 <h3 className="font-semibold text-lg mb-2">Descriptions</h3>
                 <div className="mb-2"><strong>Overview:</strong> {tour.overview}</div>
                 <div className="mb-2"><strong>Short Description:</strong> {tour.shortDescription}</div>
-                <div><strong>Long Description:</strong>
+                {/* <div><strong>Long Description:</strong>
                   <div className="whitespace-pre-line bg-gray-50 p-2 rounded mt-1 text-sm text-gray-700">{tour.longDescription}</div>
-                </div>
+                </div> */}
               </div>
 
               {/* Tags, Features, Highlights, Related Trips */}

@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 import Tour from '../models/tourModel.js';
 import { Departure, Booking } from '../models/bookingModel.js';
-import { sendBookingEmails,sendBookingConfirmationEmail } from '../utils/email.js';
-
+import { sendBookingEmails, sendBookingConfirmationEmail } from '../utils/email.js';
 import { updateTourPricingAndNextDeparture } from './tourSync.js';
 
 export class BookingService {

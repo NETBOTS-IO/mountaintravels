@@ -89,14 +89,14 @@ const defaultTour: Tour = {
   originalPrice: 0,
   images: [],
   availability: "",
-  nextDeparture: "",
+  // nextDeparture: "",
   features: [""],
   highlights: [""],
   included: [""],
   inclusions: [""],
   exclusions: [""],
   shortDescription: "",
-  longDescription: "",
+  // longDescription: "",
   overview: "",
   whyChoose: [{ title: "", description: "" }],
   physicalRequirements: "",
@@ -717,7 +717,7 @@ export default function TourForm({
               />
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="nextDeparture">Next Departure</Label>
               <Input
                 id="nextDeparture"
@@ -726,7 +726,7 @@ export default function TourForm({
                 value={tour.nextDeparture}
                 onChange={handleChange}
               />
-            </div>
+            </div> */}
           </div>
         </CardContent>
       </Card>
@@ -741,7 +741,7 @@ export default function TourForm({
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="shortDescription">Short Description</Label>
+            <Label htmlFor="shortDescription">Description</Label>
             <Textarea
               id="shortDescription"
               name="shortDescription"
@@ -753,7 +753,7 @@ export default function TourForm({
             />
           </div>
 
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Label htmlFor="longDescription">Detailed Description</Label>
             <Textarea
               id="longDescription"
@@ -764,7 +764,7 @@ export default function TourForm({
               placeholder="Full tour description"
               rows={5}
             />
-          </div>
+          </div> */}
 
           <div className="space-y-2">
             <Label htmlFor="overview">Tour Overview</Label>
