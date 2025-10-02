@@ -193,7 +193,7 @@ export function Footer() {
           <p className="text-sm mt-2 pt-0">
             Designed and developed by{" "}
             <a
-              href="https://netbots.pk"
+              href="https://netbots.io"
               target="_blank"
               rel="noopener noreferrer"
               className="underline hover:text-secondary"

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-
+import Image from "next/image";
 import { BASE_URL } from "@/app/Var";
 
 export default function DestinationDetailsPage() {
@@ -42,16 +42,33 @@ export default function DestinationDetailsPage() {
   }
 
   return (
-    <section className="py-12 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="bg-white shadow-md rounded-xl p-6">
-          {/* Image */}
-          <img
+    <section className="flex flex-col">
+      {/* Banner Image with Blur Background */}
+      <div className="relative h-[40vh] md:h-[50vh] flex items-center justify-center overflow-hidden">
+        {/* Blurred Background */}
+        <Image
+          src={`${BASE_URL}${destination.image}`}
+          alt={`${destination.name} background`}
+          fill
+          priority
+          className="object-cover blur-lg scale-110"
+        />
+
+        {/* Main Image */}
+        <div className="relative w-full h-full flex items-center justify-center">
+          <Image
             src={`${BASE_URL}${destination.image}`}
             alt={destination.name}
-            className="w-full h-64 object-cover rounded-lg mb-6"
+            fill
+            priority
+            className="object-contain relative z-10"
           />
+        </div>
+      </div>
 
+      {/* Content Section */}
+      <div className="container mx-auto px-4 mt-8">
+        <div className="bg-white shadow-md rounded-xl p-6">
           {/* Title */}
           <h1 className="text-3xl font-bold mb-4">{destination.name}</h1>
 
@@ -63,22 +80,14 @@ export default function DestinationDetailsPage() {
             <span className="font-semibold">Tours Available:</span>{" "}
             {destination.tours}
           </p>
-          {/* <p className="text-xs text-gray-400 mb-1">
-            <span className="font-semibold">Created At:</span>{" "}
-            {new Date(destination.createdAt).toLocaleString()}
-          </p>
-          <p className="text-xs text-gray-400 mb-6">
-            <span className="font-semibold">Updated At:</span>{" "}
-            {new Date(destination.updatedAt).toLocaleString()}
-          </p> */}
 
           {/* Back Button */}
           <Button
             variant="outline"
-            className="text-primary border-primary hover:bg-primary hover:text-white transition-colors"
+            className="text-primary border-primary hover:bg-primary hover:text-white transition-colors mt-4"
             onClick={() => history.back()}
           >
-            ← Back
+            ← Back to Lists
           </Button>
         </div>
       </div>
