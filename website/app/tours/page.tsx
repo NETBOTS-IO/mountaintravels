@@ -18,6 +18,7 @@ const categories = [
   "Safari",
   "Hunting",
   "Tour",
+  "Trips"
 ];
 
 export default function ToursPage() {

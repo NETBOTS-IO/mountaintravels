@@ -6,6 +6,8 @@ export const tourCategories = [
   { id: "Skiing", name: "Skiing", icon: "skiing" },
   { id: "Cultural Tours", name: "Cultural Tours", icon: "landmark" },
   { id: "Safari", name: "Safari", icon: "compass" },
+  { id: "Trips", name: "trips", icon: "landmark" },
+
 ]
 
 export const tourPackages = [

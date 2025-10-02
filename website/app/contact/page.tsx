@@ -10,6 +10,7 @@ import { contactInfo, contactFormFields, faqCategories, officeLocations } from "
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import axios from "axios"
 import { BASE_URL } from "@/app/Var"
+
 export default function ContactPage() {
   const [formData, setFormData] = useState({})
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -25,21 +26,22 @@ export default function ContactPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      const response = await axios.post(`${BASE_URL}/api/entry/create`, {
+      const response = await axios.post(`${BASE_URL}/api/contacts/add`, {
         source: "CONTACT FORM",
-        name: formData.name,
-        email:  formData.email,
-        interests: formData.interest,
-        phone: formData.phone,
-        message: formData.message,
+        name: formData.name,          // ✅ required
+        email: formData.email,        // ✅ required
+        subject: formData.interest || "General Inquiry", // ✅ backend requires subject
+        interests: formData.interest, // optional
+        phone: formData.phone,        // optional
+        message: formData.message,    // ✅ required
       });
-  
-      console.log("Booking successful:", formData);
+
+      console.log("Contact form submitted:", formData);
       setIsModalOpen(true);
     } catch (error) {
-      console.error("Error booking tour:", error);
+      console.error("Error submitting contact form:", error);
     }
   };
 
@@ -108,44 +110,83 @@ export default function ContactPage() {
             <div>
               <h2 className="text-3xl font-bold mb-8">Contact Form</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {contactFormFields.map((field) => (
-                  <div key={field.id}>
-                    <label htmlFor={field.id} className="block mb-2 font-medium">
-                      {field.label} {field.required && <span className="text-red-500">*</span>}
-                    </label>
-                    {field.type === "textarea" ? (
-                      <Textarea
-                        id={field.id}
-                        name={field.id}
-                        required={field.required}
-                        onChange={handleInputChange}
-                        className="w-full"
-                      />
-                    ) : field.type === "select" ? (
-                      <Select onValueChange={(value) => handleSelectChange(field.id, value)}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder={field.label} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {field.options.map((option) => (
-                            <SelectItem key={option.value} value={option.value || "default"}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    ) : (
-                      <Input
-                        type={field.type}
-                        id={field.id}
-                        name={field.id}
-                        required={field.required}
-                        onChange={handleInputChange}
-                        className="w-full"
-                      />
-                    )}
-                  </div>
-                ))}
+
+                {/* Name */}
+                <div>
+                  <label htmlFor="name" className="block mb-2 font-medium">
+                    Name <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    onChange={handleInputChange}
+                    className="w-full"
+                  />
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label htmlFor="email" className="block mb-2 font-medium">
+                    Email <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    onChange={handleInputChange}
+                    className="w-full"
+                  />
+                </div>
+
+                {/* Phone */}
+                <div>
+                  <label htmlFor="phone" className="block mb-2 font-medium">
+                    Phone
+                  </label>
+                  <Input
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    onChange={handleInputChange}
+                    className="w-full"
+                  />
+                </div>
+
+                {/* Interest (used as Subject in backend) */}
+                <div>
+                  <label htmlFor="interest" className="block mb-2 font-medium">
+                    Interest / Subject <span className="text-red-500">*</span>
+                  </label>
+                  <Select onValueChange={(value) => handleSelectChange("interest", value)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select an option" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="expedition">Expedition</SelectItem>
+                      <SelectItem value="trekking">Trekking</SelectItem>
+                      <SelectItem value="sightseeing">Sightseeing</SelectItem>
+                      <SelectItem value="general">General Inquiry</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Message */}
+                <div>
+                  <label htmlFor="message" className="block mb-2 font-medium">
+                    Message <span className="text-red-500">*</span>
+                  </label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    required
+                    onChange={handleInputChange}
+                    className="w-full"
+                  />
+                </div>
+
                 <Button type="submit" className="w-full">
                   Send Message
                 </Button>
@@ -154,62 +195,63 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-     {/* Office Locations */}
-     <section className="py-16">
-  <div className="container mx-auto px-4">
-    <h2 className="text-3xl font-bold mb-12 text-center">Our Offices</h2>
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {officeLocations.map((office, index) => (
-        <div key={index} className="border rounded-lg p-6">
-          <h3 className="text-xl font-bold mb-4">{office.city}</h3>
-          <p className="mb-2">{office.address}</p>
 
-          {/* Display multiple phone numbers */}
-          {Array.isArray(office.phone) ? (
-            office.phone.map((phone, idx) => (
-              <p key={idx} className="mb-2">
-                <Phone className="inline-block w-4 h-4 mr-2" />
-                <a href={`tel:${phone}`} className="hover:underline">
-                  {phone}
-                </a>
-              </p>
-            ))
-          ) : (
-            <p className="mb-2">
-              <Phone className="inline-block w-4 h-4 mr-2" />
-              <a href={`tel:${office.phone}`} className="hover:underline">
-                {office.phone}
-              </a>
-            </p>
-          )}
+      {/* Office Locations */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-12 text-center">Our Offices</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {officeLocations.map((office, index) => (
+              <div key={index} className="border rounded-lg p-6">
+                <h3 className="text-xl font-bold mb-4">{office.city}</h3>
+                <p className="mb-2">{office.address}</p>
 
-          {/* Display multiple emails */}
-          {Array.isArray(office.email) ? (
-            office.email.map((email, idx) => (
-              <p key={idx} className="mb-2">
-                <Mail className="inline-block w-4 h-4 mr-2" />
-                <a href={`mailto:${email}`} className="hover:underline">
-                  {email}
-                </a>
-              </p>
-            ))
-          ) : (
-            <p className="mb-2">
-              <Mail className="inline-block w-4 h-4 mr-2" />
-              <a href={`mailto:${office.email}`} className="hover:underline">
-                {office.email}
-              </a>
-            </p>
-          )}
+                {/* Display multiple phone numbers */}
+                {Array.isArray(office.phone) ? (
+                  office.phone.map((phone, idx) => (
+                    <p key={idx} className="mb-2">
+                      <Phone className="inline-block w-4 h-4 mr-2" />
+                      <a href={`tel:${phone}`} className="hover:underline">
+                        {phone}
+                      </a>
+                    </p>
+                  ))
+                ) : (
+                  <p className="mb-2">
+                    <Phone className="inline-block w-4 h-4 mr-2" />
+                    <a href={`tel:${office.phone}`} className="hover:underline">
+                      {office.phone}
+                    </a>
+                  </p>
+                )}
 
-          {office.mainOffice && (
-            <span className="bg-primary text-white px-2 py-1 rounded-full text-sm">Main Office</span>
-          )}
+                {/* Display multiple emails */}
+                {Array.isArray(office.email) ? (
+                  office.email.map((email, idx) => (
+                    <p key={idx} className="mb-2">
+                      <Mail className="inline-block w-4 h-4 mr-2" />
+                      <a href={`mailto:${email}`} className="hover:underline">
+                        {email}
+                      </a>
+                    </p>
+                  ))
+                ) : (
+                  <p className="mb-2">
+                    <Mail className="inline-block w-4 h-4 mr-2" />
+                    <a href={`mailto:${office.email}`} className="hover:underline">
+                      {office.email}
+                    </a>
+                  </p>
+                )}
+
+                {office.mainOffice && (
+                  <span className="bg-primary text-white px-2 py-1 rounded-full text-sm">Main Office</span>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* FAQs */}
       <section className="py-16 bg-muted">
@@ -233,8 +275,6 @@ export default function ContactPage() {
         </div>
       </section>
 
- 
-
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent>
           <DialogHeader>
@@ -249,4 +289,3 @@ export default function ContactPage() {
     </div>
   )
 }
-

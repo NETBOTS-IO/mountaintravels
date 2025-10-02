@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
 import { Facebook, Instagram, Twitter, Linkedin, Mail, Phone, MapPin, ArrowRight } from "lucide-react"
@@ -5,9 +7,13 @@ import { siteConfig, mainMenu } from "@/data/siteConfig"
 import { tourCategories } from "@/data/tourPackages"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import axios from "axios"
+import { BASE_URL } from "@/app/Var"
 
 export function Footer() {
-  // console.log("Footer component rendered")
+  const [newsletterEmail, setNewsletterEmail] = useState("")
+  const [message, setMessage] = useState("")
 
   const getIcon = (icon: string) => {
     switch (icon) {
@@ -21,6 +27,30 @@ export function Footer() {
         return <Linkedin className="h-4 w-4 md:h-5 md:w-5" />
       default:
         return null
+    }
+  }
+
+  // Newsletter submit
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setMessage("")
+
+    try {
+      await axios.post(`${BASE_URL}/api/contacts/add`, {
+        source: "NEWSLETTER",
+        name: newsletterEmail, // use email as name
+        email: newsletterEmail,
+        phone: newsletterEmail, // fallback
+        subject: "General Query",
+        interests: "newsletter",
+        message: "Newsletter Subscription",
+      })
+
+      setMessage("🎉 You have successfully subscribed to our newsletter! We will be in touch with you for any updates ")
+      setNewsletterEmail("")
+    } catch (error) {
+      console.error("Newsletter subscription failed:", error)
+      setMessage("❌ Subscription failed. Please try again.")
     }
   }
 
@@ -39,7 +69,6 @@ export function Footer() {
                 className="h-12 w-auto md:h-16 bg-white rounded-lg p-1"
               />
             </div>
-            {/* <p className="mb-4 text-sm md:text-base text-white/80">{siteConfig.description}</p> */}
             <div className="space-y-2 text-sm md:text-base">
               <div className="flex items-start">
                 <MapPin className="h-4 w-4 md:h-5 md:w-5 mr-2 mt-0.5 flex-shrink-0" />
@@ -64,14 +93,6 @@ export function Footer() {
           <div>
             <h3 className="text-lg md:text-xl font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm md:text-base">
-              {/* {mainMenu.map((item) => (
-                <li key={item.name}>
-                  <Link href={item.path} className="hover:text-secondary flex items-center">
-                    <ArrowRight className="h-3 w-3 md:h-4 md:w-4 mr-2" />
-                    {item.name}
-                  </Link>
-                </li>
-              ))} */}
               <li>
                 <Link href="/booking-info" className="hover:text-secondary flex items-center">
                   <ArrowRight className="h-3 w-3 md:h-4 md:w-4 mr-2" />
@@ -128,14 +149,16 @@ export function Footer() {
             <p className="mb-4 text-sm md:text-base text-white/80">
               Subscribe to our newsletter for the latest updates on tours and special offers.
             </p>
-            <form className="space-y-2">
+            <form onSubmit={handleNewsletterSubmit} className="space-y-2">
               <div className="flex">
-               <Input
-  type="email"
-  placeholder="Your email address"
-  className="bg-white text-black rounded-r-none text-sm md:text-base"
-/>
-
+                <Input
+                  type="email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="Your email address"
+                  required
+                  className="bg-white text-black rounded-r-none text-sm md:text-base"
+                />
                 <Button
                   type="submit"
                   className="rounded-l-none bg-secondary hover:bg-secondary/90 text-sm md:text-base"
@@ -144,8 +167,9 @@ export function Footer() {
                 </Button>
               </div>
             </form>
+            {message && <p className="mt-2 text-sm">{message}</p>}
             <div className="mt-4">
-              <h4 className="font-semibold  text-sm md:text-base">Follow Us</h4>
+              <h4 className="font-semibold text-sm md:text-base">Follow Us</h4>
               <div className="flex space-x-3">
                 {siteConfig.social.map((item) => (
                   <a
@@ -182,4 +206,3 @@ export function Footer() {
     </footer>
   )
 }
-

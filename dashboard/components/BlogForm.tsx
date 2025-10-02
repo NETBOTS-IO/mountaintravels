@@ -41,7 +41,8 @@ type BlogCategory =
   | "Luxury"
   | "Trekking"
   | "Wildlife"
-  | "Culture";
+    "Culture"
+    "Others" ;
 
 interface BlogFormState {
   title: string;
@@ -102,6 +103,8 @@ export default function BlogForm({ blogId, initialData }: BlogFormProps) {
     "Trekking",
     "Wildlife",
     "Culture",
+    "Others" ,
+
   ];
 
   // Set initial data if present

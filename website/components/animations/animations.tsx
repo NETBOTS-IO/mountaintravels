@@ -24,7 +24,7 @@ const Animation: React.FC<AnimationProps> = ({ type, onComplete }) => {
   const [animationData, setAnimationData] = useState<any>(null);
 
   if (!src) {
-    return <p>No animation available for "{type}"</p>;
+    return <p>Please Wait ! loading data.... "{type}"</p>;
   }
 
   // 🎨 JSON animation → fetch & use lottie-react

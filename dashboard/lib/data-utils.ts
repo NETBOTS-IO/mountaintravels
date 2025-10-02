@@ -665,7 +665,7 @@ export async function deleteTrustedCompany(id: string) {
   return res.json();
 }
 export async function getContacts() {
-  const res = await fetch(`${BASE_URL}/api/contact`, {
+  const res = await fetch(`${BASE_URL}/api/contacts/`, {
     method: "GET",
     cache: "no-store", // ensure fresh data
   });
