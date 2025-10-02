@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-
+import Image from "next/image";
 import { BASE_URL } from "@/app/Var";
 
 export default function TravelTipDetailsPage() {
@@ -19,7 +19,7 @@ export default function TravelTipDetailsPage() {
         const result = await res.json();
 
         if (result.success) {
-          setTip(result.data); // ✅ only store the "data" object
+          setTip(result.data);
         } else {
           setTip(null);
         }
@@ -37,23 +37,40 @@ export default function TravelTipDetailsPage() {
   if (!tip) return <p className="p-6">Tip not found.</p>;
 
   return (
-    <section className="py-12 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="bg-white shadow-md rounded-xl p-6">
-          {/* Image */}
-          <img
+    <section className="flex flex-col">
+      {/* Banner Image with Blur Background */}
+      <div className="relative h-[40vh] md:h-[50vh] flex items-center justify-center overflow-hidden">
+        {/* Blurred Background */}
+        <Image
+          src={`${BASE_URL}${tip.image}`}
+          alt={`${tip.title} background`}
+          fill
+          priority
+          className="object-cover blur-lg scale-110"
+        />
+
+        {/* Main Image */}
+        <div className="relative w-full h-full flex items-center justify-center">
+          <Image
             src={`${BASE_URL}${tip.image}`}
             alt={tip.title}
-            className="w-full h-64 object-cover rounded-lg mb-6"
+            fill
+            priority
+            className="object-contain relative z-10"
           />
+        </div>
+      </div>
 
+      {/* Content Section */}
+      <div className="container mx-auto px-4 mt-8">
+        <div className="bg-white shadow-md rounded-xl p-6">
           {/* Title */}
           <h1 className="text-3xl font-bold mb-4">{tip.title}</h1>
 
           {/* Excerpt */}
           <p className="text-gray-700 mb-4">{tip.excerpt}</p>
 
-          {/* Dates */}
+          {/* Extra Info */}
           <p className="text-sm text-gray-500 mb-2">
             <span className="font-semibold">Slug:</span> {tip.slug}
           </p>
@@ -61,13 +78,15 @@ export default function TravelTipDetailsPage() {
             <span className="font-semibold">Publish Date:</span>{" "}
             {new Date(tip.date).toLocaleDateString()}
           </p>
+
+          {/* Back Button */}
           <div className="mt-6">
             <Button
               variant="outline"
               className="text-primary border-primary hover:bg-primary hover:text-white transition-colors"
               onClick={() => history.back()}
             >
-              ← Back
+              ← Back to lists
             </Button>
           </div>
         </div>
