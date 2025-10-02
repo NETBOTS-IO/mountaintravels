@@ -22,7 +22,7 @@ Skardu City, Gilgit-Baltistan, Pakistan`,
 };
 
 const mainCategories = ["Trekking", "Expeditions", "Cultural Tours"];
-const otherCategories = ["Mountain Biking", "Skiing", "Safari"];
+const otherCategories = ["Mountain Biking", "Skiing", "Safari", "Trips"];
 
 export const mainMenu = [
   { name: "Home", path: "/" },

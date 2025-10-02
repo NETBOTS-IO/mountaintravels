@@ -45,6 +45,8 @@ const tourCategories = [
   "Cultural Tours",
   "Safari",
   "Skiing",
+  "Trips",
+  "Hunting"
 ];
 
 const ImagePreview = ({
@@ -90,7 +92,7 @@ const defaultTour: Tour = {
   images: [],
   availability: "",
   // nextDeparture: "",
-  features: [""],
+  // features: [""],
   highlights: [""],
   included: [""],
   inclusions: [""],
@@ -98,7 +100,7 @@ const defaultTour: Tour = {
   shortDescription: "",
   // longDescription: "",
   overview: "",
-  whyChoose: [{ title: "", description: "" }],
+  // whyChoose: [{ title: "", description: "" }],
   physicalRequirements: "",
   distance: "",
   hours: "",
@@ -767,7 +769,7 @@ export default function TourForm({
           </div> */}
 
           <div className="space-y-2">
-            <Label htmlFor="overview">Tour Overview</Label>
+            <Label htmlFor="overview">Tour Overview/Features</Label>
             <Textarea
               id="overview"
               name="overview"
@@ -821,122 +823,91 @@ export default function TourForm({
       </Card>
 
       {/* Features & Highlights Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader className="bg-gray-50">
-            <CardTitle className="flex items-center">
-              <Star className="w-5 h-5 mr-2" />
-              Tour Highlights
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {tour.highlights.map((highlight, index) => (
-              <div key={index} className="flex items-center mb-2">
-                <Input
-                  value={highlight}
-                  onChange={(e) => handleArrayChange(e, index, "highlights")}
-                  className="flex-grow"
-                  placeholder="Enter highlight"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removeArrayItem(index, "highlights")}
-                >
-                  <MinusCircle className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => addArrayItem("highlights")}
-              className="w-full mt-2"
-            >
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add Highlight
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  {/* Inclusions Card */}
+  <Card className="w-full">
+    <CardHeader className="bg-gray-50">
+      <CardTitle className="flex items-center">
+        <Shield className="w-5 h-5 mr-2" />
+        Included Features
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      {tour.inclusions.map((item, index) => (
+        <div key={index} className="flex items-center mb-2">
+          <Input
+            value={item}
+            onChange={(e) => handleArrayChange(e, index, "inclusions")}
+            className="flex-grow"
+            placeholder="What's included"
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() => removeArrayItem(index, "inclusions")}
+          >
+            <MinusCircle className="h-4 w-4" />
+          </Button>
+        </div>
+      ))}
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => addArrayItem("inclusions")}
+        className="w-full mt-2"
+      >
+        <PlusCircle className="h-4 w-4 mr-2" />
+        Add Inclusion
+      </Button>
+    </CardContent>
+  </Card>
 
-        <Card>
-          <CardHeader className="bg-gray-50">
-            <CardTitle className="flex items-center">
-              <Shield className="w-5 h-5 mr-2" />
-              Inclusions & Exclusions
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label>Included Features</Label>
-              {tour.inclusions.map((item, index) => (
-                <div key={index} className="flex items-center mb-2">
-                  <Input
-                    value={item}
-                    onChange={(e) => handleArrayChange(e, index, "inclusions")}
-                    className="flex-grow"
-                    placeholder="What's included"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeArrayItem(index, "inclusions")}
-                  >
-                    <MinusCircle className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => addArrayItem("inclusions")}
-                className="w-full mt-2"
-              >
-                <PlusCircle className="h-4 w-4 mr-2" />
-                Add Inclusion
-              </Button>
-            </div>
+  {/* Exclusions Card */}
+  <Card className="w-full">
+    <CardHeader className="bg-gray-50">
+      <CardTitle className="flex items-center">
+        <Shield className="w-5 h-5 mr-2" />
+        Excluded Features
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      {tour.exclusions.map((item, index) => (
+        <div key={index} className="flex items-center mb-2">
+          <Input
+            value={item}
+            onChange={(e) => handleArrayChange(e, index, "exclusions")}
+            className="flex-grow"
+            placeholder="What's not included"
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() => removeArrayItem(index, "exclusions")}
+          >
+            <MinusCircle className="h-4 w-4" />
+          </Button>
+        </div>
+      ))}
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => addArrayItem("exclusions")}
+        className="w-full mt-2"
+      >
+        <PlusCircle className="h-4 w-4 mr-2" />
+        Add Exclusion
+      </Button>
+    </CardContent>
+  </Card>
+</div>
 
-            <Separator />
 
-            <div>
-              <Label>Excluded Features</Label>
-              {tour.exclusions.map((item, index) => (
-                <div key={index} className="flex items-center mb-2">
-                  <Input
-                    value={item}
-                    onChange={(e) => handleArrayChange(e, index, "exclusions")}
-                    className="flex-grow"
-                    placeholder="What's not included"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeArrayItem(index, "exclusions")}
-                  >
-                    <MinusCircle className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => addArrayItem("exclusions")}
-                className="w-full mt-2"
-              >
-                <PlusCircle className="h-4 w-4 mr-2" />
-                Add Exclusion
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+
 
       {/* Why Choose Section */}
-      <Card>
+      {/* <Card>
         <CardHeader className="bg-gray-50">
           <CardTitle className="flex items-center">
             <HelpCircle className="w-5 h-5 mr-2" />
@@ -1006,10 +977,10 @@ export default function TourForm({
             Add Reason
           </Button>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Features Section */}
-      <Card>
+      {/* <Card>
         <CardHeader className="bg-gray-50">
           <CardTitle className="flex items-center">
             <Star className="w-5 h-5 mr-2" />
@@ -1045,7 +1016,7 @@ export default function TourForm({
             Add Feature
           </Button>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Itinerary Section */}
       <Card>
@@ -1103,7 +1074,7 @@ export default function TourForm({
 
                 <div className="space-y-2 md:col-span-2">
                   <Label htmlFor={`day-${index}-description`}>
-                    Description
+                    Description/Activity
                   </Label>
                   <Textarea
                     id={`day-${index}-description`}
@@ -1128,7 +1099,7 @@ export default function TourForm({
                   />
                 </div>
 
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <Label htmlFor={`day-${index}-duration`}>Duration</Label>
                   <Input
                     id={`day-${index}-duration`}
@@ -1137,9 +1108,9 @@ export default function TourForm({
                     onChange={(e) => handleChange(e, index, "itineraries")}
                     placeholder="Duration of activities"
                   />
-                </div>
+                </div> */}
 
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <Label>Activities</Label>
                   {day.activities?.map((activity, activityIndex) => (
                     <div key={activityIndex} className="flex items-center mb-2">
@@ -1209,7 +1180,7 @@ export default function TourForm({
                     <PlusCircle className="h-4 w-4 mr-2" />
                     Add Activity
                   </Button>
-                </div>
+                </div> */}
 
                 <div className="space-y-2">
                   <Label>Meals</Label>
@@ -1285,7 +1256,7 @@ export default function TourForm({
               </div>
 
               {/* Itinerary Images */}
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 <Label>Day Images</Label>
                 <p className="text-sm text-muted-foreground mb-2">
                   Upload images specific to this day
@@ -1323,10 +1294,10 @@ export default function TourForm({
                     <span className="text-xs">Add Images</span>
                   </label>
                 </div>
-              </div>
+              </div> */}
 
               {/* New fields for day */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor={`day-${index}-type`}>Type</Label>
                 <Input
                   id={`day-${index}-type`}
@@ -1335,8 +1306,8 @@ export default function TourForm({
                   onChange={(e) => handleChange(e, index, "itineraries")}
                   placeholder="Type of day (e.g., Arrival, Trekking)"
                 />
-              </div>
-              <div className="space-y-2">
+              </div> */}
+              {/* <div className="space-y-2">
                 <Label>Day Highlights</Label>
                 {day.highlights?.map((highlight, highlightIndex) => (
                   <div key={highlightIndex} className="flex items-center mb-2">
@@ -1406,7 +1377,7 @@ export default function TourForm({
                   <PlusCircle className="h-4 w-4 mr-2" />
                   Add Highlight
                 </Button>
-              </div>
+              </div> */}
             </div>
           ))}
 
@@ -1503,12 +1474,12 @@ export default function TourForm({
           <CardHeader className="bg-gray-50">
             <CardTitle className="flex items-center">
               <Shield className="w-5 h-5 mr-2" />
-              Policies & Terms
+              Terms & Policies 
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label>Terms & Conditions</Label>
+              <Label>Add Terms & Policies </Label>
               {tour.termsAndConditions?.map((term, index) => (
                 <div key={index} className="flex items-center mb-2">
                   <Input
@@ -1536,12 +1507,12 @@ export default function TourForm({
                 className="w-full mt-2"
               >
                 <PlusCircle className="h-4 w-4 mr-2" />
-                Add Term
+                Add Terms & Policies 
               </Button>
             </div>
 
             <Separator />
-
+{/* 
             <div>
               <Label>Policies</Label>
               {tour.policies?.map((policy, index) => (
@@ -1571,7 +1542,7 @@ export default function TourForm({
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Add Policy
               </Button>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
       </div>
@@ -1601,7 +1572,7 @@ export default function TourForm({
 
       {/* Best Time */}
       <div className="space-y-2">
-        <Label htmlFor="bestTime">Best Time</Label>
+        <Label htmlFor="bestTime">Best Time/Season</Label>
         <Input
           id="bestTime"
           name="bestTime"
@@ -1613,7 +1584,7 @@ export default function TourForm({
 
       {/* Distance */}
       <div className="space-y-2">
-        <Label htmlFor="distance">Distance</Label>
+        <Label htmlFor="distance">Total Distance We Cover</Label>
         <Input
           id="distance"
           name="distance"
@@ -1625,7 +1596,7 @@ export default function TourForm({
 
       {/* Hours */}
       <div className="space-y-2">
-        <Label htmlFor="hours">Hours</Label>
+        <Label htmlFor="hours">Hours/day</Label>
         <Input
           id="hours"
           name="hours"
@@ -1640,7 +1611,7 @@ export default function TourForm({
 
 
       {/* Tags & Related Trips */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader className="bg-gray-50">
             <CardTitle className="flex items-center">
@@ -1716,7 +1687,7 @@ export default function TourForm({
             </Button>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
 
       {/* Location & Submit Section */}
       <Card>

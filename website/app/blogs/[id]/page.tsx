@@ -6,8 +6,6 @@ import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { BASE_URL } from "@/app/Var"
 
-// const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
-
 async function getBlog(id: string) {
   try {
     const res = await fetch(`${BASE_URL}/api/blogs/${id}`, { cache: "no-store" })
@@ -31,50 +29,102 @@ export default async function BlogDetailPage({ params }: { params: { id: string 
 
   return (
     <div className="flex flex-col">
-<section className="relative h-[40vh] md:h-[50vh]">
-  <Image
-    src={`${BASE_URL}${post.coverImage}`}
-    alt={post.title}
-    fill
-    priority
-    className="object-cover"
-  />
-  {/* Lighter Overlay */}
-  <div className="absolute inset-0 bg-black/20" />
+      {/* Banner Image with Blur Background */}
+      <section className="relative h-[40vh] md:h-[50vh] flex items-center justify-center overflow-hidden">
+        {/* Blurred Background */}
+        <Image
+          src={`${BASE_URL}${post.coverImage}`}
+          alt={`${post.title} background`}
+          fill
+          priority
+          className="object-cover blur-lg scale-110"
+        />
 
-  {/* Content */}
-  <div className="absolute inset-x-0 bottom-6 flex justify-center">
-    <div className="text-white text-center max-w-4xl px-4">
-      <h1 className="text-2xl md:text-5xl font-bold mb-3 drop-shadow-md">
-        {post.title}
-      </h1>
-      <p className="text-sm md:text-lg drop-shadow-sm">
-        By {post.author?.name || "Unknown"} |{" "}
-        {new Date(post.createdAt).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-      </p>
-    </div>
-  </div>
-</section>
+        {/* Main Image */}
+        <div className="relative w-full h-full flex items-center justify-center">
+          <Image
+            src={`${BASE_URL}${post.coverImage}`}
+            alt={post.title}
+            fill
+            priority
+            className="object-contain relative z-10"
+          />
+        </div>
+      </section>
 
-
-
-
-      {/* Blog Content */}
-      <section className="py-16">
+      {/* Title & Meta Info */}
+      <section className="mt-6 mb-4">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto prose prose-lg">
-            {/* Render your editorJS content here instead of summary */}
-            <p>{post.summary}</p>
+          <div className="text-center max-w-3xl mx-auto">
+            <h1 className="text-2xl md:text-4xl font-bold mb-2">{post.title}</h1>
+            <p className="text-sm md:text-base text-gray-600">
+              By {post.author?.name || "Unknown"} |{" "}
+              {new Date(post.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
           </div>
         </div>
       </section>
 
+      {/* Blog Content */}
+      <section className="mb-10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto prose prose-lg">
+            {post.content?.blocks?.map((block: any) => {
+              if (block.type === "paragraph") {
+                return <p key={block.id}>{block.data.text}</p>
+              }
+
+              if (block.type === "header") {
+                const Tag = `h${block.data.level}` as keyof JSX.IntrinsicElements
+                return <Tag key={block.id}>{block.data.text}</Tag>
+              }
+
+              if (block.type === "list") {
+                return block.data.style === "unordered" ? (
+                  <ul key={block.id}>
+                    {block.data.items.map((item: string, i: number) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <ol key={block.id}>
+                    {block.data.items.map((item: string, i: number) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ol>
+                )
+              }
+
+              return null
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Author Info (if exists) */}
+      {post.author && (
+        <section className="mb-12">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto bg-gray-50 p-6 rounded-lg shadow-md">
+              <h2 className="text-lg font-semibold mb-2">About the Author</h2>
+              <p className="font-medium">{post.author.name}</p>
+              {post.author.designation && (
+                <p className="text-sm text-gray-600">{post.author.designation}</p>
+              )}
+              {post.author.description && (
+                <p className="mt-2 text-gray-700">{post.author.description}</p>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Back to Blogs */}
-      <section className="py-8">
+      <section className="pb-8">
         <div className="container mx-auto px-4">
           <Link href="/blogs">
             <Button className="inline-flex items-center">

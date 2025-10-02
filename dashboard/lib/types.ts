@@ -189,6 +189,7 @@ export interface Blog {
     | "Luxury"
     | "Trekking"
     | "Wildlife"
+      "Others" 
     | "Culture";
   isFeatured: boolean;
   status: "draft" | "published";

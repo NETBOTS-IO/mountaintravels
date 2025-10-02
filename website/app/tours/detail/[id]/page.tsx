@@ -68,14 +68,23 @@ export default function TourPage() {
   useEffect(() => {
     const fetchDepartures = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/departures?tourId=${id}`);
-        setDepartures(res.data.data || []);
+        const res = await axios.get(`${BASE_URL}/api/departures`);
+        const allDepartures = res.data.data || [];
+  
+        // ✅ filter departures by current tour._id
+        const filtered = allDepartures.filter(
+          (dep: any) => dep.tripId?._id === tour?._id
+        );
+  
+        setDepartures(filtered);
       } catch (err) {
         console.error("Error fetching departures:", err);
       }
     };
-    if (id) fetchDepartures();
-  }, [id]);
+  
+    if (tour?._id) fetchDepartures();
+  }, [tour?._id]);
+  
   
   // update handleBooking
   const handleBooking = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -244,28 +253,38 @@ export default function TourPage() {
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       {/* Hero Section */}
       <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] mb-12 rounded-xl overflow-hidden shadow-2xl">
-        <Image src={`${BASE_URL}${tour.images[activeImage]}` || "/placeholder.svg"} alt={tour.name} fill className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent flex items-end justify-center pb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center px-4 drop-shadow-lg">
-            {tour.name}
-          </h1>
-          
-        </div>
-        <button
-          onClick={handlePrevImage}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg transition-all hover:bg-white"
-          aria-label="Previous image"
-        >
-          <ChevronLeft className="h-6 w-6 text-gray-800" />
-        </button>
-        <button
-          onClick={handleNextImage}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg transition-all hover:bg-white"
-          aria-label="Next image"
-        >
-          <ChevronRight className="h-6 w-6 text-gray-800" />
-        </button>
-      </div>
+  <Image
+    src={`${BASE_URL}${tour.images[activeImage]}` || "/placeholder.svg"}
+    alt={tour.name}
+    fill
+    className="object-contain bg-black"
+  />
+  <div className="absolute inset-0 flex items-end justify-center pb-8">
+    {/* <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center px-4 drop-shadow-lg">
+      {tour.name}
+    </h1> */}
+  </div>
+
+  {/* Prev Button */}
+  <button
+    onClick={handlePrevImage}
+    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg transition-all hover:bg-white"
+    aria-label="Previous image"
+  >
+    <ChevronLeft className="h-6 w-6 text-gray-800" />
+  </button>
+
+  {/* Next Button */}
+  <button
+    onClick={handleNextImage}
+    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg transition-all hover:bg-white"
+    aria-label="Next image"
+  >
+    <ChevronRight className="h-6 w-6 text-gray-800" />
+  </button>
+</div>
+
+
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         <div className="lg:col-span-2 space-y-8">
@@ -328,7 +347,21 @@ export default function TourPage() {
               {tour.price}
             </div>
             
-            <p className="mb-6 text-lg leading-relaxed">{tour.shortDescription}</p>
+            {/* About Tour */}
+            <div className="mb-6">
+  <h2 className="text-xl font-bold text-green-600 mb-2">About Tour</h2>
+  <p className="text-lg leading-relaxed text-gray-700">{tour.shortDescription}</p>
+</div>
+
+{/* Overview */}
+{tour.overview && (
+  <div className="mb-6">
+    <h2 className="text-xl font-bold text-orange-600 mb-2">Features</h2>
+    <p className="text-lg leading-relaxed text-gray-700">{tour.overview}</p>
+  </div>
+)}
+
+
             <div className="flex items-center text-lg">
               <Sun className="w-6 h-6 text-primary mr-2" />
               <span>Best Season: {tour.bestTime}</span>
@@ -407,36 +440,6 @@ export default function TourPage() {
                     Meals: {day.meals?.join(", ") || "N/A"}
                   </span>
                 </p>
-
-                {/* Show Physical Requirements */}
-                {tour.physicalRequirements && (
-                  <p className="flex items-center">
-                    {/* <HelpCircle className="w-5 h-5 mr-2" /> */}
-                    {/* <span className="flex-1">
-                      Physical Requirements: {tour.physicalRequirements}
-                    </span> */}
-                  </p>
-                )}
-
-                {/* Distance */}
-                {tour.distance && (
-                  <p className="flex items-center">
-                    <MapPin className="w-5 h-5 mr-2" />
-                    <span className="flex-1">
-                      Distance: {tour.distance}
-                    </span>
-                  </p>
-                )}
-
-                {/* Hours */}
-                {tour.hours && (
-                  <p className="flex items-center">
-                    <Clock className="w-5 h-5 mr-2" />
-                    <span className="flex-1">
-                      Hours: {tour.hours}
-                    </span>
-                  </p>
-                )}
               </div>
             </div>
 
@@ -459,7 +462,38 @@ export default function TourPage() {
       </AccordionItem>
     ))}
   </Accordion>
+
+  {/* ✅ Extra Tour Info (styled with colors) */}
+  {(tour.physicalRequirements || tour.distance || tour.hours) && (
+  <div className="mt-6 p-4 border rounded-lg bg-gray-50 shadow-sm space-y-3">
+    {tour.physicalRequirements && (
+      <p className="flex items-center font-medium">
+        <HelpCircle className="w-5 h-5 mr-2 text-green-600" />
+        <span className="text-green-700">Physical Requirements:</span>&nbsp;
+        <span className="text-orange-600">{tour.physicalRequirements}</span>
+      </p>
+    )}
+
+    {tour.distance && (
+      <p className="flex items-center font-medium">
+        <MapPin className="w-5 h-5 mr-2 text-green-600" />
+        <span className="text-green-700">Distance:</span>&nbsp;
+        <span className="text-orange-600">{tour.distance}</span>
+      </p>
+    )}
+
+    {tour.hours && (
+      <p className="flex items-center font-medium">
+        <Clock className="w-5 h-5 mr-2 text-green-600" />
+        <span className="text-green-700">Hours:</span>&nbsp;
+        <span className="text-orange-600">{tour.hours}</span>
+      </p>
+    )}
+  </div>
+  )}
 </TabsContent>
+
+
 
 
 
@@ -613,7 +647,7 @@ export default function TourPage() {
             </div>
             <span
               className={`px-2 py-1 rounded text-sm font-semibold 
-                ${isAvailable ? "bg-green-200 text-green-800" : "bg-red-800 text-red-800"}`}
+                ${isAvailable ? "bg-green-200 text-green-800" : "bg-red-200 text-red-800"}`}
             >
               {dep.status}
             </span>
@@ -623,6 +657,7 @@ export default function TourPage() {
     </ul>
   </div>
 )}
+
 
 
   {/* Booking Form */}
@@ -688,7 +723,7 @@ export default function TourPage() {
     <DialogHeader>
       <DialogTitle className="text-2xl">Booking Confirmed!</DialogTitle>
       <DialogDescription className="text-lg">
-        Thank you for booking {tour.name}. We will contact you shortly with further details.
+        Thank you for Booking {tour.name}. We will contact you shortly with further details.
       </DialogDescription>
     </DialogHeader>
     <Button onClick={() => setIsModalOpen(false)} className="text-lg mt-4">
