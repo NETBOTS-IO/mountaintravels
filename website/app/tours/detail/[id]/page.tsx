@@ -356,7 +356,7 @@ export default function TourPage() {
 {/* Overview */}
 {tour.overview && (
   <div className="mb-6">
-    <h2 className="text-xl font-bold text-orange-600 mb-2">Features</h2>
+    <h2 className="text-xl font-bold text-orange-600 mb-2">Overview</h2>
     <p className="text-lg leading-relaxed text-gray-700">{tour.overview}</p>
   </div>
 )}
