@@ -38,6 +38,7 @@ const blogSchema = new mongoose.Schema(
         "Wildlife",
         "Culture",
         "Others",
+        "Trips",
       ],
     },
     isFeatured: { type: Boolean, default: false },

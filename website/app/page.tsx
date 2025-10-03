@@ -767,23 +767,20 @@ const prevTipSet = () => {
         )
       ) : (
         // 👉 Desktop: 3 cards
-        <div className="flex pb-6 -mx-4 px-4">
-          {tours
-            .slice(
-              currentTourIndex * toursPerPage,
-              (currentTourIndex + 1) * toursPerPage
-            )
-            .map((tour) => (
-              <div
-                key={tour._id}
-                className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 pr-4"
-              >
-                <div className="bg-white text-black rounded-xl shadow-sm hover:shadow-md border border-gray-200">
-                  <TourCard tour={tour} />
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
+        {tours
+          .slice(
+            currentTourIndex * toursPerPage,
+            (currentTourIndex + 1) * toursPerPage
+          )
+          .map((tour) => (
+            <div key={tour._id} className="h-full">
+              <div className="bg-white text-black rounded-xl shadow-sm hover:shadow-md border border-gray-200 h-full">
+                <TourCard tour={tour} />
               </div>
-            ))}
-        </div>
+            </div>
+          ))}
+      </div>
       )}
     </div>
   </div>
@@ -799,7 +796,7 @@ const prevTipSet = () => {
   title="Popular Destinations"
   items={popularDestinations}
   renderCard={(dest) => (
-    <div className="h-[420px] w-[410px] p-4">
+    <div className="h-[385px] w-[360px] p-4">
       <img
         src={`${BASE_URL}${dest.image}`}
         alt={dest.name}
@@ -821,7 +818,7 @@ const prevTipSet = () => {
   title="Travel Tips & Insights"
   items={tips}
   renderCard={(tip) => (
-    <div className="h-[420px] w-[410px] p-4">
+    <div className="h-[390px] w-[360px] p-4">
       <img
         src={`${BASE_URL}${tip.image}`}
         alt={tip.title}
@@ -1035,83 +1032,82 @@ const prevTipSet = () => {
 // Tour Card Component
 function TourCard({ tour }) {
   return (
-    <Link href={`/tours/detail/${tour._id}`}>
- <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-[420px] w-[410px] flex flex-col group transform hover:-translate-y-1">
-  {/* Image Section */}
-  <div className="relative h-[250px]">
-    <Image
-      src={`${BASE_URL}${tour.images?.[0]}` || "/placeholder.svg"}
-      alt={tour.name}
-      fill
-      className="object-cover"
-    />
-    <div className="absolute top-2 right-2">
-      <Badge className="bg-secondary text-white text-xs md:text-sm">
-        {tour.difficulty}
-      </Badge>
-    </div>
-    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-      <div className="flex items-center text-white mb-1">
-        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-        <span className="text-sm font-medium">{tour.rating}</span>
-        <span className="text-xs ml-1">({tour.reviews} reviews)</span>
-      </div>
-      <h3 className="font-bold text-lg text-white group-hover:text-secondary transition-colors line-clamp-1">
-        {tour.name}
-      </h3>
-    </div>
-  </div>
+    <Link href={`/tours/detail/${tour._id}`} className="h-full">
+      <Card className="flex flex-col h-full overflow-hidden hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1">
+        
+        {/* Image Section */}
+        <div className="relative h-48 md:h-56">
+          <Image
+            src={`${BASE_URL}${tour.images?.[0]}` || "/placeholder.svg"}
+            alt={tour.name}
+            fill
+            className="object-cover"
+          />
+          <div className="absolute top-2 right-2">
+            <Badge className="bg-secondary text-white text-xs md:text-sm">
+              {tour.difficulty}
+            </Badge>
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+            <div className="flex items-center text-white mb-1">
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+              <span className="text-sm font-medium">{tour.rating}</span>
+              <span className="text-xs ml-1">({tour.reviews} reviews)</span>
+            </div>
+            <h3 className="font-bold text-lg text-white group-hover:text-secondary transition-colors line-clamp-1">
+              {tour.name}
+            </h3>
+          </div>
+        </div>
 
-  {/* Content Section */}
-  <CardContent className="p-4 flex flex-col flex-1">
-    <div className="flex items-center text-sm text-gray-600 mb-2">
-      <MapPin className="w-4 h-4 mr-1 text-primary" />
-      <span className="truncate">{tour.location}, {tour.country}</span>
-    </div>
+        {/* Content Section */}
+        <CardContent className="p-4 flex flex-col flex-1">
+          <div className="flex items-center text-sm text-gray-600 mb-2">
+            <MapPin className="w-4 h-4 mr-1 text-primary" />
+            <span className="truncate">
+              {tour.location}, {tour.country}
+            </span>
+          </div>
 
-    <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
-      {tour.shortDescription}
-    </p>
+          <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
+            {tour.shortDescription}
+          </p>
 
-    <div className="grid grid-cols-2 gap-2 mb-4 text-xs text-gray-600">
-      <div className="flex items-center">
-        <Calendar className="h-4 w-4 mr-1 text-primary" />
-        <span>{tour.days} Days</span>
-      </div>
-      <div className="flex items-center">
-        <Users className="h-4 w-4 mr-1 text-primary" />
-        <span>{tour.groupSize}</span>
-      </div>
-      <div className="flex items-center">
-        <Sun className="h-4 w-4 mr-1 text-primary" />
-        <span>{tour.bestTime}</span>
-      </div>
-      <div className="flex items-center">
-        <Clock className="h-4 w-4 mr-1 text-primary" />
-        <span>Best Seller</span>
-      </div>
-    </div>
+          <div className="grid grid-cols-2 gap-2 mb-4 text-xs text-gray-600">
+            <div className="flex items-center">
+              <Calendar className="h-4 w-4 mr-1 text-primary" />
+              <span>{tour.days} Days</span>
+            </div>
+            <div className="flex items-center">
+              <Users className="h-4 w-4 mr-1 text-primary" />
+              <span>{tour.groupSize}</span>
+            </div>
+            <div className="flex items-center">
+              <Sun className="h-4 w-4 mr-1 text-primary" />
+              <span>{tour.bestTime}</span>
+            </div>
+            <div className="flex items-center">
+              <Clock className="h-4 w-4 mr-1 text-primary" />
+              <span>Best Seller</span>
+            </div>
+          </div>
 
-    {/* Footer */}
-    <div className="mt-auto flex items-center justify-between">
-      <span className="font-bold text-lg text-primary flex items-center">
-        <DollarSign className="h-4 w-4 mr-1" />
-        {tour.price}
-      </span>
-      <Button
-        variant="outline"
-        className="text-primary border-primary hover:bg-primary hover:text-white transition-colors text-xs"
-      >
-        View Details
-      </Button>
-    </div>
-  </CardContent>
-</Card>
-
-
-
-  </Link>
-  
+          {/* Footer sticks to bottom */}
+          <div className="mt-auto flex items-center justify-between">
+            <span className="font-bold text-lg text-primary flex items-center">
+              <DollarSign className="h-4 w-4 mr-1" />
+              {tour.price}
+            </span>
+            <Button
+              variant="outline"
+              className="text-primary border-primary hover:bg-primary hover:text-white transition-colors text-xs"
+            >
+              View Details
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
 

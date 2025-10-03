@@ -465,32 +465,45 @@ export default function TourPage() {
 
   {/* ✅ Extra Tour Info (styled with colors) */}
   {(tour.physicalRequirements || tour.distance || tour.hours) && (
-  <div className="mt-6 p-4 border rounded-lg bg-gray-50 shadow-sm space-y-3">
-    {tour.physicalRequirements && (
-      <p className="flex items-center font-medium">
-        <HelpCircle className="w-5 h-5 mr-2 text-green-600" />
-        <span className="text-green-700">Physical Requirements:</span>&nbsp;
-        <span className="text-orange-600">{tour.physicalRequirements}</span>
-      </p>
-    )}
+  <div className="mt-6 p-6 rounded-lg bg-gray-50 border border-gray-200 shadow-sm">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-gray-900">
+      {tour.physicalRequirements && (
+        <div>
+          <div className="flex items-center mb-1">
+            <HelpCircle className="w-5 h-5 mr-2 text-primary" />
+            <span className="font-semibold text-gray-800">
+              Physical Requirements
+            </span>
+          </div>
+          <p className="text-orange-600">{tour.physicalRequirements}</p>
+        </div>
+      )}
 
-    {tour.distance && (
-      <p className="flex items-center font-medium">
-        <MapPin className="w-5 h-5 mr-2 text-green-600" />
-        <span className="text-green-700">Distance:</span>&nbsp;
-        <span className="text-orange-600">{tour.distance}</span>
-      </p>
-    )}
+      {tour.distance && (
+        <div>
+          <div className="flex items-center mb-1">
+            <MapPin className="w-5 h-5 mr-2 text-primary" />
+            <span className="font-semibold text-gray-800">Distance</span>
+          </div>
+          <p className="text-orange-600">{tour.distance}</p>
+        </div>
+      )}
 
-    {tour.hours && (
-      <p className="flex items-center font-medium">
-        <Clock className="w-5 h-5 mr-2 text-green-600" />
-        <span className="text-green-700">Hours:</span>&nbsp;
-        <span className="text-orange-600">{tour.hours}</span>
-      </p>
-    )}
+      {tour.hours && (
+        <div>
+          <div className="flex items-center mb-1">
+            <Clock className="w-5 h-5 mr-2 text-primary" />
+            <span className="font-semibold text-gray-800">Hours</span>
+          </div>
+          <p className="text-orange-600">{tour.hours}</p>
+        </div>
+      )}
+    </div>
   </div>
-  )}
+)}
+
+
+
 </TabsContent>
 
 
@@ -626,7 +639,6 @@ export default function TourPage() {
         {/* Booking Form */}
       <div className="lg:sticky lg:top-4 lg:self-start">
 
-  {/* Departure Information Box */}
 {/* Departure Information Box */}
 {departures.length > 0 && (
   <div className="mb-6 p-4 border rounded-lg shadow-sm bg-gray-50">

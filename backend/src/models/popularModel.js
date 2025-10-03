@@ -15,7 +15,6 @@ const popularDestinationSchema = new mongoose.Schema(
     description: {
       type: String,
       required: [true, "Description is required"],
-      maxlength: [500, "Description cannot exceed 500 characters"],
     },
     tours: {
       type: Number,
