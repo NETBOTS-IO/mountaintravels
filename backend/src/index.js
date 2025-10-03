@@ -40,6 +40,8 @@ const allowedOrigins = [
   "http://localhost:3001",
   "http://localhost:3002",
   "https://mountaintravels.site",
+  "https://mountaintravels.com",
+  "http://mountaintravels.com",
   "https://www.mountaintravels.site",
   "https://api.mountaintravels.site",
   "http://dashboard.mountaintravels.com",
@@ -50,6 +52,8 @@ const allowedOrigins = [
   "https://api.mountaintravels.site",
   "https://dashboard.mountaintravels.site",
   "http://dashboard.mountaintravels.site",
+  "https://dashboard.mountaintravels.com",
+  "http://dashboard.mountaintravels.com",
 
 ];
 
