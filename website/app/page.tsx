@@ -796,17 +796,17 @@ const prevTipSet = () => {
   title="Popular Destinations"
   items={popularDestinations}
   renderCard={(dest) => (
-    <div className="flex flex-col h-full p-4">
+    <div className="h-[385px] w-[360px] p-4">
       <img
         src={`${BASE_URL}${dest.image}`}
         alt={dest.name}
         className="w-full h-48 object-cover rounded-md mb-4"
       />
       <h3 className="text-lg font-semibold">{dest.name}</h3>
-      <p className="text-gray-600 line-clamp-2 flex-grow">{dest.description}</p>
+      <p className="text-gray-600 line-clamp-2">{dest.description}</p>
       <span className="text-sm text-gray-400">Tours: {dest.tours}</span>
       <Link href={`/destinations/${dest._id}`}>
-        <Button className="mt-4 w-full">Read More</Button>
+        <Button className="mt-4 w-full">View More</Button>
       </Link>
     </div>
   )}
@@ -818,21 +818,20 @@ const prevTipSet = () => {
   title="Travel Tips & Insights"
   items={tips}
   renderCard={(tip) => (
-    <div className="flex flex-col h-full p-4">
+    <div className="h-[390px] w-[360px] p-4">
       <img
         src={`${BASE_URL}${tip.image}`}
         alt={tip.title}
         className="w-full h-48 object-cover rounded-md mb-4"
       />
       <h3 className="text-lg font-semibold">{tip.title}</h3>
-      <p className="text-gray-600 line-clamp-2 flex-grow">{tip.excerpt}</p>
+      <p className="text-gray-600 line-clamp-2">{tip.excerpt}</p>
       <Link href={`/tips/${tip._id}`}>
-        <Button className="mt-4 w-full">Read More</Button>
+        <Button className="mt-4 w-full">View More</Button>
       </Link>
     </div>
   )}
 />
-
 
 
 
@@ -1111,8 +1110,6 @@ function TourCard({ tour }) {
     </Link>
   );
 }
-
-
 
 // Destination Card Component
 function DestinationCard({ destination }) {
