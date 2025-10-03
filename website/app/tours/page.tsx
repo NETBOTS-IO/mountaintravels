@@ -18,7 +18,7 @@ const categories = [
   "Safari",
   "Hunting",
   "Tour",
-  "Trips"
+  "Trips",
 ];
 
 export default function ToursPage() {
@@ -58,7 +58,7 @@ export default function ToursPage() {
     fetchTours();
   }, []);
 
-  // ✅ Filter tours immediately when activeCategory or tours change
+  // ✅ Filter tours
   useEffect(() => {
     if (activeCategory === "all") {
       setFilteredTours(tours);
@@ -72,7 +72,6 @@ export default function ToursPage() {
     }
   }, [activeCategory, tours]);
 
-  // ✅ Handle category button click
   const handleCategoryChange = (categoryId: string) => {
     setActiveCategory(categoryId);
     router.push(`/tours?category=${categoryId}`, { scroll: false });
@@ -121,11 +120,12 @@ export default function ToursPage() {
 
       {/* Tour List */}
       {!loading && filteredTours.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTours.map((tour) => (
             <Link key={tour._id} href={`/tours/detail/${tour._id}`}>
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="relative h-64">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
+                {/* Image */}
+                <div className="relative h-56">
                   <Image
                     src={`${BASE_URL}${tour.images[0]}` || "/placeholder.svg"}
                     alt={tour.name}
@@ -146,32 +146,40 @@ export default function ToursPage() {
                     </Badge>
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="font-bold text-2xl mb-2 text-primary line-clamp-2">
+
+                {/* Content */}
+                <div className="p-5 flex flex-col flex-1">
+                  <h3 className="font-bold text-xl mb-1 text-primary line-clamp-2">
                     {tour.name}
                   </h3>
-                  <p className="text-gray-600 mb-4 line-clamp-2">
+                  <p className="text-gray-600 text-sm mb-3 line-clamp-2">
                     {tour.description}
                   </p>
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Map className="w-5 h-5 mr-2 text-primary" />
+
+                  {/* Details */}
+                  <div className="grid grid-cols-2 gap-2 mb-4 text-sm text-gray-600">
+                    <div className="flex items-center">
+                      <Map className="w-4 h-4 mr-2 text-primary" />
                       {tour.country}
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Calendar className="w-5 h-5 mr-2 text-primary" />
+                    <div className="flex items-center">
+                      <Calendar className="w-4 h-4 mr-2 text-primary" />
                       {tour.days} Days
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Users className="w-5 h-5 mr-2 text-primary" />
+                    <div className="flex items-center">
+                      <Users className="w-4 h-4 mr-2 text-primary" />
                       {tour.groupSize}
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Sun className="w-5 h-5 mr-2 text-primary" />
+                    <div className="flex items-center">
+                      <Sun className="w-4 h-4 mr-2 text-primary" />
                       {tour.bestTime}
                     </div>
                   </div>
-                  <Button className="w-full text-lg">View Details</Button>
+
+                  {/* Button */}
+                  <Button className="w-full text-base mt-auto">
+                    View Details
+                  </Button>
                 </div>
               </div>
             </Link>
