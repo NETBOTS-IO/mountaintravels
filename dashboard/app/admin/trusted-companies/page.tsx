@@ -6,6 +6,7 @@ import { getTrustedCompanies, deleteTrustedCompany } from "@/lib/data-utils";
 import { toast } from "react-hot-toast";
 import { Eye, Pencil, Trash2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BASE_URL } from "@/Var";
 
 export default function TrustedCompaniesListPage() {
   const [companies, setCompanies] = useState<any[]>([]);
@@ -74,7 +75,7 @@ export default function TrustedCompaniesListPage() {
               <div className="flex items-center gap-4">
                 {c.image && (
                   <img
-                    src={`http://localhost:5000${c.image}`}
+                    src={`${BASE_URL}${c.image}`}
                     alt={c.name}
                     className="w-20 h-10 object-contain border rounded"
                   />
