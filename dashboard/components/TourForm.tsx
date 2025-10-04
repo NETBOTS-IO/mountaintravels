@@ -1474,12 +1474,12 @@ export default function TourForm({
           <CardHeader className="bg-gray-50">
             <CardTitle className="flex items-center">
               <Shield className="w-5 h-5 mr-2" />
-              Terms & Policies 
+              Terms & Conditions
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label>Add Terms & Policies </Label>
+              <Label>Add Terms & Conditions </Label>
               {tour.termsAndConditions?.map((term, index) => (
                 <div key={index} className="flex items-center mb-2">
                   <Input
@@ -1512,7 +1512,7 @@ export default function TourForm({
             </div>
 
             <Separator />
-{/* 
+
             <div>
               <Label>Policies</Label>
               {tour.policies?.map((policy, index) => (
@@ -1542,7 +1542,7 @@ export default function TourForm({
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Add Policy
               </Button>
-            </div> */}
+            </div>
           </CardContent>
         </Card>
       </div>
