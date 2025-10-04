@@ -86,7 +86,7 @@ export const useAuthStore = create<AuthState>()(
       logout: async () => {
         try {
           // Call logout endpoint to log the event
-          await axios.post(`${API_BASE_URL}/api/auth/logout`, {}, {
+          await axios.post(`${BASE_URL}/api/auth/logout`, {}, {
             headers: {
               Authorization: `Bearer ${get().accessToken}`
             }
@@ -111,7 +111,7 @@ export const useAuthStore = create<AuthState>()(
           const { refreshToken } = get();
           if (!refreshToken) return false;
 
-          const response = await axios.post(`${API_BASE_URL}/api/auth/refresh-token`, {
+          const response = await axios.post(`${BASE_URL}/api/auth/refresh-token`, {
             refreshToken,
           });
 
@@ -258,7 +258,7 @@ export const useAuthStore = create<AuthState>()(
 // Axios API Client
 // ---------------------------
 const api: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 
