@@ -56,7 +56,7 @@ const DepartureForm: React.FC<DepartureFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700">Trip</label>
+        <label className="block text-sm font-medium text-gray-700">Tour</label>
         <select
           required
           value={formData.tripId}
