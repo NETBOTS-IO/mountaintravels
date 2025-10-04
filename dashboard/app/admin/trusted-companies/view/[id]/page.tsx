@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { getTrustedCompanyById } from "@/lib/data-utils";
 import { Button } from "@/components/ui/button";
+import { BASE_URL } from "@/Var";
 
 export default function ViewCompanyPage() {
   const { id } = useParams<{ id: string }>();
@@ -34,7 +35,7 @@ export default function ViewCompanyPage() {
 
       {company.image && (
         <img
-          src={`http://localhost:5000${company.image}`}
+          src={`${BASE_URL}${company.image}`}
           alt={company.name}
           className="w-48 h-24 object-contain rounded mb-4 border"
         />

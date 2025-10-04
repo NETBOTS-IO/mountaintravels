@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { getTravelTipById } from "@/lib/data-utils";
 import { Button } from "@/components/ui/button";
+import { BASE_URL } from "@/Var";
 
 export default function TravelTipViewPage() {
   const params = useParams();
@@ -38,7 +39,7 @@ export default function TravelTipViewPage() {
 
       {tip.image && (
         <img
-          src={`http://localhost:5000${tip.image}`}
+          src={`${BASE_URL}${tip.image}`}
           alt={tip.title}
           className="w-full max-w-2xl rounded mb-4"
         />

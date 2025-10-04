@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { getPopularDestinationById } from "@/lib/data-utils";
 import { Button } from "@/components/ui/button";
-export const BASE_URL = "http://localhost:5000"; 
+import { BASE_URL } from "@/Var";
 
 export default function ViewDestinationPage() {
   const params = useParams();
