@@ -2,6 +2,7 @@ import { User } from '@/lib/types';
 import axios, { AxiosInstance } from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { BASE_URL } from "@/Var";
 
 export interface AuthState {
   // State
@@ -31,9 +32,6 @@ export interface AuthState {
   isAdmin: () => boolean;
   canCreateAdmin: () => boolean;
 }
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
@@ -50,7 +48,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true, error: null });
 
-          const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
+          const response = await axios.post(`${BASE_URL}/api/auth/login`, {
             email,
             password,
           });

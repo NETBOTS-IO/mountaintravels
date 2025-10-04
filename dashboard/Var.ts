@@ -4,4 +4,3 @@
 export const BASE_URL = "https://api.mountaintravels.com" 
 
 // export const BASE_URL = "https://mountaintravels.site"
-
