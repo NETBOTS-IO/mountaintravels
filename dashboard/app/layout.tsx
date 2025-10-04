@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     email: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.SITE_URL || "https://mountaintravel.site"),
+  metadataBase: new URL(process.env.SITE_URL || "https://mountaintravel.com"),
   alternates: {
     canonical: "/",
   },
@@ -87,7 +87,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-title" content="Mountaintravel" />
-        <link rel="canonical" href={process.env.SITE_URL || "https://mountaintravel.site"} />
+        <link rel="canonical" href={process.env.SITE_URL || "https://mountaintravel.com"} />
       </head>
       <body className={inter.className}>
         {children}
