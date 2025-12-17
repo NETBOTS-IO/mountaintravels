@@ -90,7 +90,7 @@ const defaultTour: Tour = {
   price: 0,
   originalPrice: 0,
   images: [],
-  availability: "",
+  // availability: "",
   // nextDeparture: "",
   // features: [""],
   highlights: [""],
@@ -672,7 +672,7 @@ export default function TourForm({
         <CardHeader className="bg-gray-50">
           <CardTitle className="flex items-center">
             <DollarSign className="w-5 h-5 mr-2" />
-            Pricing & Availability
+            Pricing
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -708,7 +708,7 @@ export default function TourForm({
               </div>
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="availability">Availability</Label>
               <Input
                 id="availability"
@@ -717,7 +717,7 @@ export default function TourForm({
                 onChange={handleChange}
                 placeholder="e.g., Year-round"
               />
-            </div>
+            </div> */}
 
             {/* <div className="space-y-2">
               <Label htmlFor="nextDeparture">Next Departure</Label>
@@ -1552,7 +1552,7 @@ export default function TourForm({
   <CardHeader className="bg-gray-50">
     <CardTitle className="flex items-center">
       <HelpCircle className="w-5 h-5 mr-2" />
-      Physical Requirements & Best Time
+      Physical Requirements for this Tour & Best Time
     </CardTitle>
   </CardHeader>
   <CardContent>
@@ -1584,7 +1584,7 @@ export default function TourForm({
 
       {/* Distance */}
       <div className="space-y-2">
-        <Label htmlFor="distance">Total Distance We Cover</Label>
+        <Label htmlFor="distance">Total Distance We will Cover in this tours</Label>
         <Input
           id="distance"
           name="distance"

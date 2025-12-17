@@ -36,7 +36,7 @@ const tourSchema = new mongoose.Schema({
   price: { type: Number, min: 0 },
   originalPrice: { type: Number, min: 0 },
   images: [{ type: String }],
-  availability: { type: Boolean, default: false, required: true },
+  // availability: { type: Boolean, default: false, required: true },
   nextDeparture: { type: Date },
   features: [{ type: String }],
   highlights: [{ type: String }],

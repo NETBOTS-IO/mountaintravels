@@ -40,14 +40,21 @@ export default function ToursPage() {
     }
   }, [searchParams]);
 
-  // ✅ Fetch tours
+  // ✅ Fetch tours (only featured ones)
   useEffect(() => {
     async function fetchTours() {
       setLoading(true);
       setError("");
       try {
         const response = await axios.get(`${BASE_URL}/api/tours`);
-        setTours(response.data.data);
+
+        // ✅ Filter only featured tours
+        const featuredTours = response.data.data.filter(
+          (tour: any) => tour.featured === true
+        );
+  
+
+        setTours(featuredTours);
       } catch (error) {
         console.error("Failed to fetch tours:", error);
         setError("Failed to load tours. Please try again later.");
@@ -55,10 +62,11 @@ export default function ToursPage() {
         setLoading(false);
       }
     }
+
     fetchTours();
   }, []);
 
-  // ✅ Filter tours
+  // ✅ Filter tours by category (from URL)
   useEffect(() => {
     if (activeCategory === "all") {
       setFilteredTours(tours);
@@ -66,7 +74,7 @@ export default function ToursPage() {
       setFilteredTours(
         tours.filter(
           (tour) =>
-            tour.category.toLowerCase() === activeCategory.toLowerCase()
+            tour.category?.toLowerCase() === activeCategory.toLowerCase()
         )
       );
     }
