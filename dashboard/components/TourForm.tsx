@@ -1552,7 +1552,7 @@ export default function TourForm({
   <CardHeader className="bg-gray-50">
     <CardTitle className="flex items-center">
       <HelpCircle className="w-5 h-5 mr-2" />
-      Physical Requirements & Best Time
+      Physical Requirements for this Tour & Best Time
     </CardTitle>
   </CardHeader>
   <CardContent>
@@ -1584,7 +1584,7 @@ export default function TourForm({
 
       {/* Distance */}
       <div className="space-y-2">
-        <Label htmlFor="distance">Total Distance We Cover</Label>
+        <Label htmlFor="distance">Total Distance We will Cover in this tours</Label>
         <Input
           id="distance"
           name="distance"
