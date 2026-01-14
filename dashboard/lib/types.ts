@@ -92,6 +92,7 @@ export interface Tour {
   groupSize: string;
   difficulty: "Easy" | "Moderate" | "Challenging" | "Expert";
   rating: number;
+  tourType: string;
   reviews: number;
   price: number;
   originalPrice: number;

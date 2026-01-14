@@ -46,7 +46,7 @@ export default function TrustedCompaniesListPage() {
   if (loading) {
     return (
       <div className="p-6">
-        <p>Loading trusted companies...</p>
+        <p>Loading Responsible Travel Approach data...</p>
       </div>
     );
   }
@@ -54,17 +54,17 @@ export default function TrustedCompaniesListPage() {
   return (
     <div className="p-6">
       <div className="flex justify-between mb-6">
-        <h1 className="text-2xl font-bold">Trusted Companies</h1>
+        <h1 className="text-2xl font-bold">Responsible Travel Approach</h1>
         <Link href="/admin/trusted-companies/add">
           <Button>
             <Plus className="w-4 h-4 mr-2" />
-            Add Company
+            Add Responsible Travel Approach data
           </Button>
         </Link>
       </div>
 
       {companies.length === 0 ? (
-        <p>No trusted companies found</p>
+        <p>No Responsible Travel Approach data found</p>
       ) : (
         <ul className="space-y-4">
           {companies.map((c) => (

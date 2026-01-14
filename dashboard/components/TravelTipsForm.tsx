@@ -17,25 +17,13 @@ export default function TravelTipForm({ tipId, initialData }: TravelTipFormProps
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
     excerpt: initialData?.excerpt || "",
-    date: initialData?.date ? initialData.date.split("T")[0] : "",
-    slug: initialData?.slug || "",
   });
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   // handle text input
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // handle file input
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]);
-    }
   };
 
   // submit
@@ -44,20 +32,11 @@ export default function TravelTipForm({ tipId, initialData }: TravelTipFormProps
     setLoading(true);
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("title", formData.title);
-      formDataToSend.append("excerpt", formData.excerpt);
-      formDataToSend.append("date", formData.date);
-      formDataToSend.append("slug", formData.slug);
-      if (imageFile) {
-        formDataToSend.append("image", imageFile); // ✅ file upload
-      }
-
       if (tipId) {
-        await updateTravelTip(tipId, formDataToSend);
+        await updateTravelTip(tipId, formData);
         toast.success("Travel Tip updated");
       } else {
-        await createTravelTip(formDataToSend);
+        await createTravelTip(formData);
         toast.success("Travel Tip created");
       }
 
@@ -71,8 +50,8 @@ export default function TravelTipForm({ tipId, initialData }: TravelTipFormProps
   };
 
   return (
-    <div className="space-y-6 max-w-2xl">
-      {/* 🔙 Back button at top */}
+    <div className="space-y-6 max-w-xl">
+      {/* Back button */}
       <Button
         type="button"
         variant="outline"
@@ -80,7 +59,7 @@ export default function TravelTipForm({ tipId, initialData }: TravelTipFormProps
         className="flex items-center gap-2"
       >
         <ArrowLeft className="w-4 h-4" />
-        Back to Travel Tips List
+        Back to  List
       </Button>
 
       {/* Form */}
@@ -98,62 +77,19 @@ export default function TravelTipForm({ tipId, initialData }: TravelTipFormProps
         </div>
 
         <div>
-          <label className="block font-medium">Excerpt</label>
+          <label className="block font-medium">Description</label>
           <textarea
             name="excerpt"
             value={formData.excerpt}
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
-            rows={3}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium">Upload Image</label>
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-          {initialData?.image && (
-            <p className="text-sm text-gray-500 mt-1">
-              Current: <span className="italic">{initialData.image}</span>
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="block font-medium">Date</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium">Slug</label>
-          <input
-            type="text"
-            name="slug"
-            value={formData.slug}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-            placeholder="best-time-to-trek-pakistan"
+            rows={4}
             required
           />
         </div>
 
         <Button type="submit" disabled={loading}>
-          {loading
-            ? "Saving..."
-            : tipId
-            ? "Update Travel Tip"
-            : "Create Travel Tip"}
+          {loading ? (tipId ? "Updating..." : "Creating...") : tipId ? "Update Travel Approach" : "Create Travel Approach"}
         </Button>
       </form>
     </div>

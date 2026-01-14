@@ -35,11 +35,11 @@ export default function EditTravelTipPage() {
 
   if (loading) return <p className="p-6">Loading...</p>;
 
-  if (!tip) return <p className="p-6">Travel Tip not found.</p>;
+  if (!tip) return <p className="p-6">Responsible Travel Approach data not found.</p>;
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Edit Travel Tip</h1>
+      <h1 className="text-2xl font-bold mb-6">Edit Responsible Travel Approach</h1>
       <TravelTipForm tipId={tip._id} initialData={tip} />
     </div>
   );

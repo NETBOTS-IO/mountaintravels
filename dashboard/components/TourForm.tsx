@@ -85,6 +85,7 @@ const defaultTour: Tour = {
   days: 1,
   groupSize: "",
   difficulty: "Easy",
+  tourType: "",
   rating: 0,
   reviews: 0,
   price: 0,
@@ -601,6 +602,27 @@ export default function TourForm({
                   <SelectItem value="Moderate">Moderate</SelectItem>
                   <SelectItem value="Challenging">Challenging</SelectItem>
                   <SelectItem value="Expert">Expert</SelectItem>
+                </SelectContent>
+              </Select>
+              <Label htmlFor="tourType" className="flex items-center">
+                <Activity className="w-4 h-4 mr-2" />
+                Select Tour Type
+              </Label>
+              <Select
+                name="tourType"
+                value={tour.tourType}
+                onValueChange={(value) =>
+                  handleChange({
+                    target: { name: "tourType", value },
+                  } as React.ChangeEvent<HTMLInputElement>)
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Tour Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Luxary">Luxary</SelectItem>
+                  <SelectItem value="Hardcore">Hardcore Expeditions</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -1611,7 +1633,7 @@ export default function TourForm({
 
 
       {/* Tags & Related Trips */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader className="bg-gray-50">
             <CardTitle className="flex items-center">
@@ -1650,7 +1672,7 @@ export default function TourForm({
           </CardContent>
         </Card>
 
-        <Card>
+        {/* <Card>
           <CardHeader className="bg-gray-50">
             <CardTitle className="flex items-center">
               <Link className="w-5 h-5 mr-2" />
@@ -1686,8 +1708,8 @@ export default function TourForm({
               Add Related Trip
             </Button>
           </CardContent>
-        </Card>
-      </div> */}
+        </Card> */}
+      </div>
 
       {/* Location & Submit Section */}
       <Card>

@@ -34,10 +34,10 @@ const menuItems = [
   { icon: Camera, label: "Gallery", href: "/admin/gallery" },
   { icon: FileText, label: "Blogs", href: "/admin/blogs" },
   { icon: Quote, label: "Testimonials", href: "/admin/testimonials" },
-  { icon: MapPin, label: "Popular Destinations", href: "/admin/popular-destinations" },
-  { icon: Lightbulb, label: "Travel Tips & Insights", href: "/admin/travel-tips" },
+  // { icon: MapPin, label: "Popular Destinations", href: "/admin/popular-destinations" },
+  { icon: Lightbulb, label: "Travel Approach", href: "/admin/travel-tips" },
   { icon: Backpack, label: "Bookings", href: "/admin/bookings" },
-  { icon: ShieldCheck, label: "Trusted-Company", href: "/admin/trusted-companies" },
+  // { icon: ShieldCheck, label: "Responsible Travel Approach", href: "/admin/trusted-companies" },
     { icon: Mail, label: "Contact", href: "/admin/contact" },
 
 

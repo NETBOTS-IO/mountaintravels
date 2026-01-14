@@ -31,17 +31,17 @@ export default function TravelTipsListPage() {
   return (
     <div className="p-6">
       <div className="flex justify-between mb-6">
-        <h1 className="text-2xl font-bold">Travel Tips</h1>
+        <h1 className="text-2xl font-bold">Responsible Travel Approach</h1>
         <Link href="/admin/travel-tips/add">
           <Button>
             <Plus className="w-4 h-4 mr-2" />
-            Add Travel Tip
+            Add Responsible Travel Approach
           </Button>
         </Link>
       </div>
 
       {tips.length === 0 ? (
-        <p>No travel tips found</p>
+        <p>No Responsible Travel Approach data found</p>
       ) : (
         <ul className="space-y-4">
           {tips.map((tip) => (
