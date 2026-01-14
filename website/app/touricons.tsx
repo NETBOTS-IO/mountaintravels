@@ -1,97 +1,203 @@
 "use client"
 
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { Mountain, Compass, Landmark, Binoculars, Bike, Snowflake } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import axios from "axios"
+import { BASE_URL } from "@/app/Var"
 
-// Define your categories
-const categories = [
-  {
-    id: "trekking",
-    name: "Trekking",
-    icon: Mountain,
-    color: "from-green-500 to-green-600",
-    bgColor: "bg-green-50",
-    borderColor: "border-green-200",
-  },
-  {
-    id: "expeditions",
-    name: "Expeditions",
-    icon: Compass,
-    color: "from-red-500 to-red-600",
-    bgColor: "bg-red-50",
-    borderColor: "border-red-200",
-  },
-  {
-    id: "cultural-tour",
-    name: "Cultural Tour",
-    icon: Landmark,
-    color: "from-indigo-500 to-indigo-600",
-    bgColor: "bg-indigo-50",
-    borderColor: "border-indigo-200",
-  },
-  {
-    id: "safari",
-    name: "Safari",
-    icon: Binoculars,
-    color: "from-yellow-500 to-yellow-600",
-    bgColor: "bg-yellow-50",
-    borderColor: "border-yellow-200",
-  },
-  {
-    id: "mountain-biking",
-    name: "Mountain Biking",
-    icon: Bike,
-    color: "from-blue-500 to-blue-600",
-    bgColor: "bg-blue-50",
-    borderColor: "border-blue-200",
-  },
-  {
-    id: "skiing",
-    name: "Skiing",
-    icon: Snowflake,
-    color: "from-teal-500 to-teal-600",
-    bgColor: "bg-teal-50",
-    borderColor: "border-teal-200",
-  },
+/* ===============================
+   CATEGORY LIST (SOURCE OF TRUTH)
+================================ */
+
+const categoryList = [
+  "Trekking",
+  "Expeditions",
+  "Cultural Tours",
+  "Mountain Biking",
+  "Skiing",
+  "Safari",
+  "Trips",
 ]
 
-export default function TourIcons() {
+/* ===============================
+   UI LABELS (RENAME)
+================================ */
+
+const CATEGORY_LABELS = {
+  Trips: "Luxury Trips",
+}
+
+/* ===============================
+   CATEGORY FALLBACK IMAGES
+================================ */
+
+const CATEGORY_FALLBACK_IMAGES = {
+  Trekking: "/assets/home/trekking.jpg",
+  Expeditions: "/assets/home/expeditions.jpg",
+  "Cultural Tours": "/assets/home/culture.jpg",
+  "Mountain Biking": "/assets/home/mountain-biking.jpg",
+  Skiing: "/assets/home/skiing.jpg",
+  Safari: "/assets/home/safari.jpg",
+  Trips: "/assets/home/luxury-trips.jpg",
+}
+
+/* ===============================
+   CATEGORY FALLBACK DESCRIPTIONS
+================================ */
+
+const CATEGORY_FALLBACK_DESCRIPTIONS = {
+  "Cultural Tours":
+    "Cultural & Heritage Tours – Gandhara, Silk Road & living traditions",
+  Trekking:
+    "Trekking & Hiking – From gentle walks to legendary high-altitude treks",
+  Expeditions:
+    "Mountaineering & Expeditions – 6000m–8000m peaks with expert support",
+  "Mountain Biking":
+    "Cycling Adventures – Epic mountain roads & cultural routes",
+  Skiing:
+    "Skiing Adventures – Snow-covered slopes & alpine experiences",
+  Safari:
+    "Safari & Wildlife Tours – Explore Pakistan’s natural reserves and wildlife",
+  Trips:
+    "Special Interest Tours – Photography, archaeology, festivals & more",
+}
+
+
+/* ===============================
+   COMPONENT
+================================ */
+
+export default function FeaturedTourCategories() {
+  const router = useRouter()
+
+  const [categories, setCategories] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    async function fetchTours() {
+      setLoading(true)
+      setError("")
+
+      try {
+        const res = await axios.get(`${BASE_URL}/api/tours`)
+        const featuredTours = res.data.data.filter((t: any) => t.featured)
+
+        const apiCategoryMap = new Map()
+        featuredTours.forEach((tour: any) => {
+          const key = tour.category?.toLowerCase()
+          if (!apiCategoryMap.has(key)) {
+            apiCategoryMap.set(key, tour)
+          }
+        })
+
+        const finalCategories = categoryList.map(cat => {
+          const key = cat.toLowerCase()
+          const apiTour = apiCategoryMap.get(key)
+
+          return {
+            key,
+            category: cat,
+            label: CATEGORY_LABELS[cat] || cat,
+            hasData: Boolean(apiTour),
+            description:
+              apiTour?.description ||
+              CATEGORY_FALLBACK_DESCRIPTIONS[cat] ||
+              "New adventures coming soon. Stay tuned!",
+            image: apiTour?.images?.[0]
+              ? `${BASE_URL}${apiTour.images[0]}`
+              : CATEGORY_FALLBACK_IMAGES[cat] ||
+                "/assets/home/default.jpg",
+          }
+        })
+
+        finalCategories.sort((a, b) => {
+          if (a.hasData === b.hasData) return 0
+          return a.hasData ? -1 : 1
+        })
+
+        setCategories(finalCategories)
+      } catch (err) {
+        console.error("Failed to fetch tours:", err)
+        setError("Failed to load categories.")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchTours()
+  }, [])
+
+  const handleCardClick = (cat: any) => {
+    if (!cat.hasData) return
+    router.push(`/tours?category=${cat.category}`, { scroll: false })
+  }
+
+  if (loading)
+    return (
+      <div className="py-20 text-center text-gray-600">
+        Loading categories…
+      </div>
+    )
+
+  if (error)
+    return (
+      <div className="py-20 text-center text-red-500">
+        {error}
+      </div>
+    )
+
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Explore Tour Categories
+    <section className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4">
+        <h2 className="text-4xl font-bold text-center mb-14">
+         Choose Your Journey
         </h2>
 
-        {/* Categories Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-          {categories.map((cat, index) => {
-            const Icon = cat.icon
-            return (
-              <Link key={cat.id} href={`/tours?category=${cat.id}`}>
-                <motion.div
-                  className={`group relative bg-white rounded-2xl border-2 ${cat.borderColor} p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-xl transition-all duration-500`}
-                  whileHover={{ y: -5, scale: 1.05 }}
-                >
-                  {/* Icon */}
-                  <motion.div
-                    className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${cat.color} rounded-full mb-4 group-hover:scale-110 transition-transform duration-300`}
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <Icon className="w-8 h-8 text-white" />
-                  </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          {categories.map(cat => (
+            <div
+              key={cat.key}
+              onClick={() => handleCardClick(cat)}
+              className={`group rounded-3xl overflow-hidden transition-all duration-300
+                ${
+                  cat.hasData
+                    ? "cursor-pointer bg-white shadow-md hover:shadow-xl"
+                    : "cursor-not-allowed bg-gray-100 opacity-70"
+                }
+              `}
+            >
+              <div className="relative h-72 overflow-hidden">
+                <img
+                  src={cat.image}
+                  alt={cat.label}
+                  className={`w-full h-full object-cover transition-transform duration-500
+                    ${cat.hasData ? "group-hover:scale-110" : ""}
+                  `}
+                />
+              </div>
 
-                  {/* Title */}
-                  <h3 className="text-base font-semibold text-gray-800 group-hover:text-orange-600 transition-colors duration-300">
-                    {cat.name}
-                  </h3>
-                </motion.div>
-              </Link>
-            )
-          })}
+              <div className="p-8">
+                <h3 className="text-2xl font-semibold mb-3 text-gray-800">
+                  {cat.label}
+                </h3>
+
+                <p className="text-gray-600 line-clamp-3">
+                  {cat.description}
+                </p>
+
+                {cat.hasData ? (
+                  <div className="mt-5 text-orange-600 font-semibold">
+                    Explore Tours →
+                  </div>
+                ) : (
+                  <div className="mt-5 text-gray-400 font-medium">
+                    Coming Soon
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

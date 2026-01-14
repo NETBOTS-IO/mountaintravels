@@ -135,7 +135,7 @@ export default function ToursPage() {
                 {/* Image */}
                 <div className="relative h-56">
                   <Image
-                    src={`${BASE_URL}${tour.images[0]}` || "/placeholder.svg"}
+                    src={`${BASE_URL}${tour.images[0]}` || "No images"}
                     alt={tour.name}
                     fill
                     className="object-cover"

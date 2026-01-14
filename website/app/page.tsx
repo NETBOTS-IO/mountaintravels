@@ -28,6 +28,9 @@ import {
 import TourIcons from "@/app/touricons";
 import WhyChooseSection from "@/app/whychose";
 import ResponsiveCarousel from "@/components/responsivecarousel";
+import FeaturedSignatureTours from "@/app/luxary.tsx";
+import customizedtour from "@/app/customizedtourform.tsx";
+
  // adjust path if needed
  // adjust path if needed
 import { Button } from "@/components/ui/button";
@@ -312,21 +315,21 @@ const trustedCompanies = [
 const heroSlides = [
   {
     image: "/assets/home/hero-1.jpg",
-    title: "Explore Pakistan's Majestic Peaks",
+    title: "Refined Journeys Through the World’s Most Dramatic Mountains & Cultures",
     description:
-      "Join Mountain Travels Pakistan for an unforgettable adventure in the heart of the Himalayas and Karakoram.",
+      "Tailor-made trekking, cultural and adventure experiences crafted for our valued international travelers seeking comfort, authenticity and exclusivity.",
   },
   {
     image: "/assets/home/hero-2.jpg",
-    title: "Expeditions & Treks Await",
+    title: "Refined Journeys Through the World’s Most Dramatic Mountains & Cultures",
     description:
-      "Embark on world-class trekking, mountaineering, and adventure tours with the experts at Mountain Travels Pakistan.",
+      "Tailor-made trekking, cultural and adventure experiences crafted for our valued international travelers seeking comfort, authenticity and exclusivity.",
   },
   {
     image: "/assets/home/hero-3.jpg",
-    title: "Your Journey, Our Expertise",
+    title: "Refined Journeys Through the World’s Most Dramatic Mountains & Cultures",
     description:
-      "From thrilling expeditions to scenic tours, we craft experiences that leave lasting memories.",
+      "Tailor-made trekking, cultural and adventure experiences crafted for our valued international travelers seeking comfort, authenticity and exclusivity.",
   },
 ];
 
@@ -605,80 +608,94 @@ const prevTipSet = () => {
 
 
 
-
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[50vh] md:h-[60vh] lg:h-[calc(100vh-4rem)] flex items-center">
-        {heroSlides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <Image
-              src={slide.image || "/placeholder.svg"}
-              alt={slide.title}
-              fill
-              className="object-cover"
-              priority={index === 0}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-            <div className="absolute inset-0 flex items-center">
-              <div className="container mx-auto px-4">
-                <div className="max-w-xl text-white ml-0 md:ml-12 p-6 md:p-0 bg-black/30 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none rounded-lg md:rounded-none">
-                  <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-2 md:mb-4 animate-[fadeIn_0.5s_ease-in-out]">
-                    {slide.title}
-                  </h1>
-                  <p className="text-base md:text-xl lg:text-2xl mb-6 animate-[fadeIn_0.8s_ease-in-out]">
-                    {slide.description}
-                  </p>
-                  {/* <Link href="/tours">
-                    <Button
-                      size="lg"
-                      className="bg-secondary hover:bg-secondary/90 text-white animate-[fadeIn_1s_ease-in-out]"
-                    >
-                      Explore Tours
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link> */}
-                </div>
-              </div>
+      <section className="relative w-full h-[50vh] md:h-[60vh] lg:h-[100vh] overflow-hidden flex items-center">
+  {heroSlides.map((slide, index) => (
+    <div
+      key={index}
+      className={`absolute inset-0 transition-opacity duration-1000 ${
+        index === currentSlide ? "opacity-100 z-10" : "opacity-0"
+      }`}
+    >
+      {/* Hero Image */}
+      <div className="absolute inset-0 w-full h-full">
+        <Image
+          src={slide.image || "/placeholder.svg"}
+          alt={slide.title}
+          fill
+          sizes="100vw"
+          quality={95}
+          priority={index === 0}
+          className="object-cover w-full h-full"
+        />
+      </div>
+
+      {/* Overlay gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/10 to-transparent lg:from-black/60 lg:via-black/30 lg:to-transparent" />
+
+      {/* Text content */}
+      <div className="absolute inset-0 flex items-center">
+        <div className="container mx-auto px-4">
+          <div className="max-w-full sm:max-w-md md:max-w-lg text-white ml-0 md:ml-12 p-4 sm:p-6 md:p-8 rounded-lg md:rounded-none">
+            {/* Title */}
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 animate-[fadeIn_0.5s_ease-in-out]">
+              {slide.title}
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-3 sm:mb-4 md:mb-6 animate-[fadeIn_0.8s_ease-in-out]">
+              {slide.description}
+            </p>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <Link href="/tours">
+                <Button
+                  size="md"
+                  className="bg-secondary hover:bg-secondary/90 text-white animate-[fadeIn_1s_ease-in-out]"
+                >
+                  Discover Our Luxury Journeys
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button
+                  size="md"
+                  className="bg-secondary hover:bg-secondary/90 text-white animate-[fadeIn_1s_ease-in-out]"
+                >
+                  Let Us Design a Tailor-Made Itinerary
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
+              </Link>
             </div>
           </div>
-        ))}
-
-        {/* Navigation Arrows */}
-        {/* <button
-          className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-white/20 p-2 rounded-full text-white hover:bg-white/30 transition-colors z-10"
-          onClick={prevSlide}
-          aria-label="Previous slide"
-        >
-          <ChevronLeft className="h-4 w-4 md:h-6 md:w-6" />
-        </button>
-        <button
-          className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-white/20 p-2 rounded-full text-white hover:bg-white/30 transition-colors z-10"
-          onClick={nextSlide}
-          aria-label="Next slide"
-        >
-          <ChevronRight className="h-4 w-4 md:h-6 md:w-6" />
-        </button> */}
-
-        {/* Dots Navigation */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                index === currentSlide ? "bg-white" : "bg-white/50"
-              }`}
-              onClick={() => setCurrentSlide(index)}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
         </div>
-      </section>
+      </div>
+    </div>
+  ))}
+
+  {/* Dots Navigation */}
+  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+    {heroSlides.map((_, index) => (
+      <button
+        key={index}
+        className={`w-3 h-3 rounded-full transition-colors ${
+          index === currentSlide ? "bg-white" : "bg-white/50"
+        }`}
+        onClick={() => setCurrentSlide(index)}
+        aria-label={`Go to slide ${index + 1}`}
+      />
+    ))}
+  </div>
+</section>
+
+
+
+
+
+
 
       {/* Tour Categories */}
       <TourIcons />
@@ -686,7 +703,8 @@ const prevTipSet = () => {
 
 
       {/* About Preview */}
-      <section className="py-8 md:py-16 bg-about">
+      <FeaturedSignatureTours />
+      {/* <section className="py-8 md:py-16 bg-about">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="relative h-64 md:h-[400px] lg:h-[500px] rounded-lg overflow-hidden">
@@ -726,14 +744,14 @@ const prevTipSet = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       <WhyChooseSection />
 
       <section className="py-8 md:py-16 bg-featured">
   <div className="container mx-auto px-4">
     {/* Header with arrows */}
     <div className="flex justify-between items-center mb-6 md:mb-8">
-      <h2 className="text-2xl md:text-3xl font-bold">Featured Tour</h2>
+      <h2 className="text-2xl md:text-3xl font-bold">DESTINATIONS & REGIONS</h2>
       <div className="flex gap-2">
         <Button
           variant="outline"
@@ -785,14 +803,8 @@ const prevTipSet = () => {
     </div>
   </div>
 </section>
-
-
-
-
-
-
       {/* Popular Destinations */}
-      <ResponsiveCarousel
+      {/* <ResponsiveCarousel
   title="Popular Destinations"
   items={popularDestinations}
   renderCard={(dest) => (
@@ -810,11 +822,8 @@ const prevTipSet = () => {
       </Link>
     </div>
   )}
-/>
-
-
-
-<ResponsiveCarousel
+/> */}
+{/* <ResponsiveCarousel
   title="Travel Tips & Insights"
   items={tips}
   renderCard={(tip) => (
@@ -831,13 +840,7 @@ const prevTipSet = () => {
       </Link>
     </div>
   )}
-/>
-
-
-
-
-
-      {/* Testimonials - Enhanced Design */}
+/> */}
       <section className="py-8 md:py-16 bg-testimonials relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-5">
           <div className="absolute -top-10 -left-10 text-9xl text-primary">
@@ -956,75 +959,136 @@ const prevTipSet = () => {
           </div>
         </div>
       </section>
-
-      {/* Trusted By Companies */}
-      <section className="py-8 md:py-12 bg-trusted">
+      <section className="py-12 md:py-16 bg-trusted">
   <div className="container mx-auto px-4">
-    <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
-      Trusted By
+    {/* Section Title */}
+    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+    Corporate Social Responsibility
     </h2>
-    <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-      We're proud to be featured and recommended by these leading travel
-      publications and organizations
+
+    {/* Description */}
+    <p className="text-center text-muted-foreground mb-12 max-w-3xl mx-auto">
+    At Mountain Travels Pakistan (MTP), responsible travel is not a policy – it is how
+          we have always traveled.
     </p>
 
-    <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-      {trustedCompanies.map((company) => (
-        <div
-          key={company._id}
-          className="flex flex-col items-center text-center grayscale hover:grayscale-0 transition-all duration-300"
-        >
-          <Image
-            src={
-              company.image
-                ? `${BASE_URL}${company.image}`
-                : "/placeholder.svg"
-            }
-            alt={company.name}
-            width={120}
-            height={60}
-            className="h-12 md:h-16 w-auto object-contain mb-2"
-          />
-          <span className="text-sm md:text-base font-medium text-gray-700">
-            {company.name}
-          </span>
-        </div>
-      ))}
+    {/* Charity Card (No Image) */}
+    <div className="flex flex-col items-center text-center bg-white rounded-2xl shadow-md p-6 max-w-lg mx-auto hover:shadow-lg transition-shadow duration-300">
+      {/* <h3 className="text-2xl font-semibold mb-3">
+        Community Support & Responsibility
+      </h3> */}
+
+      <p className="text-gray-600 text-sm md:text-base mb-6">
+           From the very beginning, MTP has worked hand in hand with local guides, porters,
+            drivers and hosts — many of whom started their journeys with us decades ago.
+            Over the years, a number of guides and porters who once worked with Mountain
+            Travels Pakistan have gone on to establish their own tour companies....
+      </p>
+
+      {/* View Details Button */}
+      <Link href="/corporate">
+        <button className="px-6 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600 transition-colors duration-300">
+          View Details
+        </button>
+      </Link>
     </div>
   </div>
 </section>
 
+      <section
+  className="relative w-full min-h-[50vh] md:min-h-[50vh] lg:min-h-[50vh] bg-center bg-cover bg-no-repeat flex items-center justify-center"
+  style={{
+    backgroundImage: `url('/assets/home/hero-233.jpg')`, // Replace with your image path
+  }}
+>
+  {/* Overlay for better text readability */}
+  <div className="absolute inset-0 bg-black/40"></div>
 
+  <div className="container mx-auto px-4 relative text-center z-10">
+    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-white">
+      PLAN YOUR ADVENTURE ?
+    </h2>
+    <p className="text-lg md:text-xl lg:text-2xl mb-8 text-white/90 font-medium">
+      Your Next Great Journey Starts Here
+    </p>
 
-      {/* CTA Section */}
-      <section className="py-8 md:py-16 bg-cta">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4">
-            Ready for Your Next Adventure?
-          </h2>
-          <p className="text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto">
-            Contact us today to start planning your perfect Pakistan adventure
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/contact">
-              <Button
-                size="lg"
-                className="bg-white text-primary hover:bg-white/90 transition-colors text-sm md:text-base w-full sm:w-auto"
-              >
-                Contact Us
-              </Button>
-            </Link>
-            <Link href="/tours">
-              <Button
-                size="lg"
-                className="bg-secondary text-white hover:bg-secondary/90 transition-colors text-sm md:text-base w-full sm:w-auto"
-              >
-                Explore Tours
-              </Button>
-            </Link>
-          </div>
+    <Link href="/customizedtourform">
+      <Button className="bg-secondary text-white px-6 py-3 md:px-8 md:py-4 text-lg md:text-xl rounded-md hover:bg-secondary/90 transition-colors">
+        Customize Your Tours
+      </Button>
+    </Link>
+  </div>
+</section>
+
+    <section className="py-12 md:py-16 bg-trusted">
+      <div className="container mx-auto px-4 text-center">
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link href="/tours">
+            <Button className="bg-secondary text-white px-6 py-3 md:px-8 md:py-4 text-lg md:text-xl rounded-md hover:bg-secondary/90 transition-colors w-full sm:w-auto">
+              Browser All Tours
+            </Button>
+          </Link>
+          <Link href="/contact">
+            <Button className="bg-secondary text-white px-6 py-3 md:px-8 md:py-4 text-lg md:text-xl rounded-md hover:bg-secondary/90 transition-colors w-full sm:w-auto">
+              Contact Our Travel Expert
+            </Button>
+          </Link>
         </div>
-      </section>
+      </div>
+    </section>
+    <section className="py-8 md:py-12 bg-trusted">
+      <div className="container mx-auto px-4">
+        <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
+          CULTURE & RESPONSIBLE TRAVEL
+        </h2>
+
+        <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
+          We work closely with local communities, respect cultural traditions and operate
+          with a strong commitment to environmental responsibility. Our journeys create
+          meaningful connections while preserving the landscapes and heritage we love.
+        </p>
+
+        {/* Cards */}
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+          {trustedCompanies.map((company) => (
+            <div
+              key={company._id}
+              className="flex flex-col items-center text-center transition-all duration-300 bg-white p-6 rounded-xl shadow-md hover:shadow-lg max-w-sm"
+            >
+              {company.image && (
+                <Image
+                  src={`${BASE_URL}${company.image}`}
+                  alt={company.name}
+                  width={120}
+                  height={60}
+                  className="h-12 md:h-16 w-auto object-contain mb-3"
+                />
+              )}
+
+              <span className="text-lg font-semibold text-gray-700 mb-4">
+                {company.title}
+              </span>
+
+              <p className="text-gray-600 text-sm md:text-base mb-6">
+                {company.excerpt}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom Button */}
+        <div className="mt-10 text-center">
+  <Link href="/trusted">
+    <button className="inline-flex items-center justify-center rounded-full bg-orange-500 px-8 py-3 text-sm md:text-base font-semibold text-white transition-all duration-300 hover:bg-orange-600">
+      View details
+    </button>
+  </Link>
+</div>
+
+      </div>
+    </section>
+
+
     </div>
   );
 }
@@ -1145,38 +1209,6 @@ function DestinationCard({ destination }) {
     </div>
   );
 }
-
-// Blog Card Component
-// function BlogCard({ post }) {
-//   return (
-//     // <Link href={`/blogs/${post.slug}`}>
-//     <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-//       <div className="relative h-48">
-//         <Image
-//           src={post.image || "/placeholder.svg"}
-//           alt={post.title}
-//           fill
-//           className="object-cover transition-transform duration-500 group-hover:scale-105"
-//         />
-//       </div>
-//       <CardContent className="p-4 md:p-6">
-//         <div className="text-sm text-gray-500 mb-2">{post.date}</div>
-//         <h3 className="font-bold text-lg mb-2 hover:text-primary transition-colors">
-//           {post.title}
-//         </h3>
-//         <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-//           {post.excerpt}
-//         </p>
-//         <div className="flex items-center text-primary font-medium text-sm">
-//           Read More
-//           <ArrowUpRight className="ml-1 h-4 w-4" />
-//         </div>
-//       </CardContent>
-//     </Card>
-//     // </Link>
-//   );
-// }
-
 function getIcon(icon: string) {
   switch (icon) {
     case "hiking":
@@ -1195,65 +1227,7 @@ function getIcon(icon: string) {
       return null;
   }
 }
-// 🎨 Color map for each icon type
-// const iconStyles: Record<string, string> = {
-//   shield: "bg-red-100 text-red-600 group-hover:bg-red-200",
-//   users: "bg-blue-100 text-blue-600 group-hover:bg-blue-200",
-//   "map-pin": "bg-green-100 text-green-600 group-hover:bg-green-200",
-//   headphones: "bg-yellow-100 text-yellow-600 group-hover:bg-yellow-200",
-//   leaf: "bg-teal-100 text-teal-600 group-hover:bg-teal-200",
-//   medal: "bg-indigo-100 text-indigo-600 group-hover:bg-indigo-200",
-// }
 
-// function getWhyChooseIcon(icon: string) {
-//   switch (icon) {
-//     case "shield":
-//       return <Shield className="h-7 w-7" />
-//     case "users":
-//       return <Users className="h-7 w-7" />
-//     case "map-pin":
-//       return <MapPin className="h-7 w-7" />
-//     case "headphones":
-//       return <Headphones className="h-7 w-7" />
-//     case "leaf":
-//       return <Leaf className="h-7 w-7" />
-//     case "medal":
-//       return <Medal className="h-7 w-7" />
-//     default:
-//       return null
-//   }
-// }
-
-// function WhyChooseSection() {
-//   return (
-//     <section className="py-8 md:py-16 bg-background">
-//       <div className="container mx-auto px-4">
-//         <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-10">
-//           {whyChoose.title}
-//         </h2>
-
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-//           {whyChoose.reasons.map((reason) => (
-//             <div
-//               key={reason.id}
-//               className="group flex flex-col items-center text-center p-6 rounded-2xl bg-muted shadow-sm hover:shadow-xl hover:scale-105 transition-all duration-300"
-//               >
-//               <div
-//                 className={`mb-4 flex h-12 w-12 items-center justify-center rounded-full ${
-//                   iconStyles[reason.icon] || "bg-primary/10 text-primary"
-//                 }`}
-//               >
-//                 {getWhyChooseIcon(reason.icon)}
-//               </div>
-//               <h3 className="text-lg font-semibold mb-2">{reason.title}</h3>
-//               <p className="text-sm text-muted-foreground">{reason.description}</p>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
 
 
 
