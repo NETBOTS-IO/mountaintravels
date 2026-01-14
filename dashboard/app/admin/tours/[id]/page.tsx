@@ -75,6 +75,7 @@ export default function TourDetailPage() {
                   <div><strong>Duration:</strong> {tour.days} days</div>
                   <div><strong>Group Size:</strong> {tour.groupSize}</div>
                   <div><strong>Difficulty:</strong> {tour.difficulty}</div>
+                  <div><strong>Tour Type:</strong> {tour.tourType}</div>
                   <div><strong>Price:</strong> <span className="text-green-700 font-semibold">${tour.price}</span></div>
                   <div><strong>Original Price:</strong> ${tour.originalPrice}</div>
                   <div><strong>Best Season:</strong> {tour.bestTime}</div>

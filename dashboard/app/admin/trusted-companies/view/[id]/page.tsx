@@ -27,7 +27,7 @@ export default function ViewCompanyPage() {
     <div className="p-6">
       <div className="mb-6">
         <Link href="/admin/trusted-companies">
-          <Button variant="outline">← Back to Companies</Button>
+          <Button variant="outline">← Back to Responsible Travel Approach</Button>
         </Link>
       </div>
 

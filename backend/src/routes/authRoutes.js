@@ -53,7 +53,7 @@ import {
 const router = express.Router();
 
 // Public routes (no authentication required)
-router.post('/login', loginValidation, authRateLimit, login);
+router.post('/login', loginValidation,login);
 router.post('/forgot-password', forgotPasswordValidation, authRateLimit, forgotPassword);
 router.post('/reset-password', resetPasswordValidation, resetPassword);
 router.post('/verify-email', emailVerificationValidation, verifyEmail);

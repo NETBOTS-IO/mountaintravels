@@ -5,6 +5,7 @@ export const siteConfig = {
   shortName: "MTP",
   description:
     "Discover the beauty of Pakistan's mountains with our guided tours.",
+    
   contact: {
     address: `Ghangchan House, Aliabad
 Satellite Town, 
@@ -12,6 +13,15 @@ Skardu City, Gilgit-Baltistan, Pakistan`,
     phone: "+92 346 8486900",
     email: "info@mountaintravels.com",
     website: "mountaintravels.com",
+    
+  },
+  contact2: {
+    address2: `House 32, Street 177, G-13/3, Islamabad, Pakistan
+    +92 346 8486900`,  
+  },
+  contact3: {
+    address3: `412 S 325th Pl Apt S3, Federal Way, Washington 98003, USA
+    +1 (206) 335-4272`,  
   },
   social: [
     { name: "Facebook", url: "https://www.facebook.com/mountaintravels", icon: "facebook" },

@@ -31,7 +31,7 @@ export default function TravelTipViewPage() {
       {/* Back button */}
       <div className="mb-6">
         <Link href="/admin/travel-tips">
-          <Button variant="outline">← Back to Travel Tips</Button>
+          <Button variant="outline">← Back to Responsible Travel Approach</Button>
         </Link>
       </div>
 

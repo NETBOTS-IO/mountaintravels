@@ -19,6 +19,7 @@ import popularRoutes from './routes/popularRoutes.js';
 import tipsRoutes from './routes/tipsRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
 import trustedRoutes from './routes/trustedRoutes.js';
+import customized from './routes/customTourRoutes.js';
 
 
 
@@ -113,6 +114,7 @@ app.use('/api/popular', popularRoutes);
 app.use('/api/tips', tipsRoutes);
 app.use('/api', bookingRoutes);
 app.use("/api/trusted", trustedRoutes);
+app.use("/api/customized", customized);
 
 
 

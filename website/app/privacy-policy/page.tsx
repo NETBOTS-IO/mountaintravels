@@ -1,5 +1,3 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-
 const privacyPolicy = [
   {
     title: "1. Information We Collect",
@@ -55,20 +53,36 @@ const privacyPolicy = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Privacy Policy</h1>
-      <p className="mb-8 text-center text-lg">
-        Last updated: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-      </p>
-      <Accordion type="single" collapsible className="w-full">
-        {privacyPolicy.map((policy, index) => (
-          <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger className="text-lg font-semibold">{policy.title}</AccordionTrigger>
-            <AccordionContent className="text-base">{policy.content}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </div>
+    <section className="py-14 md:py-20 bg-trusted">
+      <div className="container mx-auto px-4">
+        {/* Big Card */}
+        <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl p-8 md:p-12">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+            Privacy Policy
+          </h1>
+
+          <p className="mb-10 text-center text-muted-foreground">
+            Last updated:{" "}
+            {new Date().toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+
+          {/* Policy Content */}
+          <div className="space-y-8 text-gray-700 leading-relaxed">
+            {privacyPolicy.map((policy, index) => (
+              <div key={index}>
+                <h2 className="text-xl font-semibold mb-2">
+                  {policy.title}
+                </h2>
+                <p>{policy.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
-

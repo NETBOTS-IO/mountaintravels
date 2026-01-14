@@ -24,4 +24,4 @@ async function deleteAdmin(email) {
 }
 
 // Replace with the admin email you want to delete
-deleteAdmin('admin@mountain.com');
+deleteAdmin('admin@dashboard.com');

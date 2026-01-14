@@ -74,6 +74,14 @@ export function Footer() {
                 <MapPin className="h-4 w-4 md:h-5 md:w-5 mr-2 mt-0.5 flex-shrink-0" />
                 <span>{siteConfig.contact.address}</span>
               </div>
+              <div className="flex items-start">
+                <MapPin className="h-4 w-4 md:h-5 md:w-5 mr-2 mt-0.5 flex-shrink-0" />
+                <span>{siteConfig.contact2.address2}</span>
+              </div>
+              <div className="flex items-start">
+                <MapPin className="h-4 w-4 md:h-5 md:w-5 mr-2 mt-0.5 flex-shrink-0" />
+                <span>{siteConfig.contact3.address3}</span>
+              </div>
               <div className="flex items-center">
                 <Phone className="h-4 w-4 md:h-5 md:w-5 mr-2 flex-shrink-0" />
                 <a href={`tel:${siteConfig.contact.phone}`} className="hover:text-secondary">
@@ -121,6 +129,12 @@ export function Footer() {
                 <Link href="/sitemap-page" className="hover:text-secondary flex items-center">
                   <ArrowRight className="h-3 w-3 md:h-4 md:w-4 mr-2" />
                   Sitemap
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-secondary flex items-center">
+                  <ArrowRight className="h-3 w-3 md:h-4 md:w-4 mr-2" />
+                  Contact 
                 </Link>
               </li>
             </ul>

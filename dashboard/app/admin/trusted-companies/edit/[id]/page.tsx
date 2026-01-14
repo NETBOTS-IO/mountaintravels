@@ -32,11 +32,11 @@ export default function EditCompanyPage() {
   }, [id, router]);
 
   if (loading) return <p className="p-6">Loading...</p>;
-  if (!company) return <p className="p-6">Company not found.</p>;
+  if (!company) return <p className="p-6">Responsible Travel Approach data not found.</p>;
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Edit Trusted Company</h1>
+      <h1 className="text-2xl font-bold mb-6">Edit Responsible Travel Approach</h1>
       <TrustedCompanyForm companyId={company._id} initialData={company} />
     </div>
   );
