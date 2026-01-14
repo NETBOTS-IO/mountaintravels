@@ -28,11 +28,8 @@ import {
 import TourIcons from "@/app/touricons";
 import WhyChooseSection from "@/app/whychose";
 import ResponsiveCarousel from "@/components/responsivecarousel";
-import FeaturedSignatureTours from "@/app/luxary.tsx";
-import customizedtour from "@/app/customizedtourform.tsx";
-
- // adjust path if needed
- // adjust path if needed
+import FeaturedSignatureTours from "@/app/luxary";
+// import CustomizedTour from "@/app/customizedtourform";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

@@ -41,7 +41,7 @@ export default function FeaturedSignatureTours() {
               luxuryTour?.images?.[0]
                 ? `${BASE_URL}${luxuryTour.images[0]}`
                 : "assets/home/hero-230.jpg",
-            navigateTo: "/luxary?collection=luxary",
+            navigateTo: "/luxary/luxary", // ✅ path param instead of query
           },
           {
             id: "hardcore",
@@ -54,7 +54,7 @@ export default function FeaturedSignatureTours() {
               hardcoreTour?.images?.[0]
                 ? `${BASE_URL}${hardcoreTour.images[0]}`
                 : "assets/home/one.jpg",
-            navigateTo: "/luxary?collection=hardcore",
+            navigateTo: "/luxary/hardcore", // ✅ path param instead of query
           },
         ])
       } catch (err) {
