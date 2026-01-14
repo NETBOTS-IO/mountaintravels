@@ -10,6 +10,7 @@
     "lint": "eslint src/**/*.js",
     "format": "prettier --write src/**/*.js",
     "setup-admin": "node src/scripts/setupAdmin.js"
+    
   },
   "keywords": [],
   "author": "",

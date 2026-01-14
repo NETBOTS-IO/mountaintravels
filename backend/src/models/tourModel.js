@@ -30,6 +30,7 @@ const tourSchema = new mongoose.Schema({
   category: { type: String, required: true },
   days: { type: Number, min: 1 },
   difficulty: { type: String, enum: ['Easy', 'Moderate', 'Challenging', 'Expert'] },
+  tourType: { type: String, enum: ['Luxary', 'Hardcore'] },
   groupSize: { type: String },
   rating: { type: Number, min: 0, max: 5 },
   reviews: { type: Number, min: 0 },
