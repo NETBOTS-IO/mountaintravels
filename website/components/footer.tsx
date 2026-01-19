@@ -14,7 +14,8 @@ import { BASE_URL } from "@/app/Var"
 export function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState("")
   const [message, setMessage] = useState("")
-
+  const whatsappNumber = "03468486900"; // Your WhatsApp number
+  const whatsappLink = `https://wa.me/92${whatsappNumber.slice(1)}`; 
   const getIcon = (icon: string) => {
     switch (icon) {
       case "facebook":
@@ -82,12 +83,37 @@ export function Footer() {
                 <MapPin className="h-4 w-4 md:h-5 md:w-5 mr-2 mt-0.5 flex-shrink-0" />
                 <span>{siteConfig.contact3.address3}</span>
               </div>
-              <div className="flex items-center">
-                <Phone className="h-4 w-4 md:h-5 md:w-5 mr-2 flex-shrink-0" />
-                <a href={`tel:${siteConfig.contact.phone}`} className="hover:text-secondary">
-                  {siteConfig.contact.phone}
-                </a>
-              </div>
+              <div className="flex items-center space-x-4">
+  {/* Phone */}
+  <div className="flex items-center space-x-1">
+    <Phone className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
+    <a
+      href={`tel:${siteConfig.contact.phone}`}
+      className="text-xs md:text-sm hover:text-secondary transition-colors"
+    >
+      {siteConfig.contact.phone}
+    </a>
+  </div>
+
+  {/* WhatsApp */}
+  <div className="flex items-center space-x-1">
+    <a
+      href={whatsappLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center text-xs md:text-sm hover:text-secondary transition-colors"
+      aria-label="WhatsApp"
+    >
+      <img
+        src="/assets/home/icon-1.avif" // Your WhatsApp icon
+        alt="WhatsApp"
+        className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0"
+      />
+      <span>{whatsappNumber}</span>
+    </a>
+  </div>
+</div>
+
               <div className="flex items-center">
                 <Mail className="h-4 w-4 md:h-5 md:w-5 mr-2 flex-shrink-0" />
                 <a href={`mailto:${siteConfig.contact.email}`} className="hover:text-secondary">
