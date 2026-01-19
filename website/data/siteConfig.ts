@@ -16,7 +16,9 @@ Skardu City, Gilgit-Baltistan, Pakistan`,
     
   },
   contact2: {
-    address2: `House 32, Street 177, G-13/3, Islamabad, Pakistan
+    address2: `Ghangchan House
+    H#1280, St#29, Block A, FMC
+    Sector B-17, Pakistan
     +92 346 8486900`,  
   },
   contact3: {
@@ -53,7 +55,7 @@ export const mainMenu = [
         path: `/tours?category=${c.id}`,
       })),
   },
-  { name: "About", path: "/about" },
+  { name: "About Us", path: "/about" },
   { name: "Gallery", path: "/gallery" },
   { name: "Contact", path: "/contact" },
 { name: "Blog", path: "/blogs" },

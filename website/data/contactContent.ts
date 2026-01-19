@@ -101,7 +101,7 @@ export const faqCategories = [
 export const officeLocations = [
   {
     city: "Islamabad",
-    address: "House 32, Street 177, G-13/3, Islamabad, Pakistan",
+    address: "Ghangchan HouseH#1280, St#29, Block A, FMC Sector B-17, Pakistan",
     phone: "+92 346 8486900",
     email: ["ghulam_mtp@hotmail.com", "info@mountaintravels.com"],
     website: "http://www.mountaintravels.com",

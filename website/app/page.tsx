@@ -1,7 +1,7 @@
 "use client";
 import { Shield, Headphones,Medal, Leaf } from "lucide-react"
 import { motion } from "framer-motion"
-
+import CorporateModal from "@/components/corporate"
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -26,6 +26,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import TourIcons from "@/app/touricons";
+import CultureModal from "@/components/cultural"
 import WhyChooseSection from "@/app/whychose";
 import ResponsiveCarousel from "@/components/responsivecarousel";
 import FeaturedSignatureTours from "@/app/luxary";
@@ -317,13 +318,37 @@ const heroSlides = [
       "Tailor-made trekking, cultural and adventure experiences crafted for our valued international travelers seeking comfort, authenticity and exclusivity.",
   },
   {
-    image: "/assets/home/hero-2.jpg",
+    image: "/assets/home/two.jpg",
+    title: "Refined Journeys Through the World’s Most Dramatic Mountains & Cultures",
+    description:
+      "Tailor-made trekking, cultural and adventure experiences crafted for our valued international travelers seeking comfort, authenticity and exclusivity.",
+  },
+  {
+    image: "/assets/home/one.jpg",
+    title: "Refined Journeys Through the World’s Most Dramatic Mountains & Cultures",
+    description:
+      "Tailor-made trekking, cultural and adventure experiences crafted for our valued international travelers seeking comfort, authenticity and exclusivity.",
+  },
+  {
+    image: "/assets/home/three.jpg",
+    title: "Refined Journeys Through the World’s Most Dramatic Mountains & Cultures",
+    description:
+      "Tailor-made trekking, cultural and adventure experiences crafted for our valued international travelers seeking comfort, authenticity and exclusivity.",
+  },
+  {
+    image: "/assets/home/hero-399.jpg",
     title: "Refined Journeys Through the World’s Most Dramatic Mountains & Cultures",
     description:
       "Tailor-made trekking, cultural and adventure experiences crafted for our valued international travelers seeking comfort, authenticity and exclusivity.",
   },
   {
     image: "/assets/home/hero-3.jpg",
+    title: "Refined Journeys Through the World’s Most Dramatic Mountains & Cultures",
+    description:
+      "Tailor-made trekking, cultural and adventure experiences crafted for our valued international travelers seeking comfort, authenticity and exclusivity.",
+  },
+  {
+    image: "/assets/home/hero-230.jpg",
     title: "Refined Journeys Through the World’s Most Dramatic Mountains & Cultures",
     description:
       "Tailor-made trekking, cultural and adventure experiences crafted for our valued international travelers seeking comfort, authenticity and exclusivity.",
@@ -339,6 +364,8 @@ export default function Home() {
   const [tips, setTips] = useState<any[]>([]); // ✅ new state
   const [loadingTips, setLoadingTips] = useState(true);
   const isMobile = useMobile();
+  const [open, setOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentTourIndex, setCurrentTourIndex] = useState(0);
@@ -477,7 +504,9 @@ const prevTipSet = () => {
       setCurrentTourIndex((prev) => (prev - 1 + totalTourPages) % totalTourPages);
     }
   };
-
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : ""
+  }, [open])
   // Destinations navigation
   const nextDestinationSet = () => {
     if (isMobile && destinationsScrollRef.current) {
@@ -885,7 +914,7 @@ const prevTipSet = () => {
                           ))}
                         </div>
                         <p className="text-sm text-primary font-medium">
-                          Tour: {testimonial.tour}
+                        Designation: {testimonial.designation}
                         </p>
                       </div>
 
@@ -894,11 +923,11 @@ const prevTipSet = () => {
    {testimonials.map((testimo) => (
   <div key={testimo.id} className="flex items-center">
     <div className="relative w-16 h-16 rounded-full overflow-hidden mr-4">
-      <img
-        src={`${BASE_URL}${testimo.image}`}   // ✅ works
-        alt={testimo.name}                              // ✅ also from testimo
-        className="w-16 h-16 object-cover rounded-full"
-      />
+    <img
+  src={testimo.image ? `${BASE_URL}${testimo.image}` : "/assets/home/testi.jfif"}
+  alt={testimo.name || "User Avatar"}
+  className="w-16 h-16 object-cover rounded-full"
+/>
     </div>
   </div>
 ))}
@@ -983,11 +1012,16 @@ const prevTipSet = () => {
       </p>
 
       {/* View Details Button */}
-      <Link href="/corporate">
-        <button className="px-6 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600 transition-colors duration-300">
-          View Details
-        </button>
-      </Link>
+      <>
+      <button
+        onClick={() => setOpen(true)}
+        className="px-6 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600 transition-colors duration-300"
+      >
+        View Details
+      </button>
+
+      <CorporateModal open={open} onClose={() => setOpen(false)} />
+    </>
     </div>
   </div>
 </section>
@@ -1072,20 +1106,17 @@ const prevTipSet = () => {
             </div>
           ))}
         </div>
-
-        {/* Bottom Button */}
         <div className="mt-10 text-center">
-  <Link href="/trusted">
-    <button className="inline-flex items-center justify-center rounded-full bg-orange-500 px-8 py-3 text-sm md:text-base font-semibold text-white transition-all duration-300 hover:bg-orange-600">
-      View details
-    </button>
-  </Link>
-</div>
-
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="inline-flex items-center justify-center rounded-full bg-orange-500 px-8 py-3 text-sm md:text-base font-semibold text-white transition-all duration-300 hover:bg-orange-600"
+      >
+        View details
+      </button>
+      <CultureModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </div>
       </div>
     </section>
-
-
     </div>
   );
 }
