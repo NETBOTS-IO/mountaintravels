@@ -14,42 +14,47 @@ function TopBar() {
   const whatsappLink = `https://wa.me/92${whatsappNumber.slice(1)}`; 
   return (
     <div className="bg-primary text-white py-1 md:py-2">
-    <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-      <div className="flex items-center space-x-2 md:space-x-4 mb-2 md:mb-0">
-      <a
+    <div className="container mx-auto px-4 flex flex-col sm:flex-row flex-wrap justify-between items-center gap-2">
+      {/* Contact & License */}
+      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 md:gap-3 text-xs md:text-sm">
+        <a
           href={`tel:${siteConfig.contact.phone}`}
-          className="flex items-center text-xs md:text-sm hover:text-secondary transition-colors"
+          className="flex items-center hover:text-secondary transition-colors min-w-[120px]"
         >
           <Phone className="h-3 w-3 md:h-4 md:w-4 mr-1" />
           <span>{siteConfig.contact.phone}</span>
         </a>
+  
         <a
           href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center text-xs md:text-sm hover:text-secondary transition-colors"
+          className="flex items-center hover:text-secondary transition-colors min-w-[120px]"
           aria-label="WhatsApp"
         >
           <img
-            src="/assets/home/icon-1.avif" // Make sure you have a WhatsApp icon here
+            src="/assets/home/icon-1.avif"
             alt="WhatsApp"
             className="h-4 w-4 md:h-5 md:w-5 mr-1"
           />
           <span>{whatsappNumber}</span>
         </a>
+  
         <a
           href={`mailto:${siteConfig.contact.email}`}
-          className="flex items-center text-xs md:text-sm hover:text-secondary transition-colors"
+          className="flex items-center hover:text-secondary transition-colors min-w-[140px]"
         >
           <Mail className="h-3 w-3 md:h-4 md:w-4 mr-1" />
           <span>{siteConfig.contact.email}</span>
         </a>
-        <div className="flex items-center text-xs md:text-sm">
-<span>License:Govt.of Pakistan License No. ID-302</span>
-</div>
-
+  
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start text-center sm:text-left gap-1 md:gap-2 px-1 sm:px-0 min-w-[180px]">
+          <span>License: Govt. of Pakistan License No. ID-302</span>
+        </div>
       </div>
-      <div className="flex items-center space-x-2 md:space-x-3">
+  
+      {/* Social Icons */}
+      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 md:gap-3">
         {siteConfig.social.map((item) => (
           <a
             key={item.name}
@@ -68,6 +73,7 @@ function TopBar() {
       </div>
     </div>
   </div>
+  
   )
 }
 

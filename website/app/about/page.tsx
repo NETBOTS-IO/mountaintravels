@@ -8,6 +8,11 @@ const teamData = [
     designation: 'Founder',
   },
   {
+    image: 'assets/team/staff14.jpeg',
+    name: 'Faisal Jamil',
+    designation: 'Manager Sales & logistics',
+  },
+  {
     image: 'assets/team/staff2.jpg',
     name: 'Furman Ali',
     designation: 'MTP staff',
