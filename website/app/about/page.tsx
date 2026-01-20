@@ -3,14 +3,9 @@ import { Shield, Leaf, Heart, Award } from "lucide-react"
 import { aboutHero, aboutContent } from "@/data/aboutContent"
 const teamData = [
   {
-    image: 'assets/team/staff1.jpg',
+    image: '/assets/about/team/image1.jpg',
     name: 'Ghulam Ahmad',
     designation: 'Founder',
-  },
-  {
-    image: 'assets/team/staff14.jpeg',
-    name: 'Faisal Jamil',
-    designation: 'Manager Sales & logistics',
   },
   {
     image: 'assets/team/staff2.jpg',
@@ -18,9 +13,14 @@ const teamData = [
     designation: 'MTP staff',
   },
   {
-    image: 'assets/team/staff3.jpg',
+    image: 'assets/team/staff3.JPG',
     name: 'Hamid Hussain',
     designation: 'MTP staff',
+  },
+  {
+    image: 'assets/team/staff14.jpeg',
+    name: 'Faisal Jamil',
+    designation: 'Manager Sales & logistics',
   },
   {
     image: 'assets/team/staff04.jpg',
@@ -28,7 +28,7 @@ const teamData = [
     designation: 'MTP staff',
   },
   {
-    image: 'assets/team/staff4.jpg',
+    image: 'assets/team/staff5.JPG',
     name: 'Ghulam Raza',
     designation: 'MTP staff',
   },
@@ -48,27 +48,6 @@ const teamData = [
     name: 'Zeeshan Mehdi',
     designation: 'MTP staff',
   },
-  {
-    image: 'assets/team/staff9.jpg',
-    name: 'M Iqbal',
-    designation: 'MTP staff',
-  },
-  {
-    image: 'assets/team/staff10.jpg',
-    name: 'Ghulam Hassan',
-    designation: 'MTP staff',
-  },
-  {
-    image: 'assets/team/staff11.jpg',
-    name: 'Akhond Ibrahim',
-    designation: 'MTP staff',
-  },
-  {
-    image: 'assets/team/staff12.jpg',
-    name: 'Iqbal Qadiri',
-    designation: 'MTP staff',
-  },
-
 ];
 export default function AboutPage() {
   return (
