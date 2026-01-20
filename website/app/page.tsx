@@ -1068,55 +1068,74 @@ const prevTipSet = () => {
       </div>
     </section>
     <section className="py-8 md:py-12 bg-trusted">
-      <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
-          CULTURE & RESPONSIBLE TRAVEL
-        </h2>
+        <div className="container mx-auto px-4">
+          {/* Heading */}
+          <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
+            CULTURE & RESPONSIBLE TRAVEL
+          </h2>
 
-        <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-          We work closely with local communities, respect cultural traditions and operate
-          with a strong commitment to environmental responsibility. Our journeys create
-          meaningful connections while preserving the landscapes and heritage we love.
-        </p>
+          {/* Description */}
+          <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
+            We work closely with local communities, respect cultural traditions and operate
+            with a strong commitment to environmental responsibility. Our journeys create
+            meaningful connections while preserving the landscapes and heritage we love.
+          </p>
 
-        {/* Cards */}
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-          {trustedCompanies.map((company) => (
-            <div
-              key={company._id}
-              className="flex flex-col items-center text-center transition-all duration-300 bg-white p-6 rounded-xl shadow-md hover:shadow-lg max-w-sm"
+          {/* Cards */}
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            {trustedCompanies.map((company) => (
+              <div
+                key={company._id}
+                className="
+                  flex flex-col items-center text-center
+                  bg-white p-6 rounded-xl shadow-md
+                  transition-all duration-300 hover:shadow-lg
+                  max-w-sm
+                "
+              >
+                {company.image && (
+                  <Image
+                    src={`${BASE_URL}${company.image}`}
+                    alt={company.title}
+                    width={120}
+                    height={60}
+                    className="h-12 md:h-16 w-auto object-contain mb-3"
+                  />
+                )}
+
+                <span className="text-lg font-semibold text-gray-700 mb-4">
+                  {company.title}
+                </span>
+
+                <p className="text-gray-600 text-sm md:text-base">
+                  {company.excerpt}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Button */}
+          <div className="mt-10 text-center">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="
+                inline-flex items-center justify-center
+                rounded-full bg-orange-500
+                px-8 py-3
+                text-sm md:text-base font-semibold text-white
+                transition-all duration-300
+                hover:bg-orange-600
+              "
             >
-              {company.image && (
-                <Image
-                  src={`${BASE_URL}${company.image}`}
-                  alt={company.name}
-                  width={120}
-                  height={60}
-                  className="h-12 md:h-16 w-auto object-contain mb-3"
-                />
-              )}
-
-              <span className="text-lg font-semibold text-gray-700 mb-4">
-                {company.title}
-              </span>
-
-              <p className="text-gray-600 text-sm md:text-base mb-6">
-                {company.excerpt}
-              </p>
-            </div>
-          ))}
+              View details
+            </button>
+          </div>
         </div>
-        <div className="mt-10 text-center">
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="inline-flex items-center justify-center rounded-full bg-orange-500 px-8 py-3 text-sm md:text-base font-semibold text-white transition-all duration-300 hover:bg-orange-600"
-      >
-        View details
-      </button>
-      <CultureModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </div>
-      </div>
-    </section>
+      </section>
+          <CultureModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
