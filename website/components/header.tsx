@@ -91,154 +91,161 @@ function MainMenu() {
 
   return (
     <div className="sticky top-0 z-40 bg-white/30 backdrop-blur-xl border-b border-white/15 shadow-md">
-    <div className="container mx-auto px-4 py-1 md:py-3">
-      <div className="flex justify-between items-center">
-        {/* Logo */}
-        <Link href="/" className="flex items-center">
-          <div className="bg-white/30 backdrop-blur-xl border border-white/20 rounded-2xl px-3 py-2 shadow-lg">
-            <Image
-              src="/assets/logo/logo.png"
-              alt={siteConfig.name}
-              width={120}
-              height={60}
-              className="h-12 w-auto md:h-16"
-              priority
-            />
-          </div>
-        </Link>
-  
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
-          {mainMenu.map((item) =>
-            item.children ? (
-              <div key={item.name} className="relative">
-                <button
-                  onClick={() => toggleDesktopDropdown(item.name)}
-                  className="text-sm lg:text-base font-medium text-black hover:text-orange-500 transition-colors flex items-center"
-                >
-                  {item.name}
-                  <ChevronDown
-                    className={`ml-1 h-4 w-4 transition-transform ${
-                      openDesktopDropdown === item.name ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-  
-                {openDesktopDropdown === item.name && (
-                  <div className="absolute left-0 mt-2 w-48 bg-white/30 backdrop-blur-xl border border-white/20 shadow-xl rounded-xl">
-                    <ul className="py-2">
-                      {item.children.map((child) => (
-                        <li key={child.name}>
-                          <Link
-                            href={child.path}
-                            className="block px-4 py-2 text-sm text-black hover:bg-white/20 transition-colors"
-                          >
-                            {child.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link
-                key={item.name}
-                href={item.path}
-                className="text-sm lg:text-base font-medium text-black hover:text-orange-500 transition-colors"
-              >
-                {item.name}
-              </Link>
-            )
-          )}
-        </nav>
-  
-        {/* Mobile Menu Button */}
-        <button className="md:hidden text-black" onClick={toggleMenu}>
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </div>
-  
-      {/* Mobile Navigation */}
-      <div
-  className={cn(
-    "md:hidden fixed inset-0 z-50 bg-white transition-transform transform",
-    isMenuOpen ? "translate-x-0" : "translate-x-full"
-  )}
->
-  <div className="flex justify-between items-center p-4 border-b border-gray-200">
-    <Link href="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
-      <div className="bg-white border border-gray-200 rounded-xl px-2 py-1">
-        <Image
-          src="/assets/logo/logo.png"
-          alt={siteConfig.name}
-          width={40}
-          height={40}
-          className="h-8 w-auto"
-        />
-      </div>
-      <span className="ml-3 font-bold text-lg text-black">
-        {siteConfig.shortName}
-      </span>
-    </Link>
+  <div className="container mx-auto px-4 py-1 md:py-3 flex justify-between items-center">
+  <Link href="/" className="relative flex items-center">
+  <div className="relative flex items-center justify-center">
+    
+    {/* OVAL GLASS BACKGROUND */}
+    <div
+      className="
+        absolute
+        inset-0
+        -z-10
+        bg-white
+        backdrop-blur-xl
+        shadow-md
+        ring-1 ring-white
+        rounded-full
+        scale-90
+      "
+    />
 
-    <button className="text-black" onClick={toggleMenu}>
-      <X className="h-6 w-6" />
-    </button>
+    <Image
+      src="/assets/logo/logo12.png"
+      alt={siteConfig.name}
+      width={120}
+      height={60}
+      className="
+        h-12 w-auto md:h-16
+        contrast-105
+        drop-shadow-[0_0_1.5px_rgba(255,255,255,0.55)]
+        drop-shadow-[0_0_1.5px_rgba(0,0,0,0.22)]
+      "
+      priority
+    />
   </div>
+</Link>
 
-  <nav className="p-4">
-    <ul className="space-y-4">
-      {mainMenu.map((item) => (
-        <li key={item.name}>
-          {item.children ? (
-            <div>
-              <button
-                onClick={() => toggleMobileDropdown(item.name)}
-                className="flex items-center justify-between w-full text-lg font-medium text-black hover:text-orange-500 transition-colors"
-              >
-                {item.name}
-                <ChevronDown
-                  className={`h-5 w-5 transition-transform ${
-                    openMobileDropdown === item.name ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
 
-              {openMobileDropdown === item.name && (
-                <ul className="pl-4 mt-2 space-y-2">
+
+
+    <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
+      {mainMenu.map((item) =>
+        item.children ? (
+          <div key={item.name} className="relative">
+            <button
+              onClick={() => toggleDesktopDropdown(item.name)}
+              className="text-sm lg:text-base font-medium text-black hover:text-orange-500 transition-colors flex items-center"
+            >
+              {item.name}
+              <ChevronDown
+                className={`ml-1 h-4 w-4 transition-transform ${
+                  openDesktopDropdown === item.name ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            {openDesktopDropdown === item.name && (
+              <div className="absolute left-0 mt-2 w-48 bg-white/30 backdrop-blur-xl border border-white/20 shadow-xl rounded-xl">
+                <ul className="py-2">
                   {item.children.map((child) => (
                     <li key={child.name}>
                       <Link
                         href={child.path}
-                        className="block text-base text-black hover:text-orange-500 transition-colors"
-                        onClick={() => setIsMenuOpen(false)}
+                        className="block px-4 py-2 text-sm text-black hover:bg-white/20 transition-colors"
                       >
                         {child.name}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              )}
-            </div>
-          ) : (
-            <Link
-              href={item.path}
-              className="block text-lg font-medium text-black hover:text-orange-500 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {item.name}
-            </Link>
-          )}
-        </li>
-      ))}
-    </ul>
-  </nav>
-</div>
-    </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Link
+            key={item.name}
+            href={item.path}
+            className="text-sm lg:text-base font-medium text-black hover:text-orange-500 transition-colors"
+          >
+            {item.name}
+          </Link>
+        )
+      )}
+    </nav>
+    <button className="md:hidden text-black" onClick={toggleMenu}>
+      {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+    </button>
   </div>
-  
-  
+  <div
+    className={cn(
+      "md:hidden fixed inset-0 z-50 bg-white transition-transform transform",
+      isMenuOpen ? "translate-x-0" : "translate-x-full"
+    )}
+  >
+    <div className="flex justify-between items-center p-4 border-b border-gray-200 bg-white">
+      <Link href="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
+        <Image
+          src="/assets/logo/logo12.png"
+          alt={siteConfig.name}
+          width={40}
+          height={40}
+          className="h-8 w-auto"
+        />
+        <span className="ml-3 font-bold text-lg text-black">{siteConfig.shortName}</span>
+      </Link>
+
+      <button className="text-black" onClick={toggleMenu}>
+        <X className="h-6 w-6" />
+      </button>
+    </div>
+    <nav className="p-4 bg-white">
+      <ul className="space-y-4">
+        {mainMenu.map((item) => (
+          <li key={item.name}>
+            {item.children ? (
+              <div>
+                <button
+                  onClick={() => toggleMobileDropdown(item.name)}
+                  className="flex items-center justify-between w-full text-lg font-medium text-black hover:text-orange-500 transition-colors"
+                >
+                  {item.name}
+                  <ChevronDown
+                    className={`h-5 w-5 transition-transform ${
+                      openMobileDropdown === item.name ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {openMobileDropdown === item.name && (
+                  <ul className="pl-4 mt-2 space-y-2">
+                    {item.children.map((child) => (
+                      <li key={child.name}>
+                        <Link
+                          href={child.path}
+                          className="block text-base text-black hover:text-orange-500 transition-colors"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {child.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ) : (
+              <Link
+                href={item.path}
+                className="block text-lg font-medium text-black hover:text-orange-500 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</div>
   )
 }
 
