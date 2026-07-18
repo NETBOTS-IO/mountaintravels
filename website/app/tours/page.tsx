@@ -20,6 +20,7 @@ import {
   Globe,
   Tent,
 } from "lucide-react";
+import Animation from "../../../components/animations/animations";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BASE_URL } from "@/app/Var";
@@ -252,9 +253,11 @@ export default function ToursPage() {
 
         {/* Loading */}
         {loading && (
-          <div className="text-center py-24 space-y-4">
-            <div className="w-14 h-14 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-muted-foreground text-lg">
+          <div className="flex flex-col items-center justify-center py-24 space-y-4">
+            <div className="w-40 h-40">
+              <Animation type="safari" />
+            </div>
+            <p className="text-muted-foreground text-sm font-medium animate-pulse">
               Loading adventures...
             </p>
           </div>

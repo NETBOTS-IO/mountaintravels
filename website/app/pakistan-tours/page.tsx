@@ -22,6 +22,7 @@ import {
   Eye,
   Globe,
 } from "lucide-react";
+import Animation from "../../../components/animations/animations";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
@@ -263,14 +264,13 @@ export default function PakistanToursPage() {
           </div>
 
           {loading ? (
-            <div className="flex justify-center py-20">
-              <div
-                className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin"
-                style={{
-                  borderColor: "#45919c",
-                  borderTopColor: "transparent",
-                }}
-              />
+            <div className="flex flex-col items-center justify-center py-20 space-y-3">
+              <div className="w-36 h-36">
+                <Animation type="cultural tours" />
+              </div>
+              <p className="text-xs text-muted-foreground animate-pulse">
+                Loading Pakistan tours...
+              </p>
             </div>
           ) : filteredTours.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

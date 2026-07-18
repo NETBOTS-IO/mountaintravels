@@ -17,6 +17,7 @@ import {
   Search,
   Home,
 } from "lucide-react";
+import Animation from "../../../components/animations/animations";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BASE_URL } from "@/app/Var";
@@ -201,14 +202,13 @@ export default function TrekkingPage() {
           </div>
 
           {loading ? (
-            <div className="flex justify-center py-20">
-              <div
-                className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin"
-                style={{
-                  borderColor: "#45919c",
-                  borderTopColor: "transparent",
-                }}
-              />
+            <div className="flex flex-col items-center justify-center py-20 space-y-3">
+              <div className="w-36 h-36">
+                <Animation type="trekking" />
+              </div>
+              <p className="text-xs text-muted-foreground animate-pulse">
+                Loading trekking routes...
+              </p>
             </div>
           ) : filteredTreks.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
