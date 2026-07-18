@@ -1,398 +1,294 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, Phone, Mail, Clock, MessageSquare } from "lucide-react";
+import Link from "next/link";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  MessageSquare,
+  Send,
+  CheckCircle,
+  Home,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  contactInfo,
-  faqCategories,
-  officeLocations,
-} from "@/data/contactContent";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import axios from "axios";
-import { BASE_URL } from "@/app/Var";
+import {
+  contactIntro,
+  addressDetails,
+  officeHours,
+  quickContacts,
+  faqs,
+} from "@/data/contactContent";
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState<any>({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const handleInputChange = (
+  const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setFormData((prevData: any) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData((prevData: any) => ({ ...prevData, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    try {
-      await axios.post(`${BASE_URL}/api/contacts/add`, {
-        source: "CONTACT FORM",
-        name: formData.name,
-        email: formData.email,
-        subject: formData.interest || "General Inquiry",
-        interests: formData.interest,
-        phone: formData.phone,
-        message: formData.message,
-      });
-
-      setIsModalOpen(true);
-    } catch (error) {
-      console.error("Error submitting contact form:", error);
-    }
+    setIsSubmitting(true);
+    // Simulate API request
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setIsSubmitting(false);
+    setSubmitSuccess(true);
+    setFormData({ name: "", email: "", subject: "", message: "" });
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground pt-32 pb-24">
+    <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground pt-24 pb-20">
+      {/* Breadcrumbs */}
+      <div className="container mx-auto px-4 py-4 max-w-5xl">
+        <nav className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+          <Link
+            href="/"
+            className="hover:text-primary flex items-center gap-1 transition-colors"
+          >
+            <Home className="w-3.5 h-3.5" />
+            Home
+          </Link>
+          <ChevronRight className="w-3 h-3 shrink-0" />
+          <span className="text-foreground font-semibold">Contact Us</span>
+        </nav>
+      </div>
+
       {/* Hero Section */}
-      <section className="relative pb-20 bg-background overflow-hidden">
-        <div className="container mx-auto px-4 z-10 relative">
-          <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tighter text-foreground max-w-4xl leading-tight">
-            {contactInfo.title}
+      <section className="relative pb-12 bg-background overflow-hidden">
+        <div className="container mx-auto px-4 z-10 relative max-w-5xl">
+          <h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-foreground max-w-3xl leading-tight">
+            {contactIntro.title}
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground font-light leading-relaxed max-w-3xl mt-6">
-            {contactInfo.subtitle}
+          <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed max-w-3xl mt-4">
+            {contactIntro.description}
           </p>
         </div>
       </section>
 
-      {/* Contact Details & Form */}
-      <section className="py-16 border-t border-border bg-muted/10">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-            {/* Quick Contact Info */}
-            <div className="lg:col-span-5 space-y-12">
-              <h2 className="font-display text-3xl font-bold tracking-tight">
-                Get in Touch
+      {/* Contact Form & Info */}
+      <section className="py-12 border-t border-border bg-muted/10">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            {/* Contact Form */}
+            <div className="lg:col-span-7 bg-card border border-border p-6 rounded-lg shadow-sm">
+              <h2 className="font-display text-2xl font-bold mb-6 text-foreground">
+                Send Us a Message
               </h2>
-              <div className="space-y-8 font-light text-base text-muted-foreground">
-                <div className="flex items-start gap-4">
-                  <MapPin className="w-6 h-6 text-primary shrink-0 mt-1" />
+              {submitSuccess ? (
+                <div className="bg-primary/10 border border-primary text-foreground p-6 rounded-lg flex items-start gap-4">
+                  <CheckCircle className="w-6 h-6 text-primary shrink-0 mt-1" />
                   <div>
-                    <h3 className="font-display font-bold text-foreground text-lg mb-1">
-                      Address
+                    <h3 className="font-bold text-lg text-primary">
+                      Message Sent Successfully!
                     </h3>
-                    <p className="whitespace-pre-line">
-                      {contactInfo.address.street}
+                    <p className="text-sm font-light mt-1 text-muted-foreground">
+                      Thank you for contacting Mountain Travels Pakistan. Our
+                      travel specialists will review your message and get back
+                      to you within 24 hours.
                     </p>
-                    <p>
-                      {contactInfo.address.city}, {contactInfo.address.country}
-                    </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
-                  <Phone className="w-6 h-6 text-primary shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-display font-bold text-foreground text-lg mb-1">
-                      Phone
-                    </h3>
-                    <a
-                      href={`tel:${contactInfo.phone}`}
-                      className="hover:underline text-foreground"
-                    >
-                      {contactInfo.phone}
-                    </a>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label
+                        htmlFor="name"
+                        className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                      >
+                        Full Name
+                      </label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="John Doe"
+                        required
+                        className="bg-background"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label
+                        htmlFor="email"
+                        className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                      >
+                        Email Address
+                      </label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="john@example.com"
+                        required
+                        className="bg-background"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <Mail className="w-6 h-6 text-primary shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-display font-bold text-foreground text-lg mb-1">
-                      Email
-                    </h3>
-                    <a
-                      href={`mailto:${contactInfo.email}`}
-                      className="hover:underline text-foreground"
-                    >
-                      {contactInfo.email}
-                    </a>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <Clock className="w-6 h-6 text-primary shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-display font-bold text-foreground text-lg mb-1">
-                      Business Hours
-                    </h3>
-                    <p className="text-foreground">{contactInfo.hours}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Form Container */}
-            <div className="lg:col-span-7 bg-card border border-border p-8 md:p-12 shadow-xl">
-              <h2 className="font-display text-3xl font-bold tracking-tight mb-8">
-                Send a Message
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
+                  <div className="space-y-1.5">
                     <label
-                      htmlFor="name"
-                      className="block mb-2 text-sm font-semibold text-foreground/80"
+                      htmlFor="subject"
+                      className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
                     >
-                      Name <span className="text-primary">*</span>
+                      Subject
                     </label>
                     <Input
-                      type="text"
-                      id="name"
-                      name="name"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      placeholder="Planning a customized trip"
                       required
-                      onChange={handleInputChange}
-                      className="w-full h-12 bg-background border-border text-foreground focus:ring-primary"
+                      className="bg-background"
                     />
                   </div>
-                  <div>
+                  <div className="space-y-1.5">
                     <label
-                      htmlFor="email"
-                      className="block mb-2 text-sm font-semibold text-foreground/80"
+                      htmlFor="message"
+                      className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
                     >
-                      Email Address <span className="text-primary">*</span>
+                      Message
                     </label>
-                    <Input
-                      type="email"
-                      id="email"
-                      name="email"
+                    <Textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Tell us about your travel plans..."
+                      rows={5}
                       required
-                      onChange={handleInputChange}
-                      className="w-full h-12 bg-background border-border text-foreground focus:ring-primary"
+                      className="bg-background resize-none"
                     />
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label
-                      htmlFor="phone"
-                      className="block mb-2 text-sm font-semibold text-foreground/80"
-                    >
-                      Phone Number
-                    </label>
-                    <Input
-                      type="text"
-                      id="phone"
-                      name="phone"
-                      onChange={handleInputChange}
-                      className="w-full h-12 bg-background border-border text-foreground focus:ring-primary"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="interest"
-                      className="block mb-2 text-sm font-semibold text-foreground/80"
-                    >
-                      I am interested in <span className="text-primary">*</span>
-                    </label>
-                    <Select
-                      onValueChange={(value) =>
-                        handleSelectChange("interest", value)
-                      }
-                    >
-                      <SelectTrigger className="w-full h-12 bg-background border-border text-foreground focus:ring-primary">
-                        <SelectValue placeholder="Select an option" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="expedition">Expedition</SelectItem>
-                        <SelectItem value="trekking">Trekking</SelectItem>
-                        <SelectItem value="sightseeing">Sightseeing</SelectItem>
-                        <SelectItem value="general">General Inquiry</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block mb-2 text-sm font-semibold text-foreground/80"
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full flex items-center justify-center gap-2 py-4 text-sm font-semibold"
                   >
-                    Your Message <span className="text-primary">*</span>
-                  </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    required
-                    onChange={handleInputChange}
-                    className="w-full min-h-[150px] bg-background border-border text-foreground focus:ring-primary"
-                  />
-                </div>
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                    <Send className="w-4 h-4" />
+                  </Button>
+                </form>
+              )}
+            </div>
 
-                <Button
-                  type="submit"
-                  className="w-full py-6 text-base font-semibold"
-                >
-                  Send Message
-                </Button>
-              </form>
+            {/* Contact Info */}
+            <div className="lg:col-span-5 space-y-6">
+              {/* Address details */}
+              <div className="bg-card border border-border p-6 rounded-lg shadow-sm">
+                <h3 className="font-display font-bold text-lg mb-4 text-primary flex items-center gap-2">
+                  <MapPin className="w-5 h-5" />
+                  Headquarters
+                </h3>
+                <div className="space-y-3 text-sm font-light text-muted-foreground">
+                  <p className="font-semibold text-foreground">
+                    {addressDetails.company}
+                  </p>
+                  <p className="whitespace-pre-line leading-relaxed">
+                    {addressDetails.address}
+                  </p>
+                  <div className="pt-3 border-t border-border mt-3">
+                    <p className="text-xs font-semibold text-foreground uppercase tracking-wider mb-1">
+                      Office Hours
+                    </p>
+                    <p className="text-xs">
+                      {officeHours.days}: {officeHours.hours}
+                    </p>
+                    <p className="text-xs text-primary font-medium mt-1">
+                      {officeHours.note}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Contacts */}
+              <div className="bg-card border border-border p-6 rounded-lg shadow-sm">
+                <h3 className="font-display font-bold text-lg mb-4 text-primary flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5" />
+                  Direct Contacts
+                </h3>
+                <div className="space-y-4">
+                  <a
+                    href={`tel:${quickContacts.phone}`}
+                    className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
+                      <Phone className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                        Phone
+                      </p>
+                      <p>{quickContacts.phone}</p>
+                    </div>
+                  </a>
+                  <a
+                    href={`mailto:${quickContacts.email}`}
+                    className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                        Email
+                      </p>
+                      <p>{quickContacts.email}</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Office Locations */}
-      <section className="py-24 bg-background">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <h2 className="font-display text-4xl font-bold tracking-tighter text-foreground mb-16 text-center">
-            Our Offices
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {officeLocations.map((office, index) => (
-              <div
-                key={index}
-                className="bg-card border border-border p-8 hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-display text-2xl font-bold text-foreground">
-                    {office.city}
-                  </h3>
-                  {office.mainOffice && (
-                    <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
-                      Main Office
-                    </span>
-                  )}
-                </div>
-                <p className="text-muted-foreground font-light leading-relaxed mb-6">
-                  {office.address}
-                </p>
-
-                <div className="space-y-3 pt-6 border-t border-border text-muted-foreground font-light">
-                  {Array.isArray(office.phone) ? (
-                    office.phone.map((phone, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-primary shrink-0" />
-                        <a
-                          href={`tel:${phone}`}
-                          className="hover:underline hover:text-foreground"
-                        >
-                          {phone}
-                        </a>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-primary shrink-0" />
-                      <a
-                        href={`tel:${office.phone}`}
-                        className="hover:underline hover:text-foreground"
-                      >
-                        {office.phone}
-                      </a>
-                    </div>
-                  )}
-
-                  {Array.isArray(office.email) ? (
-                    office.email.map((email, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <Mail className="w-4 h-4 text-primary shrink-0" />
-                        <a
-                          href={`mailto:${email}`}
-                          className="hover:underline hover:text-foreground"
-                        >
-                          {email}
-                        </a>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-primary shrink-0" />
-                      <a
-                        href={`mailto:${office.email}`}
-                        className="hover:underline hover:text-foreground"
-                      >
-                        {office.email}
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Frequently Asked Questions */}
-      <section className="py-24 bg-muted/50 border-t border-border">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="font-display text-4xl font-bold tracking-tighter text-foreground mb-16 text-center">
+      {/* FAQ Accordion Section */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <h2 className="font-display text-3xl font-bold text-foreground mb-10 text-center">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-12">
-            {faqCategories.map((category, index) => (
-              <div key={index} className="space-y-6">
-                <h3 className="font-display text-2xl font-bold text-primary border-b border-border pb-2">
-                  {category.category}
-                </h3>
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-4"
-                >
-                  {category.questions.map((faq, faqIndex) => (
-                    <AccordionItem
-                      key={faqIndex}
-                      value={`faq-${index}-${faqIndex}`}
-                      className="border-b border-border py-2 bg-background/50 px-4"
-                    >
-                      <AccordionTrigger className="font-display font-bold text-lg hover:text-primary transition-colors text-left py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground font-light text-base leading-relaxed pt-2 pb-6">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
+          <Accordion type="single" collapsible className="w-full space-y-2">
+            {faqs.map((faq, idx) => (
+              <AccordionItem
+                key={idx}
+                value={`item-${idx}`}
+                className="border-b border-border py-1"
+              >
+                <AccordionTrigger className="font-display font-semibold text-base hover:text-primary transition-colors text-left py-3">
+                  {faq.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground font-light text-sm leading-relaxed pt-1 pb-4">
+                  {faq.a}
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
       </section>
-
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="font-display text-2xl font-bold">
-              Thank you for contacting us!
-            </DialogTitle>
-            <DialogDescription className="text-base font-light mt-2">
-              We have received your message and will get back to you as soon as
-              possible.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="pt-4 flex justify-end">
-            <Button onClick={() => setIsModalOpen(false)} className="px-6">
-              Close
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

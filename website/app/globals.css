@@ -13,16 +13,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 217 33% 17%;
 
-    --primary: 171 51% 8%; /* #0A1F1C Deep Pine */
-    --primary-foreground: 60 25% 97%;
+    --primary: 24 85% 50%; /* Brand Orange */
+    --primary-foreground: 0 0% 100%;
     
-    --secondary: 24 67% 53%; /* #D97736 Amber */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 171 51% 8%; /* Deep Pine */
+    --secondary-foreground: 60 25% 97%;
     
     --muted: 60 15% 92%;
     --muted-foreground: 217 20% 40%;
     
-    --accent: 171 20% 15%;
+    --accent: 24 20% 15%;
     --accent-foreground: 60 25% 97%;
     
     --destructive: 0 84.2% 60.2%;
@@ -30,7 +30,7 @@
 
     --border: 60 10% 88%;
     --input: 60 10% 85%;
-    --ring: 24 67% 53%;
+    --ring: 24 85% 50%;
     --radius: 0.5rem;
   }
 
@@ -44,11 +44,11 @@
     --popover: 171 40% 12%;
     --popover-foreground: 60 25% 97%;
 
-    --primary: 60 25% 97%;
-    --primary-foreground: 171 51% 8%;
+    --primary: 24 85% 50%;
+    --primary-foreground: 0 0% 100%;
     
-    --secondary: 24 67% 53%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 60 25% 97%;
+    --secondary-foreground: 171 51% 8%;
     
     --muted: 171 30% 15%;
     --muted-foreground: 171 10% 60%;
@@ -61,7 +61,7 @@
     
     --border: 171 30% 20%;
     --input: 171 30% 20%;
-    --ring: 24 67% 53%;
+    --ring: 24 85% 50%;
   }
 }
 @layer utilities {
