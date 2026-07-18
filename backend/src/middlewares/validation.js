@@ -444,12 +444,6 @@ export const validateCreateBooking = [
     .isLength({ max: 100 })
     .withMessage("Email must be less than 100 characters"),
 
-  body("phone")
-    .optional()
-    .trim()
-    .isMobilePhone("any", { strictMode: false })
-    .withMessage("Invalid phone number format"),
-
   body("travelers")
     .isInt({ min: 1, max: 20 })
     .withMessage("Number of travelers must be between 1 and 20"),
