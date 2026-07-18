@@ -287,10 +287,17 @@ export default function TourPage() {
       {/* Hero Section */}
       <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] mb-12 rounded-xl overflow-hidden shadow-2xl">
         <Image
-          src={`${BASE_URL}${tour.images[activeImage]}` || "/placeholder.svg"}
+          src={
+            tour.images && tour.images.length > 0
+              ? tour.images[activeImage].startsWith("http")
+                ? tour.images[activeImage]
+                : `${BASE_URL}${tour.images[activeImage]}`
+              : "https://images.unsplash.com/photo-1469521669194-babb45599def?w=1000&q=80"
+          }
           alt={tour.name}
           fill
-          className="object-contain bg-black"
+          unoptimized
+          className="object-cover bg-black"
         />
         <div className="absolute inset-0 flex items-end justify-center pb-8">
           {/* <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center px-4 drop-shadow-lg">
