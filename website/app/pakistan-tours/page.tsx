@@ -22,7 +22,7 @@ import {
   Eye,
   Globe,
 } from "lucide-react";
-import Animation from "../../../components/animations/animations";
+import Animation from "@/components/animations/animations";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";

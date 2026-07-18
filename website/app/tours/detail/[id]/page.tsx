@@ -32,7 +32,7 @@ import {
   CheckCircle,
   ArrowRight,
 } from "lucide-react";
-import Animation from "../../../../components/animations/animations";
+import Animation from "@/components/animations/animations";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

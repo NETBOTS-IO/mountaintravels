@@ -20,7 +20,7 @@ import {
   Globe,
   Tent,
 } from "lucide-react";
-import Animation from "../../../components/animations/animations";
+import Animation from "@/components/animations/animations";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BASE_URL } from "@/app/Var";
