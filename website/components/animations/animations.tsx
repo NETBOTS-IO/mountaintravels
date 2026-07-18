@@ -24,7 +24,12 @@ const Animation: React.FC<AnimationProps> = ({ type, onComplete }) => {
   const [animationData, setAnimationData] = useState<any>(null);
 
   if (!src) {
-    return <p>Please Wait ! loading data.... "{type}"</p>;
+    return (
+      <div className="flex flex-col items-center justify-center p-4">
+        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mb-2" />
+        <span className="text-[10px] text-muted-foreground">Loading...</span>
+      </div>
+    );
   }
 
   // 🎨 JSON animation → fetch & use lottie-react
@@ -35,7 +40,16 @@ const Animation: React.FC<AnimationProps> = ({ type, onComplete }) => {
         .then((data) => setAnimationData(data));
     }, [src]);
 
-    if (!animationData) return <p>Please Wait ! loading data....</p>;
+    if (!animationData) {
+      return (
+        <div className="flex flex-col items-center justify-center p-4">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mb-2" />
+          <span className="text-[10px] text-muted-foreground">
+            Loading assets...
+          </span>
+        </div>
+      );
+    }
 
     return (
       <Lottie

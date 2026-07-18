@@ -16,6 +16,11 @@ import {
   Layers,
   Search,
   Home,
+  FileText,
+  Plane,
+  ShieldCheck,
+  Radio,
+  LifeBuoy,
 } from "lucide-react";
 import Animation from "@/components/animations/animations";
 import { Badge } from "@/components/ui/badge";
@@ -378,49 +383,52 @@ export default function MountaineeringPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               {
-                icon: "📋",
+                icon: FileText,
                 title: "Permits & Licensing",
                 desc: "All government climbing permits, royalty fees, and liaison officer arrangements handled efficiently.",
               },
               {
-                icon: "✈️",
+                icon: Plane,
                 title: "Logistics & Transport",
                 desc: "Airport transfers, domestic flights, jeep convoys, porter recruitment, and cargo clearance.",
               },
               {
-                icon: "🏕️",
+                icon: Tent,
                 title: "Base Camp Services",
                 desc: "Premium BC setup with dining tent, kitchen, toilet facilities, and cook staff throughout the expedition.",
               },
               {
-                icon: "🧗",
+                icon: Mountain,
                 title: "High-Altitude Porters (HAPs)",
                 desc: "Experienced, certified high-altitude porters from Gilgit-Baltistan with proven track records on 8,000m peaks.",
               },
               {
-                icon: "📡",
+                icon: Radio,
                 title: "Communication & Weather",
                 desc: "Satellite phone facilities, weather forecasting service, and daily BC-team communication support.",
               },
               {
-                icon: "🚁",
+                icon: LifeBuoy,
                 title: "Emergency & Rescue",
                 desc: "Emergency protocols, helicopter rescue coordination, and 24/7 crisis management from our Islamabad office.",
               },
-            ].map((service, i) => (
-              <div
-                key={i}
-                className="bg-card rounded-2xl border border-border p-6 hover:border-[#45919c]/40 hover:shadow-md transition-all"
-              >
-                <div className="text-3xl mb-3">{service.icon}</div>
-                <h3 className="font-bold text-foreground mb-2 text-sm">
-                  {service.title}
-                </h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {service.desc}
-                </p>
-              </div>
-            ))}
+            ].map((service, i) => {
+              const Icon = service.icon;
+              return (
+                <div
+                  key={i}
+                  className="bg-card rounded-2xl border border-border p-6 hover:border-[#45919c]/40 hover:shadow-md transition-all flex flex-col items-center text-center space-y-3"
+                >
+                  <Icon className="w-8 h-8 text-primary" />
+                  <h3 className="font-bold text-foreground text-sm">
+                    {service.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {service.desc}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
