@@ -1,51 +1,85 @@
 "use client";
-import { Shield, Headphones, Medal, Leaf, Compass, MapPin, Award, Star, Quote, ArrowRight, Phone, MessageCircle } from "lucide-react"
-import { motion } from "framer-motion"
-import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import axios from "axios"
+import {
+  Shield,
+  Headphones,
+  Medal,
+  Leaf,
+  Compass,
+  MapPin,
+  ArrowRight,
+  MessageCircle,
+} from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import axios from "axios";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import ResponsiveCarousel from "@/components/responsivecarousel"
-import TourIcons from "@/app/touricons"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import ResponsiveCarousel from "@/components/responsivecarousel";
+import TourIcons from "@/app/touricons";
 
-import { heroSection, whyChoose, featuredExperiences, popularDestinations, fallbackTestimonials, aboutPreview } from "@/data/homeContent"
-import { getPublicTravelTips, getTrustedCompaniesPublic } from "@/data/utils"
-import { BASE_URL } from "@/app/Var"
+import {
+  heroSection,
+  whyChoose,
+  featuredExperiences,
+  popularDestinations,
+  fallbackTestimonials,
+  aboutPreview,
+} from "@/data/homeContent";
+import { getPublicTravelTips, getTrustedCompaniesPublic } from "@/data/utils";
+import { BASE_URL } from "@/app/Var";
+
+// Reusable reveal stagger component
+function RevealStagger({
+  children,
+  delayOffset = 0,
+}: {
+  children: React.ReactNode;
+  delayOffset?: number;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      initial={reduce ? false : { opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{
+        duration: 0.6,
+        delay: delayOffset,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function Home() {
-  const [tours, setTours] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-  const [testimonials, setTestimonials] = useState<any[]>([])
-  const [loadingTestimonials, setLoadingTestimonials] = useState(true)
-  const [tips, setTips] = useState<any[]>([])
-  const [loadingTips, setLoadingTips] = useState(true)
-  const [trustedCompanies, setTrustedCompanies] = useState<any[]>([])
-  const [loadingCompanies, setLoadingCompanies] = useState(true)
-
-  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
+  const [tours, setTours] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [testimonials, setTestimonials] = useState<any[]>([]);
+  const [loadingTestimonials, setLoadingTestimonials] = useState(true);
 
   useEffect(() => {
     async function loadInitialData() {
       try {
-        const toursRes = await axios.get(`${BASE_URL}/api/tours`)
+        const toursRes = await axios.get(`${BASE_URL}/api/tours`);
         if (toursRes.data && toursRes.data.data) {
-          setTours(toursRes.data.data)
+          setTours(toursRes.data.data);
         }
       } catch (err) {
-        console.error("Failed to fetch tours:", err)
-        setError("Failed to load tours.")
+        console.error("Failed to fetch tours:", err);
+        setError("Failed to load tours.");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
 
       try {
-        const testRes = await fetch(`${BASE_URL}/api/testimonials`)
-        const testData = await testRes.json()
+        const testRes = await fetch(`${BASE_URL}/api/testimonials`);
+        const testData = await testRes.json();
         if (testData.success && testData.data && testData.data.length > 0) {
           const mapped = testData.data.map((t: any) => ({
             id: t._id,
@@ -56,261 +90,287 @@ export default function Home() {
             image: t.image,
             tour: t.tripName,
             date: new Date(t.tripDate).toLocaleDateString(),
-          }))
-          setTestimonials(mapped)
+          }));
+          setTestimonials(mapped);
         } else {
-          setTestimonials(fallbackTestimonials)
+          setTestimonials(fallbackTestimonials);
         }
       } catch (err) {
-        console.error("Failed to fetch testimonials:", err)
-        setTestimonials(fallbackTestimonials)
+        console.error("Failed to fetch testimonials:", err);
+        setTestimonials(fallbackTestimonials);
       } finally {
-        setLoadingTestimonials(false)
-      }
-
-      try {
-        const tipsData = await getPublicTravelTips()
-        setTips(tipsData)
-      } catch (err) {
-        console.error("Failed to fetch tips:", err)
-      } finally {
-        setLoadingTips(false)
-      }
-
-      try {
-        const compData = await getTrustedCompaniesPublic()
-        setTrustedCompanies(compData)
-      } catch (err) {
-        console.error("Failed to fetch companies:", err)
-      } finally {
-        setLoadingCompanies(false)
+        setLoadingTestimonials(false);
       }
     }
 
-    loadInitialData()
-  }, [])
-
-  const nextTestimonial = () => {
-    setCurrentTestimonialIndex((prev) =>
-      prev === testimonials.length - 1 ? 0 : prev + 1
-    )
-  }
-
-  const prevTestimonial = () => {
-    setCurrentTestimonialIndex((prev) =>
-      prev === 0 ? testimonials.length - 1 : prev - 1
-    )
-  }
-
-  // Auto-rotate testimonials
-  useEffect(() => {
-    if (testimonials.length === 0) return
-    const timer = setInterval(() => {
-      nextTestimonial()
-    }, 8000)
-    return () => clearInterval(timer)
-  }, [testimonials])
+    loadInitialData();
+  }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary selection:text-white">
-      {/* Hero Section */}
-      <section className="relative h-[85vh] flex items-center justify-center bg-black overflow-hidden">
+    <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+      {/* 1. Asymmetric Left-Aligned Hero */}
+      <section className="relative min-h-[100dvh] flex items-center bg-black overflow-hidden pt-24 pb-16">
         <div className="absolute inset-0 z-0">
           <Image
             src="/assets/home/hero-1.jpg"
             alt="Majestic Karakoram Peaks"
             fill
-            className="object-cover opacity-70 scale-105 animate-[scaleOut_20s_infinite_alternate]"
+            className="object-cover opacity-60 scale-105 animate-[scaleOut_20s_infinite_alternate]"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent" />
+          {/* Subtle gradient for text readability, avoiding heavy centering */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
         </div>
 
-        <div className="container mx-auto px-4 z-10 relative text-left">
-          <div className="max-w-3xl space-y-6">
-            <Badge className="bg-primary/20 text-primary border border-primary/30 px-3 py-1 text-sm rounded-full backdrop-blur-md">
-              EST. 1990 — 35+ Years of Trust
-            </Badge>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight drop-shadow-md">
-              {heroSection.headline}
-            </h1>
-            <p className="text-lg md:text-xl text-white/90 font-light leading-relaxed max-w-2xl">
-              {heroSection.subheading}
-            </p>
-            <div className="flex flex-wrap gap-4 pt-4">
-              <Link href="/contact">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                  {heroSection.ctaPrimary}
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Link href="/tours">
-                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-md shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                  {heroSection.ctaSecondary}
-                </Button>
-              </Link>
-              <a href="https://wa.me/923000000000" target="_blank" rel="noopener noreferrer">
-                <Button size="lg" variant="outline" className="bg-green-600 hover:bg-green-700 text-white border-none shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5 fill-white text-green-600" />
-                  {heroSection.ctaWhatsApp}
-                </Button>
-              </a>
-            </div>
+        <div className="container mx-auto px-4 z-10 relative">
+          <div className="max-w-3xl space-y-8">
+            <RevealStagger delayOffset={0.1}>
+              <h1 className="font-display text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.05]">
+                {heroSection.headline}
+              </h1>
+            </RevealStagger>
+
+            <RevealStagger delayOffset={0.2}>
+              <p className="text-xl md:text-2xl text-white/80 font-light leading-relaxed max-w-2xl">
+                {heroSection.subheading}
+              </p>
+            </RevealStagger>
+
+            <RevealStagger delayOffset={0.3}>
+              <div className="flex flex-wrap gap-6 pt-4">
+                <Link href="/contact">
+                  <Button
+                    size="lg"
+                    className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg px-8 py-6 text-lg font-medium"
+                  >
+                    {heroSection.ctaPrimary}
+                  </Button>
+                </Link>
+                <Link href="/tours">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white/20 bg-white/5 hover:bg-white/10 text-white shadow-lg px-8 py-6 text-lg font-medium backdrop-blur-sm"
+                  >
+                    {heroSection.ctaSecondary}
+                  </Button>
+                </Link>
+              </div>
+            </RevealStagger>
           </div>
         </div>
       </section>
 
-      {/* Tour Categories Quick Access */}
+      {/* Tour Categories Quick Access - Adjusted to fit new palette */}
       <div className="relative -mt-16 z-20 container mx-auto px-4">
-        <div className="bg-card/75 border border-muted-foreground/10 rounded-3xl shadow-2xl backdrop-blur-xl p-6">
+        <div className="bg-background border border-border rounded-2xl shadow-xl p-8">
           <TourIcons />
         </div>
       </div>
 
-      {/* Why Choose Mountain Travels Pakistan */}
-      <section className="py-24 bg-background">
+      {/* 2. About Preview - Split Screen Editorial */}
+      <section className="py-32 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
-              {whyChoose.title}
-            </h2>
-            <p className="text-muted-foreground text-lg font-light leading-relaxed">
-              {whyChoose.description}
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <RevealStagger>
+              <div className="relative h-[600px] w-full rounded-none overflow-hidden">
+                <Image
+                  src={aboutPreview.image || "/placeholder.svg"}
+                  alt="Exploring Silk Road Routes"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </RevealStagger>
+
+            <div className="space-y-8">
+              <RevealStagger delayOffset={0.1}>
+                <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter text-foreground">
+                  {aboutPreview.title}
+                </h2>
+              </RevealStagger>
+
+              <RevealStagger delayOffset={0.2}>
+                <p className="text-muted-foreground text-lg leading-relaxed font-light max-w-prose">
+                  {aboutPreview.description}
+                </p>
+              </RevealStagger>
+
+              <RevealStagger delayOffset={0.3}>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-border mt-8">
+                  {aboutPreview.stats.map((stat, index) => (
+                    <div key={index} className="space-y-2">
+                      <div className="font-display text-4xl font-bold text-primary">
+                        {stat.value}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </RevealStagger>
+
+              <RevealStagger delayOffset={0.4}>
+                <div className="pt-8">
+                  <Link href="/about">
+                    <Button
+                      variant="link"
+                      className="text-primary hover:text-primary/80 p-0 text-lg font-medium group"
+                    >
+                      Read Our Complete Story
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                </div>
+              </RevealStagger>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* 3. Why Choose Us - Asymmetric Bento Grid */}
+      <section className="py-32 bg-muted/50 border-y border-border">
+        <div className="container mx-auto px-4">
+          <RevealStagger>
+            <div className="max-w-3xl mb-20 space-y-6">
+              <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tighter text-foreground">
+                {whyChoose.title}
+              </h2>
+              <p className="text-muted-foreground text-xl font-light leading-relaxed">
+                {whyChoose.description}
+              </p>
+            </div>
+          </RevealStagger>
+
+          {/* Bento Grid: 2 top cards, 3 bottom cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {whyChoose.reasons.map((reason, idx) => (
+              <RevealStagger key={idx} delayOffset={idx * 0.1}>
+                <div
+                  className={`bg-background border border-border p-10 h-full flex flex-col justify-between hover:shadow-lg transition-shadow duration-500
+                  ${idx === 0 ? "md:col-span-2 lg:col-span-2" : ""}
+                  ${idx === 1 ? "md:col-span-1 lg:col-span-1" : ""}
+                `}
+                >
+                  <div className="space-y-6">
+                    <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-primary">
+                      {reason.icon === "medal" && <Medal className="w-5 h-5" />}
+                      {reason.icon === "map-pin" && (
+                        <MapPin className="w-5 h-5" />
+                      )}
+                      {reason.icon === "compass" && (
+                        <Compass className="w-5 h-5" />
+                      )}
+                      {reason.icon === "shield" && (
+                        <Shield className="w-5 h-5" />
+                      )}
+                      {reason.icon === "leaf" && <Leaf className="w-5 h-5" />}
+                    </div>
+                    <h3 className="font-display text-2xl font-bold text-foreground">
+                      {reason.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {reason.description}
+                    </p>
+                  </div>
+                </div>
+              </RevealStagger>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Featured Experiences */}
+      <section className="py-32 bg-background">
+        <div className="container mx-auto px-4">
+          <RevealStagger>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+              <div className="max-w-2xl space-y-6">
+                <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter text-foreground">
+                  Featured Experiences
+                </h2>
+                <p className="text-muted-foreground text-lg font-light leading-relaxed">
+                  Explore our core pillars of adventure and discovery, carefully
+                  designed to introduce you to the ultimate highlights of
+                  Pakistan and Central Asia.
+                </p>
+              </div>
+              <Link href="/tours">
+                <Button
+                  variant="outline"
+                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8"
+                >
+                  View All Experiences
+                </Button>
+              </Link>
+            </div>
+          </RevealStagger>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {whyChoose.reasons.map((reason, idx) => (
-              <Card key={idx} className="bg-muted/30 border-muted-foreground/10 rounded-2xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
-                <CardContent className="p-8 space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                    {reason.icon === "medal" && <Medal className="w-6 h-6" />}
-                    {reason.icon === "map-pin" && <MapPin className="w-6 h-6" />}
-                    {reason.icon === "compass" && <Compass className="w-6 h-6" />}
-                    {reason.icon === "shield" && <Shield className="w-6 h-6" />}
-                    {reason.icon === "leaf" && <Leaf className="w-6 h-6" />}
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground">{reason.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
-                    {reason.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* About Preview */}
-      <section className="py-24 bg-muted/30 border-y border-muted-foreground/10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="relative h-96 md:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-muted-foreground/10">
-              <Image
-                src={aboutPreview.image || "/placeholder.svg"}
-                alt="Exploring Silk Road Routes"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="space-y-6">
-              <Badge className="bg-primary/10 text-primary border-none">Our Story</Badge>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
-                {aboutPreview.title}
-              </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed font-light">
-                {aboutPreview.description}
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-4 border-t border-muted-foreground/10">
-                {aboutPreview.stats.map((stat, index) => (
-                  <div key={index} className="space-y-1">
-                    <div className="text-3xl font-extrabold text-primary">{stat.value}</div>
-                    <div className="text-sm text-muted-foreground font-medium">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="pt-6">
-                <Link href="/about">
-                  <Button size="lg" className="group">
-                    Read Our Complete Story
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Experiences */}
-      <section className="py-24 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
-              Featured Travel Experiences
-            </h2>
-            <p className="text-muted-foreground text-lg font-light leading-relaxed">
-              Explore our core pillars of adventure and discovery, carefully designed to introduce you to the ultimate highlights of Pakistan and Central Asia.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredExperiences.map((experience, idx) => (
-              <Card key={idx} className="bg-card border-muted-foreground/10 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1">
-                <div className="relative h-56">
-                  <Image
-                    src={experience.image || "/placeholder.svg"}
-                    alt={experience.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                  <h3 className="absolute bottom-4 left-6 text-xl font-bold text-white">{experience.title}</h3>
-                </div>
-                <CardContent className="p-6">
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                    {experience.description}
-                  </p>
-                  <Link href="/tours">
-                    <Button variant="link" className="text-primary hover:text-primary/80 p-0 font-bold group/btn">
-                      Explore Options
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Popular Destinations Carousel */}
-      <section className="py-24 bg-muted/30 border-y border-muted-foreground/10">
-        <div className="container mx-auto px-4">
-          <ResponsiveCarousel
-            title="Explore Pakistan's Most Remarkable Destinations"
-            items={popularDestinations}
-            renderCard={(dest) => (
-              <div className="h-[430px] w-[360px] p-4 flex flex-col justify-between bg-card border border-muted-foreground/10 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
-                <div>
-                  <div className="relative h-48 w-full rounded-xl overflow-hidden mb-4 shadow-sm">
-                    <img
-                      src={dest.image || "/placeholder.svg"}
-                      alt={dest.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              <RevealStagger key={idx} delayOffset={idx * 0.15}>
+                <div className="group cursor-pointer">
+                  <div className="relative h-[400px] mb-6 overflow-hidden bg-muted">
+                    <Image
+                      src={experience.image || "/placeholder.svg"}
+                      alt={experience.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">{dest.name}</h3>
-                  <p className="text-muted-foreground text-sm line-clamp-3 leading-relaxed">{dest.description}</p>
+                  <h3 className="font-display text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                    {experience.title}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    {experience.description}
+                  </p>
+                  <span className="text-primary font-medium flex items-center group-hover:underline underline-offset-4">
+                    Explore Options
+                    <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                  </span>
                 </div>
-                <div className="flex items-center justify-between mt-4 pt-4 border-t border-muted-foreground/10">
-                  <span className="text-sm font-medium text-primary">{dest.tours} Core Packages</span>
-                  <Link href="/tours">
-                    <Button size="sm" className="bg-primary/10 hover:bg-primary/20 text-primary border-none">
-                      Explore
-                    </Button>
-                  </Link>
+              </RevealStagger>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Popular Destinations */}
+      <section className="py-32 bg-muted border-y border-border">
+        <div className="container mx-auto px-4">
+          <RevealStagger>
+            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter text-foreground mb-16 max-w-2xl">
+              Explore Pakistan's Most Remarkable Destinations
+            </h2>
+          </RevealStagger>
+
+          <ResponsiveCarousel
+            title=""
+            items={popularDestinations}
+            renderCard={(dest) => (
+              <div className="h-[480px] w-[340px] flex flex-col bg-background overflow-hidden group border border-border">
+                <div className="relative h-3/5 w-full overflow-hidden">
+                  <img
+                    src={dest.image || "/placeholder.svg"}
+                    alt={dest.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-8 flex flex-col justify-between flex-grow">
+                  <div>
+                    <h3 className="font-display text-2xl font-bold text-foreground mb-3">
+                      {dest.name}
+                    </h3>
+                    <p className="text-muted-foreground text-sm line-clamp-3 leading-relaxed">
+                      {dest.description}
+                    </p>
+                  </div>
+                  <div className="mt-6 flex items-center justify-between">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                      {dest.tours} Packages
+                    </span>
+                  </div>
                 </div>
               </div>
             )}
@@ -318,122 +378,84 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-24 bg-background relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-          <div className="absolute -top-10 -left-10 text-9xl text-primary"><Quote /></div>
-          <div className="absolute bottom-10 right-10 text-9xl text-primary transform rotate-180"><Quote /></div>
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10 max-w-4xl">
-          <div className="text-center space-y-4 mb-16">
-            <Badge className="bg-primary/10 text-primary border-none">Guest Reviews</Badge>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
-              What Our International Guests Say
-            </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed font-light">
-              Read real reviews from explorers, photographers, and mountaineers who have traveled with us.
-            </p>
-          </div>
-
-          <div className="relative bg-muted/20 border border-muted-foreground/10 rounded-3xl p-8 md:p-12 shadow-xl backdrop-blur-sm">
-            {testimonials.length > 0 && testimonials[currentTestimonialIndex] && (
-              <div className="space-y-6 text-center">
-                <div className="flex justify-center">
-                  {[...Array(testimonials[currentTestimonialIndex].rating || 5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-lg md:text-2xl text-foreground italic font-light leading-relaxed">
-                  "{testimonials[currentTestimonialIndex].text}"
-                </p>
-                <div className="space-y-1">
-                  <h4 className="text-xl font-bold text-foreground">
-                    {testimonials[currentTestimonialIndex].name}
-                  </h4>
-                  <p className="text-sm text-primary font-medium">
-                    {testimonials[currentTestimonialIndex].tour} ({testimonials[currentTestimonialIndex].location})
-                  </p>
-                  {testimonials[currentTestimonialIndex].date && (
-                    <p className="text-xs text-muted-foreground">{testimonials[currentTestimonialIndex].date}</p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Navigation Dots */}
-            <div className="flex justify-center mt-8 gap-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentTestimonialIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    currentTestimonialIndex === index ? "bg-primary" : "bg-muted-foreground/30"
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Tailor-Made Travel Section */}
-      <section className="py-24 bg-muted/50 border-t border-muted-foreground/10">
+      {/* 6. Testimonials - Minimalist layout */}
+      <section className="py-32 bg-background">
         <div className="container mx-auto px-4">
-          <div className="bg-card border border-muted-foreground/10 rounded-3xl p-8 md:p-16 shadow-2xl relative overflow-hidden">
-            <div className="absolute right-0 top-0 h-full w-1/3 bg-[radial-gradient(circle_at_top_right,rgba(var(--primary-rgb),0.1),transparent)] hidden lg:block" />
-            <div className="max-w-3xl space-y-6 relative z-10">
-              <Badge className="bg-primary/10 text-primary border-none">Bespoke Journeys</Badge>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
-                Tailor-Made Travel Specialists
-              </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed font-light">
-                No two travelers are alike. Whether you are interested in culture, photography, history, trekking, wildlife, archaeology, mountain landscapes, or Silk Road exploration, our specialists will create a customized itinerary designed specifically for you.
-              </p>
-              <div className="pt-4 flex flex-wrap gap-4">
-                <Link href="/contact">
-                  <Button size="lg" className="bg-primary hover:bg-primary/90 text-white shadow-lg transition-transform hover:-translate-y-1">
-                    Request a Custom Itinerary
-                  </Button>
-                </Link>
-                <a href="https://wa.me/923000000000" target="_blank" rel="noopener noreferrer">
-                  <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10 flex items-center gap-2">
-                    <MessageCircle className="h-5 w-5 fill-primary text-background" />
-                    WhatsApp Us Today
-                  </Button>
-                </a>
-              </div>
-            </div>
+          <RevealStagger>
+            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter text-foreground mb-20 text-center">
+              Voices of Our Guests
+            </h2>
+          </RevealStagger>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
+            {testimonials.slice(0, 3).map((testimonial, idx) => (
+              <RevealStagger key={idx} delayOffset={idx * 0.1}>
+                <div className="space-y-6">
+                  <p className="text-lg text-foreground leading-relaxed">
+                    "{testimonial.text}"
+                  </p>
+                  <div className="flex items-center gap-4 pt-4 border-t border-border">
+                    <div>
+                      <h4 className="font-display font-bold text-foreground">
+                        {testimonial.name}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {testimonial.tour}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </RevealStagger>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Final CTAs & Start Planning Your Journey */}
-      <section className="py-24 bg-primary text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.05),transparent)]" />
-        <div className="container mx-auto px-4 text-center space-y-8 relative z-10 max-w-4xl">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight">
-            Start Planning Your Journey
-          </h2>
-          <p className="text-white/80 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto">
-            Whether you dream of exploring Pakistan's rich cultural heritage, discovering the spectacular Karakoram Mountains, following the ancient Silk Road, or embarking on a challenging trekking expedition, our experienced team is ready to help.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-            <Link href="/contact">
-              <Button size="lg" className="bg-white text-primary hover:bg-white/90 text-sm md:text-base font-bold shadow-2xl transition-transform hover:-translate-y-1">
-                Plan Your Tour
-              </Button>
-            </Link>
-            <a href="https://wa.me/923000000000" target="_blank" rel="noopener noreferrer">
-              <Button size="lg" variant="outline" className="border-white/20 bg-white/10 hover:bg-white/20 text-white text-sm md:text-base font-bold shadow-2xl transition-transform hover:-translate-y-1 flex items-center gap-2">
-                <MessageCircle className="h-5 w-5 fill-white text-primary" />
-                WhatsApp Our Specialists
-              </Button>
-            </a>
-          </div>
+      {/* 7. Final CTAs */}
+      <section className="py-32 bg-primary text-primary-foreground relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.08),transparent)]" />
+        <div className="container mx-auto px-4 text-center space-y-10 relative z-10 max-w-3xl">
+          <RevealStagger>
+            <h2 className="font-display text-5xl md:text-7xl font-bold tracking-tighter leading-tight">
+              Start Planning Your Journey
+            </h2>
+          </RevealStagger>
+          <RevealStagger delayOffset={0.1}>
+            <p className="text-primary-foreground/80 text-xl font-light leading-relaxed mx-auto">
+              Whether you dream of exploring Pakistan's rich cultural heritage,
+              discovering the spectacular Karakoram Mountains, following the
+              ancient Silk Road, or embarking on a challenging trekking
+              expedition, our experienced team is ready to help.
+            </p>
+          </RevealStagger>
+          <RevealStagger delayOffset={0.2}>
+            <div className="flex flex-col sm:flex-row justify-center gap-6 pt-8">
+              <Link href="/contact">
+                <Button
+                  size="lg"
+                  className="bg-secondary hover:bg-secondary/90 text-secondary-foreground text-lg font-medium px-10 py-7 shadow-2xl"
+                >
+                  Plan Your Tour
+                </Button>
+              </Link>
+              <a
+                href="https://wa.me/923000000000"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/20 bg-white/5 hover:bg-white/10 text-white text-lg font-medium px-10 py-7 backdrop-blur-sm flex items-center gap-3"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  WhatsApp Our Specialists
+                </Button>
+              </a>
+            </div>
+          </RevealStagger>
         </div>
       </section>
     </div>
-  )
+  );
 }

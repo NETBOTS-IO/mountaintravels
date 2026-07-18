@@ -4,98 +4,75 @@
 
 @layer base {
   :root {
-    --border: 0 0% 90%; /* very light gray border */
-    --foreground: 222.2 84% 4.9%; /* dark text */
+    --background: 60 25% 97%; /* #F9F9F6 Bone */
+    --foreground: 217 33% 17%; /* #1E293B Alpine Slate */
+    
+    --card: 0 0% 100%;
+    --card-foreground: 217 33% 17%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 33% 17%;
 
-    --primary: 187 65% 35%;
-    --secondary-foreground: 210 40% 98%;
-    --primary-hover: 45 100% 50%; /* bright yellow */
+    --primary: 171 51% 8%; /* #0A1F1C Deep Pine */
+    --primary-foreground: 60 25% 97%;
+    
+    --secondary: 24 67% 53%; /* #D97736 Amber */
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 60 15% 92%;
+    --muted-foreground: 217 20% 40%;
+    
+    --accent: 171 20% 15%;
+    --accent-foreground: 60 25% 97%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
 
-    --secondary: 25 95% 53%; /* 🍊 bright orange */
-    --secondary-foreground: 210 40% 98%;
-
-    --accent: 200 65% 38%; /* 🌊 mountain sky blue */
-    --accent-foreground: 210 40% 98%;
-
-    --muted: 210 40% 96.1%; /* soft gray for bg */
-    --muted-foreground: 215.4 16.3% 46.9%; /* muted text */
-
-    --ring: 158 40% 32%; /* same as primary for focus */
+    --border: 60 10% 88%;
+    --input: 60 10% 85%;
+    --ring: 24 67% 53%;
+    --radius: 0.5rem;
   }
 
-
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 187 65% 35%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 25 95% 53%; /* 🍊 same orange */
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 270 45% 42%;
-    --accent-foreground: 210 40% 98%;
+    --background: 171 51% 8%;
+    --foreground: 60 25% 97%;
+    
+    --card: 171 40% 12%;
+    --card-foreground: 60 25% 97%;
+    
+    --popover: 171 40% 12%;
+    --popover-foreground: 60 25% 97%;
+
+    --primary: 60 25% 97%;
+    --primary-foreground: 171 51% 8%;
+    
+    --secondary: 24 67% 53%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 171 30% 15%;
+    --muted-foreground: 171 10% 60%;
+    
+    --accent: 171 30% 15%;
+    --accent-foreground: 60 25% 97%;
+    
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 187 65% 35%;
+    
+    --border: 171 30% 20%;
+    --input: 171 30% 20%;
+    --ring: 24 67% 53%;
   }
 }
 @layer utilities {
-  .bg-about {
-    @apply bg-green-100 text-gray-800; /* light green */
-  }
-  
-  .bg-tour-categories {
-    @apply bg-white text-gray-800; /* pure white */
-  }
-  
-  
-  .bg-featured {
-    @apply bg-slate-100 text-gray-800; /* light gray/stone */
-  }
-  
-  .bg-destinations {
-    @apply bg-rose-100 text-gray-800; /* light pink */
-  }
-  
-  .bg-blog {
-    @apply bg-yellow-100 text-gray-800; /* light yellow */
-  }
-  
-  .bg-testimonials {
-    @apply bg-indigo-100 text-gray-800; /* light indigo */
-  }
-  
-  .bg-trusted {
-    @apply bg-stone-100 text-gray-800; /* light stone gray */
-  }
-  
-  .bg-cta {
-    @apply bg-cyan-100 text-gray-800; /* light cyan */
-  }
-  
-  
-
-
 }
 
 @layer base {
-  /* ✅ Keep the background green */
-  .bg-primary {
-    @apply bg-[hsl(var(--primary))] text-white;
+  * {
+    @apply border-border;
   }
-
-  /* ✅ On hover, children (links, buttons, text) turn orange/yellow */
-  .bg-primary a:hover,
-  .bg-primary button:hover,
-  .bg-primary li:hover {
-    @apply text-[hsl(var(--primary-hover))];
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
