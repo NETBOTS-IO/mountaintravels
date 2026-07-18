@@ -30,6 +30,7 @@ import {
   MessageSquare,
   AlertCircle,
   CheckCircle,
+  ArrowRight,
 } from "lucide-react";
 import Animation from "../../../../components/animations/animations";
 
