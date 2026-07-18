@@ -2,131 +2,127 @@ import { body, check, param, query } from "express-validator";
 
 //---------- User Validation ----------
 export const loginValidation = [
-  body('email')
+  body("email")
     .isEmail()
     .normalizeEmail()
-    .withMessage('Please provide a valid email address'),
-  body('password')
-    .isLength({ min: 1 })
-    .withMessage('Password is required')
+    .withMessage("Please provide a valid email address"),
+  body("password").isLength({ min: 1 }).withMessage("Password is required"),
 ];
 
 export const profileUpdateValidation = [
-  body('firstName')
+  body("firstName")
     .optional()
     .trim()
     .isLength({ min: 2, max: 50 })
-    .withMessage('First name must be between 2 and 50 characters'),
-  body('lastName')
+    .withMessage("First name must be between 2 and 50 characters"),
+  body("lastName")
     .optional()
     .trim()
     .isLength({ min: 2, max: 50 })
-    .withMessage('Last name must be between 2 and 50 characters')
+    .withMessage("Last name must be between 2 and 50 characters"),
 ];
 
 export const passwordChangeValidation = [
-  body('currentPassword')
+  body("currentPassword")
     .isLength({ min: 1 })
-    .withMessage('Current password is required'),
-  body('newPassword')
+    .withMessage("Current password is required"),
+  body("newPassword")
     .isLength({ min: 8 })
-    .withMessage('New password must be at least 8 characters long')
+    .withMessage("New password must be at least 8 characters long")
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
-    .withMessage('New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character')
+    .withMessage(
+      "New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+    ),
 ];
 
 export const forgotPasswordValidation = [
-  body('email')
+  body("email")
     .isEmail()
     .normalizeEmail()
-    .withMessage('Please provide a valid email address')
+    .withMessage("Please provide a valid email address"),
 ];
 
 export const resetPasswordValidation = [
-  body('token')
-    .isLength({ min: 1 })
-    .withMessage('Reset token is required'),
-  body('newPassword')
+  body("token").isLength({ min: 1 }).withMessage("Reset token is required"),
+  body("newPassword")
     .isLength({ min: 8 })
-    .withMessage('New password must be at least 8 characters long')
+    .withMessage("New password must be at least 8 characters long")
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
-    .withMessage('New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character')
+    .withMessage(
+      "New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+    ),
 ];
 
 export const createAdminValidation = [
-  body('email')
+  body("email")
     .isEmail()
     .normalizeEmail()
-    .withMessage('Please provide a valid email address'),
-  body('firstName')
+    .withMessage("Please provide a valid email address"),
+  body("firstName")
     .trim()
     .isLength({ min: 2, max: 50 })
-    .withMessage('First name must be between 2 and 50 characters'),
-  body('lastName')
+    .withMessage("First name must be between 2 and 50 characters"),
+  body("lastName")
     .trim()
     .isLength({ min: 2, max: 50 })
-    .withMessage('Last name must be between 2 and 50 characters'),
-  body('permissions')
+    .withMessage("Last name must be between 2 and 50 characters"),
+  body("permissions")
     .optional()
     .isObject()
-    .withMessage('Permissions must be an object')
+    .withMessage("Permissions must be an object"),
 ];
 
 export const updatePermissionsValidation = [
-  body('permissions')
-    .isObject()
-    .withMessage('Permissions must be an object'),
-  body('permissions.tours')
+  body("permissions").isObject().withMessage("Permissions must be an object"),
+  body("permissions.tours")
     .optional()
     .isBoolean()
-    .withMessage('Tours permission must be a boolean'),
-  body('permissions.blogs')
+    .withMessage("Tours permission must be a boolean"),
+  body("permissions.blogs")
     .optional()
     .isBoolean()
-    .withMessage('Blogs permission must be a boolean'),
-  body('permissions.gallery')
+    .withMessage("Blogs permission must be a boolean"),
+  body("permissions.gallery")
     .optional()
     .isBoolean()
-    .withMessage('Gallery permission must be a boolean'),
-  body('permissions.testimonials')
+    .withMessage("Gallery permission must be a boolean"),
+  body("permissions.testimonials")
     .optional()
     .isBoolean()
-    .withMessage('Testimonials permission must be a boolean'),
-  body('permissions.partnerFeedbacks')
+    .withMessage("Testimonials permission must be a boolean"),
+  body("permissions.partnerFeedbacks")
     .optional()
     .isBoolean()
-    .withMessage('Partner feedbacks permission must be a boolean'),
-  body('permissions.inquiries')
+    .withMessage("Partner feedbacks permission must be a boolean"),
+  body("permissions.inquiries")
     .optional()
     .isBoolean()
-    .withMessage('Inquiries permission must be a boolean'),
-  body('permissions.userManagement')
+    .withMessage("Inquiries permission must be a boolean"),
+  body("permissions.userManagement")
     .optional()
     .isBoolean()
-    .withMessage('User management permission must be a boolean'),
-  body('permissions.systemSettings')
+    .withMessage("User management permission must be a boolean"),
+  body("permissions.systemSettings")
     .optional()
     .isBoolean()
-    .withMessage('System settings permission must be a boolean')
+    .withMessage("System settings permission must be a boolean"),
 ];
 
 export const updateStatusValidation = [
-  body('isActive')
-    .isBoolean()
-    .withMessage('isActive must be a boolean value')
+  body("isActive").isBoolean().withMessage("isActive must be a boolean value"),
 ];
 
 export const emailVerificationValidation = [
-  body('token')
+  body("token")
     .isLength({ min: 1 })
-    .withMessage('Verification token is required')
+    .withMessage("Verification token is required"),
 ];
 
 export const resendVerificationValidation = [
-  body('email')
+  body("email")
     .isEmail()
     .normalizeEmail()
-    .withMessage('Please provide a valid email address')
+    .withMessage("Please provide a valid email address"),
 ];
 
 //---------- Tour Validation ----------
@@ -156,7 +152,7 @@ export const tourValidation = [
     if (!tourData.bestTime) throw new Error("Best time is required");
     if (!tourData.shortDescription && !tourData.longDescription)
       throw new Error(
-        "At least one description (shortDescription or longDescription) is required"
+        "At least one description (shortDescription or longDescription) is required",
       );
     if (!tourData.itineraries || !tourData.itineraries.length)
       throw new Error("At least one itinerary is required");
@@ -248,7 +244,7 @@ export const blogValidation = [
         value.blocks.length === 0
       ) {
         throw new Error(
-          "Content must be a valid Editor.js structure with at least one block"
+          "Content must be a valid Editor.js structure with at least one block",
         );
       }
 
@@ -336,7 +332,7 @@ export const testimonialValidation = [
     .custom((value) => {
       if ((value * 2) % 1 !== 0) {
         throw new Error(
-          "Rating must be a whole number or half value (e.g., 4.5)"
+          "Rating must be a whole number or half value (e.g., 4.5)",
         );
       }
       return true;
@@ -354,7 +350,7 @@ export const testimonialValidation = [
     .trim()
     .matches(/\.(jpg|jpeg|png|gif|webp)$/i)
     .withMessage(
-      "Image must be a valid image file (jpg, jpeg, png, gif, webp)"
+      "Image must be a valid image file (jpg, jpeg, png, gif, webp)",
     ),
 
   body("tripName")
@@ -390,7 +386,7 @@ export const testimonialValidation = [
       for (let highlight of highlights) {
         if (typeof highlight !== "string" || highlight.length > 100) {
           throw new Error(
-            "Each highlight must be a string with max 100 characters"
+            "Each highlight must be a string with max 100 characters",
           );
         }
       }
@@ -400,197 +396,203 @@ export const testimonialValidation = [
 
 //---------- Booking Validation ----------
 export const validateCreateBooking = [
-  body('tripId')
+  body("tripId")
     .notEmpty()
-    .withMessage('Trip ID is required')
-    .withMessage('Invalid Trip ID format'),
-    
-  body('departureId')
-    .optional()
+    .withMessage("Trip ID is required")
     .custom((value) => {
-      if (value && !isValidObjectId(value)) {
-        throw new Error('Invalid Departure ID format');
+      if (!isValidObjectId(value)) {
+        throw new Error("Invalid Trip ID format");
       }
       return true;
     }),
-    
-  body('firstName')
+
+  body("departureId")
+    .optional()
+    .custom((value) => {
+      if (value && !isValidObjectId(value)) {
+        throw new Error("Invalid Departure ID format");
+      }
+      return true;
+    }),
+
+  body("firstName")
     .trim()
     .notEmpty()
-    .withMessage('First name is required')
+    .withMessage("First name is required")
     .isLength({ min: 1, max: 50 })
-    .withMessage('First name must be between 1 and 50 characters')
-    .matches(/^[a-zA-Z\s]+$/)
-    .withMessage('First name can only contain letters and spaces'),
-    
-  body('lastName')
+    .withMessage("First name must be between 1 and 50 characters")
+    .matches(/^[a-zA-Z\s.-]+$/)
+    .withMessage(
+      "First name can only contain letters, spaces, dots, and hyphens",
+    ),
+
+  body("lastName")
     .trim()
     .notEmpty()
-    .withMessage('Last name is required')
+    .withMessage("Last name is required")
     .isLength({ min: 1, max: 50 })
-    .withMessage('Last name must be between 1 and 50 characters')
-    .matches(/^[a-zA-Z\s]+$/)
-    .withMessage('Last name can only contain letters and spaces'),
-    
-  body('email')
+    .withMessage("Last name must be between 1 and 50 characters")
+    .matches(/^[a-zA-Z\s.-]+$/)
+    .withMessage(
+      "Last name can only contain letters, spaces, dots, and hyphens",
+    ),
+
+  body("email")
     .trim()
     .isEmail()
-    .withMessage('Invalid email address')
-    .normalizeEmail()
+    .withMessage("Invalid email address")
     .isLength({ max: 100 })
-    .withMessage('Email must be less than 100 characters'),
-    
-  body('phone')
+    .withMessage("Email must be less than 100 characters"),
+
+  body("phone")
     .optional()
     .trim()
-    .isMobilePhone('any', { strictMode: false })
-    .withMessage('Invalid phone number format'),
-    
-  body('travelers')
+    .isMobilePhone("any", { strictMode: false })
+    .withMessage("Invalid phone number format"),
+
+  body("travelers")
     .isInt({ min: 1, max: 20 })
-    .withMessage('Number of travelers must be between 1 and 20'),
-    
-  body('specialRequests')
+    .withMessage("Number of travelers must be between 1 and 20"),
+
+  body("specialRequests")
     .optional()
     .trim()
     .isLength({ max: 500 })
-    .withMessage('Special requests must be less than 500 characters'),
+    .withMessage("Special requests must be less than 500 characters"),
 ];
 
 // Update booking validation rules
 export const validateUpdateBooking = [
-  body('status')
+  body("status")
     .optional()
-    .isIn(['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED'])
-    .withMessage('Invalid booking status'),
-    
-  body('paymentStatus')
+    .isIn(["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"])
+    .withMessage("Invalid booking status"),
+
+  body("paymentStatus")
     .optional()
-    .isIn(['PENDING', 'PAID', 'REFUNDED', 'FAILED'])
-    .withMessage('Invalid payment status'),
-    
-  body('paymentMethod')
+    .isIn(["PENDING", "PAID", "REFUNDED", "FAILED"])
+    .withMessage("Invalid payment status"),
+
+  body("paymentMethod")
     .optional()
     .trim()
     .isLength({ max: 50 })
-    .withMessage('Payment method must be less than 50 characters'),
-    
-  body('specialRequests')
+    .withMessage("Payment method must be less than 50 characters"),
+
+  body("specialRequests")
     .optional()
     .trim()
     .isLength({ max: 500 })
-    .withMessage('Special requests must be less than 500 characters'),
+    .withMessage("Special requests must be less than 500 characters"),
 ];
 
 // Departure validation rules
 export const validateCreateDeparture = [
-  body('tripId')
+  body("tripId")
     .notEmpty()
-    .withMessage('Trip ID is required')
-    .withMessage('Invalid Trip ID format'),
-    
-  body('date')
+    .withMessage("Trip ID is required")
+    .withMessage("Invalid Trip ID format"),
+
+  body("date")
     .isISO8601()
-    .withMessage('Invalid date format (use ISO 8601)')
+    .withMessage("Invalid date format (use ISO 8601)")
     .custom((value) => {
       const date = new Date(value);
       const now = new Date();
       if (date <= now) {
-        throw new Error('Departure date must be in the future');
+        throw new Error("Departure date must be in the future");
       }
       return true;
     }),
-    
-  body('price')
+
+  body("price")
     .isFloat({ min: 0.01 })
-    .withMessage('Price must be a positive number'),
-    
-  body('maxSpots')
+    .withMessage("Price must be a positive number"),
+
+  body("maxSpots")
     .isInt({ min: 1, max: 50 })
-    .withMessage('Max spots must be between 1 and 50'),
-    
-  body('status')
+    .withMessage("Max spots must be between 1 and 50"),
+
+  body("status")
     .optional()
-    .isIn(['AVAILABLE', 'LIMITED', 'SOLD_OUT', 'CANCELLED'])
-    .withMessage('Invalid departure status'),
+    .isIn(["AVAILABLE", "LIMITED", "SOLD_OUT", "CANCELLED"])
+    .withMessage("Invalid departure status"),
 ];
 
 // Parameter validation rules
-export const validateObjectIdParam = (paramName = 'id') => [
-  param(paramName)
-    .isMongoId()
-    .withMessage(`Invalid ${paramName} format`),
+export const validateObjectIdParam = (paramName = "id") => [
+  param(paramName).isMongoId().withMessage(`Invalid ${paramName} format`),
 ];
 
 export const validateBookingNumberParam = [
-  param('bookingNumber')
+  param("bookingNumber")
     .notEmpty()
-    .withMessage('Booking number is required')
+    .withMessage("Booking number is required")
     .isLength({ min: 5, max: 20 })
-    .withMessage('Invalid booking number format'),
+    .withMessage("Invalid booking number format"),
 ];
 
 // Query parameter validation
 export const validateBookingQuery = [
-  query('page')
+  query("page")
     .optional()
     .isInt({ min: 1 })
-    .withMessage('Page must be a positive integer'),
-    
-  query('limit')
+    .withMessage("Page must be a positive integer"),
+
+  query("limit")
     .optional()
     .isInt({ min: 1, max: 100 })
-    .withMessage('Limit must be between 1 and 100'),
-    
-  query('status')
+    .withMessage("Limit must be between 1 and 100"),
+
+  query("status")
     .optional()
-    .isIn(['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED'])
-    .withMessage('Invalid status filter'),
-    
-  query('email')
-    .optional()
-    .isEmail()
-    .withMessage('Invalid email format'),
+    .isIn(["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"])
+    .withMessage("Invalid status filter"),
+
+  query("email").optional().isEmail().withMessage("Invalid email format"),
 ];
 
 // Cancel booking validation
 export const validateCancelBooking = [
-  body('reason')
+  body("reason")
     .optional()
     .trim()
     .isLength({ max: 200 })
-    .withMessage('Cancellation reason must be less than 200 characters'),
+    .withMessage("Cancellation reason must be less than 200 characters"),
 ];
 
 // Rate limiting helper (basic implementation)
 const requestCounts = new Map();
 
-export const bookingRateLimit = (maxRequests = 5, windowMs = 60 * 60 * 1000) => {
+export const bookingRateLimit = (
+  maxRequests = 5,
+  windowMs = 60 * 60 * 1000,
+) => {
   return (req, res, next) => {
     const clientIP = req.ip || req.connection.remoteAddress;
     const now = Date.now();
-    
+
     if (!requestCounts.has(clientIP)) {
       requestCounts.set(clientIP, { count: 1, resetTime: now + windowMs });
       return next();
     }
-    
+
     const clientData = requestCounts.get(clientIP);
-    
+
     if (now > clientData.resetTime) {
       clientData.count = 1;
       clientData.resetTime = now + windowMs;
       return next();
     }
-    
+
     if (clientData.count >= maxRequests) {
       return res.status(429).json({
         success: false,
-        message: 'Too many booking requests. Please try again later.',
-        retryAfter: Math.ceil((clientData.resetTime - now) / 1000)
+        message: "Too many booking requests. Please try again later.",
+        retryAfter: Math.ceil((clientData.resetTime - now) / 1000),
       });
     }
-    
+
     clientData.count++;
     next();
   };
@@ -599,16 +601,19 @@ export const bookingRateLimit = (maxRequests = 5, windowMs = 60 * 60 * 1000) => 
 // Input sanitization middleware
 export const sanitizeBookingInput = (req, res, next) => {
   const sanitizeString = (str) => {
-    if (typeof str !== 'string') return str;
-    return str.trim().replace(/[<>]/g, '');
+    if (typeof str !== "string") return str;
+    return str.trim().replace(/[<>]/g, "");
   };
-  
+
   if (req.body) {
-    if (req.body.firstName) req.body.firstName = sanitizeString(req.body.firstName);
-    if (req.body.lastName) req.body.lastName = sanitizeString(req.body.lastName);
-    if (req.body.specialRequests) req.body.specialRequests = sanitizeString(req.body.specialRequests);
+    if (req.body.firstName)
+      req.body.firstName = sanitizeString(req.body.firstName);
+    if (req.body.lastName)
+      req.body.lastName = sanitizeString(req.body.lastName);
+    if (req.body.specialRequests)
+      req.body.specialRequests = sanitizeString(req.body.specialRequests);
     if (req.body.phone) req.body.phone = sanitizeString(req.body.phone);
   }
-  
+
   next();
 };
