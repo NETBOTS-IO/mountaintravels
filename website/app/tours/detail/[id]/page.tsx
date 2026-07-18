@@ -716,27 +716,45 @@ export default function TourPage() {
                         <MapPin className="w-6 h-6 sm:w-8 sm:h-8 mr-2 text-primary" />
                         Tour Map
                       </h2>
-                      <div className="aspect-video rounded-lg overflow-hidden">
-                        <iframe
-                          width="100%"
-                          height="100%"
-                          frameBorder="0"
-                          scrolling="no"
-                          marginHeight="0"
-                          marginWidth="0"
-                          src={`https://www.openstreetmap.org/export/embed.html?bbox=${tour.map.longitude - 0.1}%2C${tour.map.latitude - 0.1}%2C${tour.map.longitude + 0.1}%2C${tour.map.latitude + 0.1}&amp;layer=mapnik&amp;marker=${tour.map.latitude}%2C${tour.map.longitude}`}
-                        ></iframe>
-                      </div>
-                      <p className="mt-4 text-center text-sm text-gray-500">
-                        <a
-                          href={`https://www.openstreetmap.org/?mlat=${tour.map.latitude}&amp;mlon=${tour.map.longitude}#map=12/${tour.map.latitude}/${tour.map.longitude}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-primary transition-colors"
-                        >
-                          View Larger Map
-                        </a>
-                      </p>
+                      {tour.map?.longitude !== undefined &&
+                      tour.map?.latitude !== undefined ? (
+                        <>
+                          <div className="aspect-video rounded-lg overflow-hidden">
+                            <iframe
+                              width="100%"
+                              height="100%"
+                              frameBorder="0"
+                              scrolling="no"
+                              marginHeight={0}
+                              marginWidth={0}
+                              src={`https://www.openstreetmap.org/export/embed.html?bbox=${tour.map.longitude - 0.1}%2C${tour.map.latitude - 0.1}%2C${tour.map.longitude + 0.1}%2C${tour.map.latitude + 0.1}&amp;layer=mapnik&amp;marker=${tour.map.latitude}%2C${tour.map.longitude}`}
+                            ></iframe>
+                          </div>
+                          <p className="mt-4 text-center text-sm text-gray-500">
+                            <a
+                              href={`https://www.openstreetmap.org/?mlat=${tour.map.latitude}&amp;mlon=${tour.map.longitude}#map=12/${tour.map.latitude}/${tour.map.longitude}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="hover:text-primary transition-colors"
+                            >
+                              View Larger Map
+                            </a>
+                          </p>
+                        </>
+                      ) : (
+                        <div className="aspect-video rounded-lg overflow-hidden bg-muted flex items-center justify-center border border-dashed">
+                          <div className="text-center text-muted-foreground p-6">
+                            <MapPin className="w-12 h-12 mx-auto mb-3 opacity-30 text-primary" />
+                            <h3 className="font-bold text-sm text-foreground mb-1">
+                              Route Map Not Available
+                            </h3>
+                            <p className="text-xs">
+                              GPS coordinates for this tour route have not been
+                              loaded. Please contact support for track files.
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </TabsContent>
