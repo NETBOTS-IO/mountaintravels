@@ -20,6 +20,7 @@ import {
   ChevronRight,
   Home,
   Eye,
+  Globe,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -162,7 +163,7 @@ export default function PakistanToursPage() {
           </nav>
 
           <Badge className="bg-white/10 text-white border-white/20 mb-4 px-4 py-1.5 text-xs">
-            <Globe2 className="w-3.5 h-3.5 mr-1.5 inline text-[#2596be]" />
+            <Globe className="w-3.5 h-3.5 mr-1.5 inline text-[#2596be]" />
             Official Tourism Specialist Since 1990
           </Badge>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight mb-4 max-w-4xl mx-auto">
