@@ -4,67 +4,95 @@
 
 @layer base {
   :root {
-    --background: 60 25% 97%; /* #F9F9F6 Bone */
-    --foreground: 217 33% 17%; /* #1E293B Alpine Slate */
-    
-    --card: 0 0% 100%;
-    --card-foreground: 217 33% 17%;
-    
-    --popover: 0 0% 100%;
-    --popover-foreground: 217 33% 17%;
+    /* ============================================================
+     * Mountain Travels Pakistan — Brand Color System
+     * Primary:   #45919c  → HSL(188, 39%, 44%)  — Teal
+     * Secondary: #2596be  → HSL(196, 67%, 45%)  — Sky Blue
+     * ============================================================ */
 
-    --primary: 24 85% 50%; /* Brand Orange */
+    --background: 200 20% 97%;           /* Near-white blue tint */
+    --foreground: 210 33% 14%;           /* Deep navy text */
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 33% 14%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 33% 14%;
+
+    /* PRIMARY — #45919c Teal */
+    --primary: 188 39% 44%;
     --primary-foreground: 0 0% 100%;
-    
-    --secondary: 171 51% 8%; /* Deep Pine */
-    --secondary-foreground: 60 25% 97%;
-    
-    --muted: 60 15% 92%;
-    --muted-foreground: 217 20% 40%;
-    
-    --accent: 24 20% 15%;
-    --accent-foreground: 60 25% 97%;
-    
+
+    /* SECONDARY — #2596be Sky Blue */
+    --secondary: 196 67% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Muted / subtle backgrounds */
+    --muted: 196 20% 93%;
+    --muted-foreground: 210 15% 45%;
+
+    /* Accent — deeper teal for dark backgrounds */
+    --accent: 188 45% 18%;
+    --accent-foreground: 0 0% 98%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 60 10% 88%;
-    --input: 60 10% 85%;
-    --ring: 24 85% 50%;
+    --border: 196 15% 88%;
+    --input: 196 15% 85%;
+    --ring: 188 39% 44%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 171 51% 8%;
-    --foreground: 60 25% 97%;
-    
-    --card: 171 40% 12%;
-    --card-foreground: 60 25% 97%;
-    
-    --popover: 171 40% 12%;
-    --popover-foreground: 60 25% 97%;
+    --background: 188 45% 8%;           /* Very dark teal */
+    --foreground: 196 20% 95%;
 
-    --primary: 24 85% 50%;
+    --card: 188 40% 12%;
+    --card-foreground: 196 20% 95%;
+
+    --popover: 188 40% 12%;
+    --popover-foreground: 196 20% 95%;
+
+    /* PRIMARY stays same teal in dark mode */
+    --primary: 188 39% 50%;
     --primary-foreground: 0 0% 100%;
-    
-    --secondary: 60 25% 97%;
-    --secondary-foreground: 171 51% 8%;
-    
-    --muted: 171 30% 15%;
-    --muted-foreground: 171 10% 60%;
-    
-    --accent: 171 30% 15%;
-    --accent-foreground: 60 25% 97%;
-    
+
+    /* SECONDARY stays blue */
+    --secondary: 196 67% 50%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 188 30% 15%;
+    --muted-foreground: 196 15% 60%;
+
+    --accent: 188 30% 15%;
+    --accent-foreground: 196 20% 95%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    
-    --border: 171 30% 20%;
-    --input: 171 30% 20%;
-    --ring: 24 85% 50%;
+
+    --border: 188 25% 20%;
+    --input: 188 25% 20%;
+    --ring: 188 39% 50%;
   }
 }
+
 @layer utilities {
+  /* Brand utility classes for direct use */
+  .text-brand-teal   { color: #45919c; }
+  .text-brand-blue   { color: #2596be; }
+  .bg-brand-teal     { background-color: #45919c; }
+  .bg-brand-blue     { background-color: #2596be; }
+  .border-brand-teal { border-color: #45919c; }
+  .border-brand-blue { border-color: #2596be; }
+
+  /* Gradient utilities */
+  .gradient-brand {
+    background: linear-gradient(135deg, #45919c 0%, #2596be 100%);
+  }
+  .gradient-brand-dark {
+    background: linear-gradient(135deg, #2d6870 0%, #1a6f8a 100%);
+  }
 }
 
 @layer base {
@@ -73,6 +101,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }
 
@@ -85,27 +114,27 @@
 
 .admin-dashboard button:hover,
 .admin-dashboard a:hover {
-  @apply text-orange-600;
+  color: #45919c;
 }
 
 .admin-dashboard .bg-primary {
-  @apply bg-orange-600;
+  background-color: #45919c;
 }
 
 .admin-dashboard .text-primary {
-  @apply text-orange-600;
+  color: #45919c;
 }
 
 .admin-dashboard .border-primary {
-  @apply border-orange-600;
+  border-color: #45919c;
 }
 
 .admin-dashboard .hover\:bg-primary:hover {
-  @apply hover:bg-orange-600;
+  background-color: #2596be;
 }
 
 .admin-dashboard .hover\:text-primary:hover {
-  @apply hover:text-orange-600;
+  color: #45919c;
 }
 
 .typing-indicator::after {
