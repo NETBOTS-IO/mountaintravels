@@ -62,6 +62,10 @@ export default function ToursPage() {
   useEffect(() => {
     const pillar = searchParams.get("pillar");
     setActivePillar(pillar || "all");
+    const searchVal = searchParams.get("search");
+    if (searchVal) {
+      setSearchQuery(searchVal);
+    }
   }, [searchParams]);
 
   useEffect(() => {

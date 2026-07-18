@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Sparkles,
   Globe2,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,34 +24,44 @@ import {
 
 export default function DestinationsPage() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Unsplash replacements for stunning destinations visuals
   const destImages: Record<string, string> = {
     "hunza-valley":
-      "https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800&q=80", // Hunza
+      "https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800&q=80",
     "skardu-baltistan":
-      "https://images.unsplash.com/photo-1624313511990-675902801899?w=800&q=80", // Skardu
+      "https://images.unsplash.com/photo-1624313511990-675902801899?w=800&q=80",
     "gilgit-baltistan":
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80", // Karakoram / GB
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80",
     "chitral-kalash":
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80", // Hindu Kush
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
     "swat-valley":
-      "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=800&q=80", // Swat
+      "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=800&q=80",
     kashmir:
-      "https://images.unsplash.com/photo-1566228015668-4c45dbc4e2f5?w=800&q=80", // Kashmir
+      "https://images.unsplash.com/photo-1566228015668-4c45dbc4e2f5?w=800&q=80",
     lahore:
-      "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=800&q=80", // Badshahi Mosque
+      "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=800&q=80",
     taxila:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80", // Ancient ruins placeholder
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
     "makran-coast":
-      "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&q=80", // Coastal beach
+      "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&q=80",
   };
+
+  // Filter destinations based on search query
+  const filteredDestinations = popularDestinations.filter(
+    (dest) =>
+      dest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      dest.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      dest.highlights.some((h) =>
+        h.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+  );
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       {/* Hero Section */}
       <section
-        className="relative py-28 overflow-hidden"
+        className="relative py-24 overflow-hidden"
         style={{
           background:
             "linear-gradient(135deg, #0d2f38 0%, #1a4f5a 40%, #2596be 100%)",
@@ -78,147 +89,187 @@ export default function DestinationsPage() {
 
           <Badge className="bg-white/10 text-white border-white/20 mb-4 px-4 py-1.5 text-xs animate-pulse">
             <Sparkles className="w-3 h-3 mr-1.5 inline text-amber-300" />
-            Voted Top Travel Destination
+            Discover & Explore
           </Badge>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6 max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight mb-4 max-w-4xl mx-auto">
             {destinationsIntro.title}
           </h1>
-          <p className="text-lg md:text-xl text-white/70 font-light leading-relaxed max-w-3xl mx-auto">
+          <p className="text-base md:text-lg text-white/70 font-light leading-relaxed max-w-3xl mx-auto mb-8">
             {destinationsIntro.description}
           </p>
+
+          {/* Search bar inside destination page */}
+          <div className="max-w-md mx-auto relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+            <input
+              type="text"
+              placeholder="Search destinations, attractions..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+            />
+          </div>
         </div>
       </section>
 
       {/* Destinations Grid List */}
-      <section className="py-20 bg-muted/20 border-t border-border">
+      <section className="py-16 bg-muted/20 border-t border-border">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {popularDestinations.map((dest, index) => {
-              const isHovered = hoveredIndex === index;
-              return (
-                <div
-                  key={dest.id}
-                  className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:border-primary/20 transition-all duration-500 flex flex-col h-full transform hover:-translate-y-2"
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                >
-                  {/* Image Section */}
-                  <div className="relative h-60 w-full overflow-hidden bg-muted">
-                    <Image
-                      src={
-                        destImages[dest.id] ||
-                        "https://images.unsplash.com/photo-1469521669194-babb45599def?w=600&q=80"
-                      }
-                      alt={dest.name}
-                      fill
-                      unoptimized
-                      className={`object-cover transition-transform duration-1000 ease-out ${isHovered ? "scale-110 rotate-1" : "scale-100"}`}
-                    />
-                    {/* Shadow overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80" />
+          {filteredDestinations.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredDestinations.map((dest, index) => {
+                const isHovered = hoveredIndex === index;
+                // Clean short title
+                const shortTitle = dest.name.split("–")[0].trim();
+                // We will redirect to /tours?search=ShortTitle to filter exactly
+                const searchLink = `/tours?search=${encodeURIComponent(shortTitle)}`;
 
-                    <div className="absolute top-3 left-3 bg-white/90 backdrop-blur border border-white/20 px-3 py-1 rounded-full shadow-md">
-                      <span className="font-semibold text-primary flex items-center text-[10px] uppercase tracking-wider">
-                        <MapPin className="w-3 h-3 mr-1 text-[#45919c]" />
-                        Pakistan
-                      </span>
-                    </div>
+                return (
+                  <div
+                    key={dest.id}
+                    className="bg-card border border-border rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:border-[#45919c]/30 transition-all duration-400 flex flex-col h-full transform hover:-translate-y-1"
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    {/* Image Section */}
+                    <div className="relative h-56 w-full overflow-hidden bg-muted">
+                      <Image
+                        src={
+                          destImages[dest.id] ||
+                          "https://images.unsplash.com/photo-1469521669194-babb45599def?w=600&q=80"
+                        }
+                        alt={dest.name}
+                        fill
+                        unoptimized
+                        className={`object-cover transition-transform duration-700 ease-out ${isHovered ? "scale-105" : "scale-100"}`}
+                      />
+                      {/* Shadow overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <h2 className="font-bold text-lg leading-tight tracking-tight">
-                        {dest.name.split("–")[0].trim()}
-                      </h2>
-                      <span className="text-[11px] text-white/80 block mt-0.5 font-light tracking-wide line-clamp-1">
-                        {dest.name.split("–")[1]?.trim() || "Land of Wonders"}
-                      </span>
-                    </div>
-                  </div>
+                      <div className="absolute top-3 left-3 bg-white/90 backdrop-blur border border-white/20 px-2.5 py-0.5 rounded-full shadow-sm">
+                        <span className="font-semibold text-primary flex items-center text-[9px] uppercase tracking-wider">
+                          <MapPin className="w-2.5 h-2.5 mr-1 text-[#45919c]" />
+                          Destination
+                        </span>
+                      </div>
 
-                  {/* Content Section */}
-                  <div className="p-6 flex flex-col flex-grow justify-between space-y-4">
-                    <p className="text-muted-foreground font-light text-xs leading-relaxed flex-grow line-clamp-3">
-                      {dest.description}
-                    </p>
-
-                    {/* Highlights */}
-                    <div className="border-t border-border pt-4">
-                      <h3 className="font-bold text-xs mb-2.5 flex items-center text-primary">
-                        <Compass className="w-3.5 h-3.5 mr-1.5" />
-                        Key Highlights
-                      </h3>
-                      <div className="flex flex-wrap gap-1.5">
-                        {dest.highlights.slice(0, 3).map((highlight, idx) => (
-                          <span
-                            key={idx}
-                            className="inline-flex items-center text-[10px] bg-muted text-muted-foreground px-2.5 py-1 rounded-md border border-border"
-                          >
-                            <CheckCircle className="w-2.5 h-2.5 mr-1 text-[#45919c] shrink-0" />
-                            {highlight}
-                          </span>
-                        ))}
-                        {dest.highlights.length > 3 && (
-                          <span className="text-[10px] text-muted-foreground px-1 py-1 font-medium">
-                            +{dest.highlights.length - 3} more
-                          </span>
-                        )}
+                      <div className="absolute bottom-3 left-3 right-3 text-white">
+                        <h2 className="font-bold text-base leading-tight tracking-tight">
+                          {shortTitle}
+                        </h2>
+                        <span className="text-[10px] text-white/80 block mt-0.5 font-light tracking-wide line-clamp-1">
+                          {dest.name.split("–")[1]?.trim() || "Land of Wonders"}
+                        </span>
                       </div>
                     </div>
 
-                    {/* Appeal text block */}
-                    <p className="text-muted-foreground font-light italic text-xs border-l-2 border-primary pl-3 line-clamp-2">
-                      "{dest.appeal}"
-                    </p>
+                    {/* Content Section */}
+                    <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+                      <p className="text-muted-foreground font-light text-xs leading-relaxed flex-grow line-clamp-3">
+                        {dest.description}
+                      </p>
 
-                    {/* Suggested Trips */}
-                    <div className="pt-4 border-t border-border mt-auto">
-                      <div className="flex flex-wrap gap-1 mb-4">
-                        {dest.suggestedTours.map((tour, idx) => (
-                          <span
-                            key={idx}
-                            className="bg-primary/5 text-primary border border-primary/10 px-2 py-0.5 rounded text-[10px] font-medium"
-                          >
-                            {tour}
-                          </span>
-                        ))}
+                      {/* Highlights */}
+                      <div className="border-t border-border pt-3">
+                        <h3 className="font-bold text-[11px] mb-2 flex items-center text-[#45919c]">
+                          <Compass className="w-3 h-3 mr-1" />
+                          Key Highlights
+                        </h3>
+                        <div className="flex flex-wrap gap-1">
+                          {dest.highlights.slice(0, 3).map((highlight, idx) => (
+                            <span
+                              key={idx}
+                              className="inline-flex items-center text-[10px] bg-muted text-muted-foreground px-2 py-0.5 rounded border border-border"
+                            >
+                              <CheckCircle className="w-2.5 h-2.5 mr-1 text-[#45919c] shrink-0" />
+                              {highlight}
+                            </span>
+                          ))}
+                          {dest.highlights.length > 3 && (
+                            <span className="text-[9px] text-muted-foreground px-1 py-0.5 font-medium">
+                              +{dest.highlights.length - 3} more
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <Link href={`/tours`}>
-                        <Button
-                          size="sm"
-                          className="w-full text-xs font-semibold group bg-primary hover:bg-primary/95 transition-all"
-                        >
-                          Explore Tours
-                          <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </Link>
+
+                      {/* Appeal text block */}
+                      <p className="text-muted-foreground font-light italic text-xs border-l-2 border-primary pl-3 line-clamp-2">
+                        "{dest.appeal}"
+                      </p>
+
+                      {/* Suggested Trips */}
+                      <div className="pt-3 border-t border-border mt-auto">
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {dest.suggestedTours.map((tour, idx) => (
+                            <span
+                              key={idx}
+                              className="bg-primary/5 text-primary border border-primary/10 px-2 py-0.5 rounded text-[9px] font-medium"
+                            >
+                              {tour}
+                            </span>
+                          ))}
+                        </div>
+                        <Link href={searchLink}>
+                          <Button
+                            size="sm"
+                            className="w-full text-xs font-semibold group bg-primary hover:bg-primary/95 transition-all"
+                          >
+                            View Related Tours
+                            <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-card rounded-2xl border border-border">
+              <Globe2 className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
+              <h3 className="text-lg font-bold text-foreground mb-1">
+                No destinations found
+              </h3>
+              <p className="text-muted-foreground text-sm max-w-sm mx-auto mb-4">
+                No results match your search query "{searchQuery}". Try
+                searching for something else.
+              </p>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setSearchQuery("")}
+              >
+                Clear Search
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Beyond Pakistan / Silk Road Banner */}
-      <section className="py-20 bg-background border-t border-border">
+      <section className="py-16 bg-background border-t border-border">
         <div className="container mx-auto px-4 max-w-4xl text-center space-y-6">
-          <div className="w-16 h-16 bg-[#45919c]/10 rounded-full flex items-center justify-center mx-auto text-primary animate-bounce">
-            <Globe2 className="w-8 h-8 text-primary" />
+          <div className="w-14 h-14 bg-[#45919c]/10 rounded-full flex items-center justify-center mx-auto text-primary">
+            <Globe2
+              className="w-7 h-7 text-primary animate-spin"
+              style={{ animationDuration: "20s" }}
+            />
           </div>
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
+          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
             {beyondPakistan.title}
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
             {beyondPakistan.description}
           </p>
-          <p className="text-sm font-medium italic text-[#45919c]">
+          <p className="text-xs font-medium italic text-[#45919c]">
             "{beyondPakistan.closing}"
           </p>
-          <div className="pt-4">
+          <div className="pt-2">
             <Link href="/tours?pillar=silk-road-central-asia">
               <Button
-                size="lg"
-                className="px-8 py-4 text-sm font-semibold rounded-full group hover:shadow-lg transition-all"
+                size="default"
+                className="px-6 py-3 text-xs font-semibold rounded-full group hover:shadow-lg transition-all"
               >
                 Explore Silk Road Tours
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
