@@ -26,26 +26,22 @@ const otherCategories = ["Mountain Biking", "Skiing", "Safari", "Trips"];
 
 export const mainMenu = [
   { name: "Home", path: "/" },
-  // Direct main categories
-  ...tourCategories
-    .filter((c) => mainCategories.includes(c.id))
-    .map((c) => ({
-      name: c.name,
-      path: `/tours?category=${c.id}`,
-    })),
-  // Dropdown for others
+  { name: "Destinations", path: "/destinations" },
+  { name: "Tours", path: "/pakistan-tours" },
   {
-    name: "Other Tours",
-    children: tourCategories
-      .filter((c) => otherCategories.includes(c.id))
-      .map((c) => ({
-        name: c.name,
-        path: `/tours?category=${c.id}`,
-      })),
+    name: "Adventures",
+    children: [
+      { name: "Trekking", path: "/trekking-in-pakistan" },
+      { name: "Mountaineering", path: "/mountaineering-in-pakistan" },
+    ],
+  },
+  {
+    name: "Travel Guides",
+    children: [
+      { name: "Pakistan Guide", path: "/pakistan-travel-guide" },
+      { name: "Travel Information", path: "/travel-information-pakistan" },
+    ],
   },
   { name: "About", path: "/about" },
-  { name: "Gallery", path: "/gallery" },
   { name: "Contact", path: "/contact" },
-{ name: "Blog", path: "/blogs" },
-
 ];

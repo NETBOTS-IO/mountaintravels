@@ -57,6 +57,7 @@ const allowedOrigins = [
 
 ];
 
+
 app.use(
   cors({
     origin: (origin, callback) => {
