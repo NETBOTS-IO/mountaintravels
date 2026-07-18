@@ -1,28 +1,37 @@
-import mongoose from 'mongoose';
-import Tour from '../models/tourModel.js';
-import { Departure, Booking } from '../models/bookingModel.js';
-import { sendBookingEmails, sendBookingConfirmationEmail } from '../utils/email.js';
-import { updateTourPricingAndNextDeparture } from './tourSync.js';
+import mongoose from "mongoose";
+import Tour from "../models/tourModel.js";
+import { Departure, Booking } from "../models/bookingModel.js";
+import {
+  sendBookingEmails,
+  sendBookingConfirmationEmail,
+} from "../utils/email.js";
+import { updateTourPricingAndNextDeparture } from "./tourSync.js";
 
 export class BookingService {
-  
   /**
    * Create a new booking
    */
   static async createBooking(bookingData) {
-    const session = await mongoose.startSession();
-    
+    // Check if MongoDB replica set is available, otherwise run without transaction
+    let session = null;
     try {
+      session = await mongoose.startSession();
       await session.startTransaction();
-      
-      // Validate trip exists and is available
-      const trip = await Tour.findById(bookingData.tripId).session(session);
-      if (!trip) {
-        throw new Error('Trip not found');
-      }
+    } catch (e) {
+      console.log(
+        "⚠️ MongoDB Transaction not supported (Standalone Mode). Executing without transaction.",
+      );
+      session = null;
+    }
 
-      if (!trip.availability) {
-        throw new Error('Trip is not available for booking');
+    try {
+      // Validate trip exists and is available
+      const trip = session
+        ? await Tour.findById(bookingData.tripId).session(session)
+        : await Tour.findById(bookingData.tripId);
+
+      if (!trip) {
+        throw new Error("Trip not found");
       }
 
       // Validate departure if provided
@@ -30,13 +39,18 @@ export class BookingService {
       let finalPrice = trip.price;
 
       if (bookingData.departureId) {
-        departure = await Departure.findById(bookingData.departureId).session(session);
+        departure = session
+          ? await Departure.findById(bookingData.departureId).session(session)
+          : await Departure.findById(bookingData.departureId);
+
         if (!departure) {
-          throw new Error('Departure not found');
+          throw new Error("Departure not found");
         }
 
-        if (!departure.hasAvailability(bookingData.travelers)) {
-          throw new Error(`Only ${departure.spotsLeft} spots available for this departure`);
+        if (departure.spotsLeft < bookingData.travelers) {
+          throw new Error(
+            `Only ${departure.spotsLeft} spots available for this departure`,
+          );
         }
 
         finalPrice = departure.price;
@@ -56,24 +70,34 @@ export class BookingService {
         travelers: bookingData.travelers,
         totalPrice,
         specialRequests: bookingData.specialRequests,
-        status: 'PENDING',
-        paymentStatus: 'PENDING'
+        status: "PENDING",
+        paymentStatus: "PENDING",
       });
 
-      await booking.save({ session });
+      if (session) {
+        await booking.save({ session });
+      } else {
+        await booking.save();
+      }
 
       // Update departure spots if departure is selected
       if (departure) {
         departure.spotsLeft -= bookingData.travelers;
-        await departure.save({ session });
+        if (session) {
+          await departure.save({ session });
+        } else {
+          await departure.save();
+        }
       }
 
-      await session.commitTransaction();
+      if (session) {
+        await session.commitTransaction();
+      }
 
       // Populate the booking for response
       await booking.populate([
-        { path: 'tripId', select: 'name price' },
-        { path: 'departureId', select: 'date price' }
+        { path: "tripId", select: "name price" },
+        { path: "departureId", select: "date price" },
       ]);
 
       // Send confirmation emails (don't await to avoid blocking)
@@ -84,28 +108,31 @@ export class BookingService {
             user: {
               firstName: booking.firstName,
               lastName: booking.lastName,
-              email: booking.email
+              email: booking.email,
             },
             trip: booking.tripId,
-            departure: booking.departureId
+            departure: booking.departureId,
           });
         } catch (emailError) {
-          console.error('Failed to send booking emails:', emailError);
+          console.error("Failed to send booking emails:", emailError);
         }
       });
 
       return {
         success: true,
         booking: booking.toObject(),
-        message: 'Booking created successfully'
+        message: "Booking created successfully",
       };
-
     } catch (error) {
-      await session.abortTransaction();
-      console.error('BookingService.createBooking error:', error);
-      throw new Error(error.message || 'Failed to create booking');
+      if (session) {
+        await session.abortTransaction();
+      }
+      console.error("BookingService.createBooking error:", error);
+      throw new Error(error.message || "Failed to create booking");
     } finally {
-      await session.endSession();
+      if (session) {
+        await session.endSession();
+      }
     }
   }
 
@@ -114,22 +141,22 @@ export class BookingService {
    */
   static async getBooking(identifier, isBookingNumber = false) {
     try {
-      const query = isBookingNumber 
+      const query = isBookingNumber
         ? { bookingNumber: identifier }
         : { _id: identifier };
 
       const booking = await Booking.findOne(query)
-        .populate('tripId', 'name price duration')
-        .populate('departureId', 'date price spotsLeft status')
+        .populate("tripId", "name price duration")
+        .populate("departureId", "date price spotsLeft status")
         .lean();
 
       if (!booking) {
-        throw new Error('Booking not found');
+        throw new Error("Booking not found");
       }
 
       return booking;
     } catch (error) {
-      throw new Error(error.message || 'Failed to fetch booking');
+      throw new Error(error.message || "Failed to fetch booking");
     }
   }
 
@@ -144,31 +171,31 @@ export class BookingService {
         status,
         email,
         tripId,
-        sortBy = 'createdAt',
-        sortOrder = 'desc'
+        sortBy = "createdAt",
+        sortOrder = "desc",
       } = options;
 
       const skip = (page - 1) * limit;
-      
+
       // Build filter query
       const filter = {};
       if (status) filter.status = status;
-      if (email) filter.email = { $regex: email, $options: 'i' };
+      if (email) filter.email = { $regex: email, $options: "i" };
       if (tripId) filter.tripId = tripId;
 
       // Build sort object
       const sort = {};
-      sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
+      sort[sortBy] = sortOrder === "desc" ? -1 : 1;
 
       const [bookings, total] = await Promise.all([
         Booking.find(filter)
-          .populate('tripId', 'name')
-          .populate('departureId', 'date price')
+          .populate("tripId", "name")
+          .populate("departureId", "date price")
           .sort(sort)
           .skip(skip)
           .limit(limit)
           .lean(),
-        Booking.countDocuments(filter)
+        Booking.countDocuments(filter),
       ]);
 
       return {
@@ -179,11 +206,11 @@ export class BookingService {
           total,
           pages: Math.ceil(total / limit),
           hasNextPage: page < Math.ceil(total / limit),
-          hasPrevPage: page > 1
-        }
+          hasPrevPage: page > 1,
+        },
       };
     } catch (error) {
-      throw new Error('Failed to fetch bookings');
+      throw new Error("Failed to fetch bookings");
     }
   }
 
@@ -193,23 +220,26 @@ export class BookingService {
   static async updateBooking(bookingId, updateData) {
     try {
       const existingBooking = await Booking.findById(bookingId)
-        .populate('tripId', 'name')
-        .populate('departureId', 'date price');
+        .populate("tripId", "name")
+        .populate("departureId", "date price");
 
       if (!existingBooking) {
-        throw new Error('Booking not found');
+        throw new Error("Booking not found");
       }
 
       const updatedBooking = await Booking.findByIdAndUpdate(
         bookingId,
         updateData,
-        { new: true, runValidators: true }
+        { new: true, runValidators: true },
       )
-        .populate('tripId', 'name')
-        .populate('departureId', 'date price');
+        .populate("tripId", "name")
+        .populate("departureId", "date price");
 
       // Send confirmation email if status changed to CONFIRMED
-      if (updateData.status === 'CONFIRMED' && existingBooking.status !== 'CONFIRMED') {
+      if (
+        updateData.status === "CONFIRMED" &&
+        existingBooking.status !== "CONFIRMED"
+      ) {
         setImmediate(async () => {
           try {
             await sendBookingConfirmationEmail({
@@ -217,48 +247,48 @@ export class BookingService {
               user: {
                 firstName: updatedBooking.firstName,
                 lastName: updatedBooking.lastName,
-                email: updatedBooking.email
+                email: updatedBooking.email,
               },
               trip: updatedBooking.tripId,
-              departure: updatedBooking.departureId
+              departure: updatedBooking.departureId,
             });
           } catch (emailError) {
-            console.error('Failed to send confirmation email:', emailError);
+            console.error("Failed to send confirmation email:", emailError);
           }
         });
       }
 
       return updatedBooking.toObject();
     } catch (error) {
-      throw new Error(error.message || 'Failed to update booking');
+      throw new Error(error.message || "Failed to update booking");
     }
   }
 
   /**
    * Cancel booking
    */
-  static async cancelBooking(bookingId, reason = '') {
+  static async cancelBooking(bookingId, reason = "") {
     const session = await mongoose.startSession();
-    
+
     try {
       await session.startTransaction();
 
       const booking = await Booking.findById(bookingId)
-        .populate('departureId')
+        .populate("departureId")
         .session(session);
 
       if (!booking) {
-        throw new Error('Booking not found');
+        throw new Error("Booking not found");
       }
 
-      if (booking.status === 'CANCELLED') {
-        throw new Error('Booking is already cancelled');
+      if (booking.status === "CANCELLED") {
+        throw new Error("Booking is already cancelled");
       }
 
       // Update booking status
-      booking.status = 'CANCELLED';
-      booking.paymentStatus = 'REFUNDED';
-      booking.specialRequests = booking.specialRequests 
+      booking.status = "CANCELLED";
+      booking.paymentStatus = "REFUNDED";
+      booking.specialRequests = booking.specialRequests
         ? `${booking.specialRequests}\n\nCancellation reason: ${reason}`
         : `Cancellation reason: ${reason}`;
 
@@ -272,11 +302,11 @@ export class BookingService {
       }
 
       await session.commitTransaction();
-      
+
       return booking.toObject();
     } catch (error) {
       await session.abortTransaction();
-      throw new Error(error.message || 'Failed to cancel booking');
+      throw new Error(error.message || "Failed to cancel booking");
     } finally {
       await session.endSession();
     }
@@ -288,20 +318,20 @@ export class BookingService {
   static async getBookingStats() {
     try {
       const stats = await Booking.getStats();
-      
+
       // Get recent bookings
       const recentBookings = await Booking.find()
-        .populate('tripId', 'name')
+        .populate("tripId", "name")
         .sort({ createdAt: -1 })
         .limit(5)
         .lean();
 
       return {
         ...stats,
-        recentBookings
+        recentBookings,
       };
     } catch (error) {
-      throw new Error('Failed to fetch booking statistics');
+      throw new Error("Failed to fetch booking statistics");
     }
   }
 
@@ -311,14 +341,14 @@ export class BookingService {
   static async getBookingsByEmail(email) {
     try {
       const bookings = await Booking.find({ email: email.toLowerCase() })
-        .populate('tripId', 'name price')
-        .populate('departureId', 'date price')
+        .populate("tripId", "name price")
+        .populate("departureId", "date price")
         .sort({ createdAt: -1 })
         .lean();
 
       return bookings;
     } catch (error) {
-      throw new Error('Failed to fetch customer bookings');
+      throw new Error("Failed to fetch customer bookings");
     }
   }
 }
@@ -327,7 +357,6 @@ export class BookingService {
  * Departure Service - for managing trip departures
  */
 export class DepartureService {
-  
   /**
    * Create a new departure
    */
@@ -336,17 +365,17 @@ export class DepartureService {
       // Validate trip exists
       const trip = await Tour.findById(departureData.tripId);
       if (!trip) {
-        throw new Error('Trip not found');
+        throw new Error("Trip not found");
       }
 
       // Check if departure date already exists for this trip
       const existingDeparture = await Departure.findOne({
         tripId: departureData.tripId,
-        date: new Date(departureData.date)
+        date: new Date(departureData.date),
       });
 
       if (existingDeparture) {
-        throw new Error('Departure date already exists for this trip');
+        throw new Error("Departure date already exists for this trip");
       }
 
       const departure = new Departure({
@@ -355,17 +384,17 @@ export class DepartureService {
         price: departureData.price,
         maxSpots: departureData.maxSpots,
         spotsLeft: departureData.maxSpots,
-        status: departureData.status || 'AVAILABLE'
+        status: departureData.status || "AVAILABLE",
       });
 
       await departure.save();
-      await departure.populate('tripId', 'name');
+      await departure.populate("tripId", "name");
 
       await updateTourPricingAndNextDeparture(departure.tripId);
 
       return departure.toObject();
     } catch (error) {
-      throw new Error(error.message || 'Failed to create departure');
+      throw new Error(error.message || "Failed to create departure");
     }
   }
 
@@ -375,7 +404,7 @@ export class DepartureService {
   static async getTripDepartures(tripId) {
     try {
       const departures = await Departure.findAvailable(tripId)
-        .populate('tripId', 'name')
+        .populate("tripId", "name")
         .lean();
 
       // Add booking count for each departure
@@ -383,19 +412,19 @@ export class DepartureService {
         departures.map(async (departure) => {
           const bookingCount = await Booking.countDocuments({
             departureId: departure._id,
-            status: { $in: ['PENDING', 'CONFIRMED'] }
+            status: { $in: ["PENDING", "CONFIRMED"] },
           });
-          
+
           return {
             ...departure,
-            bookingCount
+            bookingCount,
           };
-        })
+        }),
       );
 
       return departuresWithBookings;
     } catch (error) {
-      throw new Error('Failed to fetch departures');
+      throw new Error("Failed to fetch departures");
     }
   }
 
@@ -407,20 +436,20 @@ export class DepartureService {
       const departure = await Departure.findByIdAndUpdate(
         departureId,
         updateData,
-        { new: true, runValidators: true }
+        { new: true, runValidators: true },
       )
-        .populate('tripId', 'name')
+        .populate("tripId", "name")
         .lean();
 
       if (!departure) {
-        throw new Error('Departure not found');
+        throw new Error("Departure not found");
       }
 
       await updateTourPricingAndNextDeparture(departure.tripId);
 
       return departure;
     } catch (error) {
-      throw new Error(error.message || 'Failed to update departure');
+      throw new Error(error.message || "Failed to update departure");
     }
   }
 
@@ -431,23 +460,23 @@ export class DepartureService {
     try {
       const bookingCount = await Booking.countDocuments({
         departureId,
-        status: { $in: ['PENDING', 'CONFIRMED'] }
+        status: { $in: ["PENDING", "CONFIRMED"] },
       });
 
       if (bookingCount > 0) {
-        throw new Error('Cannot delete departure with existing bookings');
+        throw new Error("Cannot delete departure with existing bookings");
       }
 
       const departure = await Departure.findByIdAndDelete(departureId);
       if (!departure) {
-        throw new Error('Departure not found');
+        throw new Error("Departure not found");
       }
 
       await updateTourPricingAndNextDeparture(departure.tripId);
 
-      return { success: true, message: 'Departure deleted successfully' };
+      return { success: true, message: "Departure deleted successfully" };
     } catch (error) {
-      throw new Error(error.message || 'Failed to delete departure');
+      throw new Error(error.message || "Failed to delete departure");
     }
   }
 
@@ -462,11 +491,11 @@ export class DepartureService {
         tripId,
         status,
         fromDate,
-        toDate
+        toDate,
       } = options;
 
       const skip = (page - 1) * limit;
-      
+
       const filter = {};
       if (tripId) filter.tripId = tripId;
       if (status) filter.status = status;
@@ -478,12 +507,12 @@ export class DepartureService {
 
       const [departures, total] = await Promise.all([
         Departure.find(filter)
-          .populate('tripId', 'name')
+          .populate("tripId", "name")
           .sort({ date: 1 })
           .skip(skip)
           .limit(limit)
           .lean(),
-        Departure.countDocuments(filter)
+        Departure.countDocuments(filter),
       ]);
 
       return {
@@ -492,11 +521,11 @@ export class DepartureService {
           page,
           limit,
           total,
-          pages: Math.ceil(total / limit)
-        }
+          pages: Math.ceil(total / limit),
+        },
       };
     } catch (error) {
-      throw new Error('Failed to fetch departures');
+      throw new Error("Failed to fetch departures");
     }
   }
 }
