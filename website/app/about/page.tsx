@@ -34,9 +34,6 @@ function RevealStagger({
 }
 
 import {
-  Quote,
-  Home,
-  ChevronRight,
   CheckCircle2,
   Shield,
   Heart,
