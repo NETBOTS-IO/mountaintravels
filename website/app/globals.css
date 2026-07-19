@@ -113,12 +113,21 @@ a:hover {
   background-color: transparent !important;
 }
 
-button:hover,
+button:hover:not(.text-primary):not([class*="variant-link"]):not([class*="bg-transparent"]),
 .button-hover-state:hover,
 button[type="submit"]:hover {
   background-color: #ff9800 !important;
   color: #ffffff !important;
   border-color: #ff9800 !important;
+}
+
+/* Hide scrollbars utility */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Force state overrides for class lists */

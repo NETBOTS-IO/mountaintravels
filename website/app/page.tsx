@@ -102,9 +102,48 @@ export default function Home() {
     loadInitialData();
   }, []);
 
+  const experiencesRef = useRef<HTMLDivElement>(null);
+  const destinationsRef = useRef<HTMLDivElement>(null);
+  const testimonialsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const autoScroll = (ref: any) => {
+      if (ref && ref.current) {
+        const container = ref.current;
+        if (
+          container.scrollLeft + container.clientWidth >=
+          container.scrollWidth - 5
+        ) {
+          container.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          container.scrollBy({ left: 240, behavior: "smooth" });
+        }
+      }
+    };
+
+    const interval = setInterval(() => {
+      autoScroll(experiencesRef);
+      autoScroll(destinationsRef);
+      autoScroll(testimonialsRef);
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const slideLeft = (ref: any) => {
+    if (ref && ref.current) {
+      ref.current.scrollBy({ left: -320, behavior: "smooth" });
+    }
+  };
+
+  const slideRight = (ref: any) => {
+    if (ref && ref.current) {
+      ref.current.scrollBy({ left: 320, behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
-      {/* 1. Hero Section - Refined, fully responsive and attractive */}
       <section className="relative min-h-[90vh] md:min-h-[85vh] flex items-center bg-black overflow-hidden pt-28 pb-16">
         <div className="absolute inset-0 z-0 select-none">
           <Image
@@ -163,14 +202,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Tour Categories Quick Access */}
       <div className="relative -mt-10 md:-mt-12 z-20 container mx-auto px-4 max-w-5xl">
         <div className="bg-background/95 backdrop-blur-md border border-border/80 rounded-2xl shadow-xl p-5 md:p-6 hover:shadow-2xl hover:border-[#45919c]/20 transition-all duration-300">
           <TourIcons />
         </div>
       </div>
 
-      {/* 2. About Preview */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -218,7 +255,7 @@ export default function Home() {
                   <Link href="/about">
                     <Button
                       variant="link"
-                      className="text-primary hover:text-[#ff9800] p-0 text-base font-semibold group transition-colors"
+                      className="text-primary hover:text-[#ff9800] p-0 text-base font-semibold group transition-colors hover:bg-transparent"
                     >
                       Read Our Complete Story
                       <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
@@ -231,7 +268,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. Why Choose Us - Changed bg from bg-muted/30 to slate-50 */}
       <section className="py-20 bg-slate-50 border-y border-border">
         <div className="container mx-auto px-4 max-w-6xl">
           <RevealStagger>
@@ -277,7 +313,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Featured Experiences - Styled as a responsive horizontal swiper with images */}
       <section className="py-20 bg-background overflow-hidden">
         <div className="container mx-auto px-4 max-w-6xl">
           <RevealStagger>
@@ -292,16 +327,29 @@ export default function Home() {
                   Pakistan and Central Asia.
                 </p>
               </div>
-              <Link href="/tours">
-                <Button className="border-primary text-primary hover:bg-[#ff9800] hover:border-[#ff9800] hover:text-white px-6 py-4 text-sm font-semibold rounded-full hover:scale-[1.03] transition-all duration-300">
-                  View All Experiences
-                </Button>
-              </Link>
+              <div className="flex items-center space-x-3 self-end">
+                <button
+                  onClick={() => slideLeft(experiencesRef)}
+                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-[#ff9800] hover:text-white hover:border-[#ff9800] transition-colors duration-300"
+                  aria-label="Slide Left"
+                >
+                  &larr;
+                </button>
+                <button
+                  onClick={() => slideRight(experiencesRef)}
+                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-[#ff9800] hover:text-white hover:border-[#ff9800] transition-colors duration-300"
+                  aria-label="Slide Right"
+                >
+                  &rarr;
+                </button>
+              </div>
             </div>
           </RevealStagger>
 
-          {/* Swiper Layout / Responsive Scroll Container */}
-          <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory">
+          <div
+            ref={experiencesRef}
+            className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
+          >
             {featuredExperiences.map((experience, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
                 <div className="group border border-border flex-shrink-0 w-[280px] sm:w-[320px] md:w-[350px] snap-start hover:shadow-xl hover:border-[#45919c]/40 transition-all duration-300 flex flex-col justify-between bg-card rounded-2xl overflow-hidden">
@@ -335,16 +383,36 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. Popular Destinations - Overhauled as responsive flex row */}
       <section className="py-20 bg-slate-50 border-y border-border overflow-hidden">
         <div className="container mx-auto px-4 max-w-6xl">
           <RevealStagger>
-            <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-12 text-center">
-              Explore Pakistan's Most Remarkable Destinations
-            </h2>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+              <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-foreground max-w-xl">
+                Explore Pakistan's Most Remarkable Destinations
+              </h2>
+              <div className="flex items-center space-x-3 self-end">
+                <button
+                  onClick={() => slideLeft(destinationsRef)}
+                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-[#ff9800] hover:text-white hover:border-[#ff9800] transition-colors duration-300"
+                  aria-label="Slide Left"
+                >
+                  &larr;
+                </button>
+                <button
+                  onClick={() => slideRight(destinationsRef)}
+                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-[#ff9800] hover:text-white hover:border-[#ff9800] transition-colors duration-300"
+                  aria-label="Slide Right"
+                >
+                  &rarr;
+                </button>
+              </div>
+            </div>
           </RevealStagger>
 
-          <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory">
+          <div
+            ref={destinationsRef}
+            className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
+          >
             {popularDestinations.map((dest, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
                 <div className="bg-background border border-border flex-shrink-0 w-[280px] sm:w-[320px] snap-start hover:shadow-xl hover:border-[#45919c]/40 transition-all duration-300 rounded-2xl overflow-hidden group">
@@ -384,7 +452,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. Silk Road & Central Asia Section */}
       <section className="py-20 bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-[#45919c]/5 pointer-events-none" />
         <div className="container mx-auto px-4 max-w-4xl text-center space-y-6 relative z-10">
@@ -408,7 +475,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. Tailor-Made Travel Section */}
       <section className="py-20 bg-muted/20 border-y border-border">
         <div className="container mx-auto px-4 max-w-4xl text-center space-y-6">
           <RevealStagger>
@@ -439,27 +505,50 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 8. Testimonials */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-background overflow-hidden">
         <div className="container mx-auto px-4 max-w-6xl">
           <RevealStagger>
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-foreground mb-12 text-center">
-              Voices of Our Guests
-            </h2>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
+                Voices of Our Guests
+              </h2>
+              <div className="flex items-center space-x-3 self-end">
+                <button
+                  onClick={() => slideLeft(testimonialsRef)}
+                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-[#ff9800] hover:text-white hover:border-[#ff9800] transition-colors duration-300"
+                  aria-label="Slide Left"
+                >
+                  &larr;
+                </button>
+                <button
+                  onClick={() => slideRight(testimonialsRef)}
+                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-[#ff9800] hover:text-white hover:border-[#ff9800] transition-colors duration-300"
+                  aria-label="Slide Right"
+                >
+                  &rarr;
+                </button>
+              </div>
+            </div>
           </RevealStagger>
 
-          <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory">
+          <div
+            ref={testimonialsRef}
+            className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
+          >
             {(testimonials.length > 0
               ? testimonials
               : fallbackTestimonials
             ).map((testimonial, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                <div className="space-y-4 border border-border p-6 flex-shrink-0 w-[280px] sm:w-[320px] snap-start flex flex-col justify-between bg-card hover:shadow-xl hover:border-[#45919c]/30 transition-all duration-300 rounded-2xl group">
-                  <p className="text-xs text-foreground italic font-light leading-relaxed">
+                <div className="space-y-4 border border-[#45919c]/10 p-6 flex-shrink-0 w-[290px] sm:w-[340px] snap-start flex flex-col justify-between bg-gradient-to-br from-[#112a30]/5 via-transparent to-[#ff9800]/5 hover:shadow-xl hover:border-[#45919c]/30 transition-all duration-300 rounded-2xl relative overflow-hidden group">
+                  <div className="absolute top-2 right-4 text-6xl text-[#45919c]/10 font-serif pointer-events-none select-none">
+                    &ldquo;
+                  </div>
+                  <p className="text-xs text-foreground italic font-light leading-relaxed relative z-10">
                     "{testimonial.text}"
                   </p>
-                  <div className="pt-4 border-t border-border mt-4 flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#45919c]/10 text-[#45919c] font-bold text-sm flex items-center justify-center">
+                  <div className="pt-4 border-t border-border mt-4 flex items-center gap-3 relative z-10">
+                    <div className="w-10 h-10 rounded-full bg-[#45919c] text-white font-bold text-sm flex items-center justify-center shadow-md">
                       {testimonial.name.charAt(0)}
                     </div>
                     <div>
@@ -478,7 +567,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 9. Responsible Tourism Preview */}
       <section className="py-20 bg-muted/20 border-y border-border">
         <div className="container mx-auto px-4 max-w-4xl text-center space-y-6">
           <RevealStagger>
@@ -495,7 +583,7 @@ export default function Home() {
             <Link href="/about">
               <Button
                 variant="link"
-                className="text-primary hover:text-[#ff9800] text-sm font-semibold hover:underline p-0 transition-colors"
+                className="text-primary hover:text-[#ff9800] text-sm font-semibold hover:underline p-0 transition-colors hover:bg-transparent"
               >
                 Our Commitment to Local Communities →
               </Button>
@@ -504,7 +592,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 10. FAQ Accordion Section */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-2xl">
           <RevealStagger>
@@ -521,7 +608,7 @@ export default function Home() {
                   value={`item-${idx}`}
                   className="border-b border-border py-1"
                 >
-                  <AccordionTrigger className="font-display font-semibold text-base hover:text-[#ff9800] transition-colors text-left py-3">
+                  <AccordionTrigger className="font-display font-semibold text-base hover:text-[#ff9800] hover:no-underline transition-colors text-left py-3">
                     {faq.q}
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground font-light text-sm leading-relaxed pt-1 pb-4">
@@ -534,7 +621,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 11. Final CTAs */}
       <section
         className="py-24 text-white relative overflow-hidden"
         style={{
