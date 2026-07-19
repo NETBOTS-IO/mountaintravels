@@ -104,48 +104,55 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
-      {/* 1. Hero Section - Sized down layout */}
-      <section className="relative min-h-[85vh] flex items-center bg-black overflow-hidden pt-20 pb-12">
-        <div className="absolute inset-0 z-0">
+      {/* 1. Hero Section - Refined, fully responsive and attractive */}
+      <section className="relative min-h-[90vh] md:min-h-[85vh] flex items-center bg-black overflow-hidden pt-28 pb-16">
+        <div className="absolute inset-0 z-0 select-none">
           <Image
             src="/assets/home/hero-1.jpg"
             alt="Majestic Karakoram Peaks"
             fill
-            className="object-cover opacity-60"
+            className="object-cover opacity-65 scale-105 animate-[subtle-zoom_20s_infinite_alternate]"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
         </div>
 
         <div className="container mx-auto px-4 z-10 relative">
-          <div className="max-w-2xl space-y-6">
+          <div className="max-w-3xl space-y-6">
             <RevealStagger delayOffset={0.1}>
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1]">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-[#ff9800] bg-white/10 backdrop-blur-md border border-white/15">
+                Official Tourism Specialist Since 1990
+              </span>
+            </RevealStagger>
+
+            <RevealStagger delayOffset={0.2}>
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
                 {heroSection.headline}
               </h1>
             </RevealStagger>
 
-            <RevealStagger delayOffset={0.2}>
-              <p className="text-lg md:text-xl text-white/80 font-light leading-relaxed max-w-xl">
+            <RevealStagger delayOffset={0.3}>
+              <p className="text-sm sm:text-base md:text-lg text-gray-200 font-light leading-relaxed max-w-2xl drop-shadow-[0_1px_5px_rgba(0,0,0,0.3)]">
                 {heroSection.subheading}
               </p>
             </RevealStagger>
 
-            <RevealStagger delayOffset={0.3}>
-              <div className="flex flex-wrap gap-4 pt-2">
-                <Link href="/contact">
+            <RevealStagger delayOffset={0.4}>
+              <div className="flex flex-col sm:flex-row gap-3.5 pt-2">
+                <Link href="/contact" className="w-full sm:w-auto">
                   <Button
-                    size="default"
-                    className="bg-primary hover:bg-primary/95 hover:scale-[1.02] transition-all text-primary-foreground shadow-md px-6 py-5 text-base font-semibold"
+                    size="lg"
+                    className="w-full sm:w-auto bg-[#45919c] hover:bg-[#ff9800] text-white shadow-lg shadow-[#45919c]/10 hover:shadow-[#ff9800]/20 hover:scale-[1.03] transition-all duration-300 font-bold px-8 py-6 rounded-full"
                   >
                     {heroSection.ctaPrimary}
                   </Button>
                 </Link>
-                <Link href="/tours">
+                <Link href="/tours" className="w-full sm:w-auto">
                   <Button
-                    size="default"
+                    size="lg"
                     variant="outline"
-                    className="border-white/20 bg-white/5 hover:bg-white/10 text-white hover:scale-[1.02] transition-all px-6 py-5 text-base font-semibold backdrop-blur-sm"
+                    className="w-full sm:w-auto border-white/30 bg-white/10 hover:bg-white/20 text-white hover:border-[#ff9800] hover:scale-[1.03] transition-all duration-300 font-semibold px-8 py-6 rounded-full backdrop-blur-md"
                   >
                     {heroSection.ctaSecondary}
                   </Button>
@@ -157,8 +164,8 @@ export default function Home() {
       </section>
 
       {/* Tour Categories Quick Access */}
-      <div className="relative -mt-12 z-20 container mx-auto px-4 max-w-5xl">
-        <div className="bg-background border border-border rounded-xl shadow-md p-6">
+      <div className="relative -mt-10 md:-mt-12 z-20 container mx-auto px-4 max-w-5xl">
+        <div className="bg-background/95 backdrop-blur-md border border-border/80 rounded-2xl shadow-xl p-5 md:p-6 hover:shadow-2xl hover:border-[#45919c]/20 transition-all duration-300">
           <TourIcons />
         </div>
       </div>
@@ -241,20 +248,20 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyChoose.reasons.map((reason, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                <div className="bg-background border border-border p-6 h-full flex flex-col justify-between hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                <div className="bg-background border border-border p-6 h-full flex flex-col justify-between rounded-2xl hover:border-[#45919c]/40 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group">
                   <div className="space-y-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                      {reason.icon === "medal" && <Medal className="w-5 h-5" />}
+                    <div className="w-12 h-12 rounded-2xl bg-[#45919c]/10 text-[#45919c] group-hover:bg-[#ff9800]/10 group-hover:text-[#ff9800] transition-colors duration-300 flex items-center justify-center">
+                      {reason.icon === "medal" && <Medal className="w-6 h-6" />}
                       {reason.icon === "map-pin" && (
-                        <MapPin className="w-5 h-5" />
+                        <MapPin className="w-6 h-6" />
                       )}
                       {reason.icon === "compass" && (
-                        <Compass className="w-5 h-5" />
+                        <Compass className="w-6 h-6" />
                       )}
                       {reason.icon === "shield" && (
-                        <Shield className="w-5 h-5" />
+                        <Shield className="w-6 h-6" />
                       )}
-                      {reason.icon === "leaf" && <Leaf className="w-5 h-5" />}
+                      {reason.icon === "leaf" && <Leaf className="w-6 h-6" />}
                     </div>
                     <h3 className="font-display text-xl font-bold text-foreground">
                       {reason.title}
@@ -288,7 +295,7 @@ export default function Home() {
               <Link href="/tours">
                 <Button
                   variant="outline"
-                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-4 text-sm font-semibold"
+                  className="border-primary text-primary hover:bg-[#ff9800] hover:border-[#ff9800] hover:text-white px-6 py-4 text-sm font-semibold rounded-full hover:scale-[1.03] transition-all duration-300"
                 >
                   View All Experiences
                 </Button>
@@ -299,9 +306,9 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredExperiences.map((experience, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                <div className="group border border-border p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-full bg-card">
+                <div className="group border border-border p-6 hover:shadow-xl hover:border-[#45919c]/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-full bg-card rounded-2xl">
                   <div>
-                    <h3 className="font-display text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="font-display text-xl font-bold text-foreground mb-2 group-hover:text-[#ff9800] transition-colors">
                       {experience.title}
                     </h3>
                     <p className="text-muted-foreground font-light text-sm leading-relaxed mb-4">
@@ -309,9 +316,9 @@ export default function Home() {
                     </p>
                   </div>
                   <Link href="/tours" className="pt-2">
-                    <span className="text-primary text-sm font-semibold flex items-center group-hover:underline underline-offset-4">
+                    <span className="text-primary group-hover:text-[#ff9800] text-sm font-semibold flex items-center group-hover:underline underline-offset-4 transition-colors">
                       Explore Options
-                      <ArrowRight className="ml-1 h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="ml-1 h-3.5 w-3.5 transform group-hover:translate-x-1.5 transition-transform" />
                     </span>
                   </Link>
                 </div>
@@ -333,9 +340,9 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {popularDestinations.map((dest, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                <div className="bg-background border border-border p-6 h-full flex flex-col justify-between hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                <div className="bg-background border border-border p-6 h-full flex flex-col justify-between hover:shadow-xl hover:border-[#45919c]/40 hover:-translate-y-1.5 transition-all duration-300 rounded-2xl group">
                   <div>
-                    <h3 className="font-display text-xl font-bold text-foreground mb-2">
+                    <h3 className="font-display text-xl font-bold text-foreground mb-2 group-hover:text-[#ff9800] transition-colors">
                       {dest.name}
                     </h3>
                     <p className="text-muted-foreground font-light text-sm leading-relaxed">
@@ -343,14 +350,15 @@ export default function Home() {
                     </p>
                   </div>
                   <div className="mt-6 pt-4 border-t border-border flex items-center justify-between">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-primary group-hover:text-[#ff9800] transition-colors">
                       {dest.tours} Packages
                     </span>
                     <Link
                       href="/destinations"
-                      className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                      className="text-xs font-bold text-primary group-hover:text-[#ff9800] hover:underline flex items-center gap-1 transition-colors"
                     >
-                      View Details <ArrowRight className="w-3 h-3" />
+                      View Details{" "}
+                      <ArrowRight className="w-3 h-3 transform group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </div>
                 </div>
@@ -361,21 +369,22 @@ export default function Home() {
       </section>
 
       {/* 6. Silk Road & Central Asia Section */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4 max-w-3xl text-center space-y-4">
+      <section className="py-20 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-[#45919c]/5 pointer-events-none" />
+        <div className="container mx-auto px-4 max-w-4xl text-center space-y-6 relative z-10">
           <RevealStagger>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground">
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
               {silkRoadSection.title}
             </h2>
           </RevealStagger>
           <RevealStagger delayOffset={0.1}>
-            <p className="text-base text-muted-foreground font-light leading-relaxed">
+            <p className="text-base text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
               {silkRoadSection.text}
             </p>
           </RevealStagger>
           <RevealStagger delayOffset={0.2}>
             <Link href="/tours">
-              <Button className="mt-4 px-6 py-4 text-sm font-semibold hover:scale-[1.02] transition-transform">
+              <Button className="mt-4 bg-[#45919c] hover:bg-[#ff9800] text-white px-8 py-6 text-sm font-bold rounded-full hover:scale-[1.03] transition-all duration-300">
                 Explore Silk Road Journeys
               </Button>
             </Link>
@@ -384,20 +393,20 @@ export default function Home() {
       </section>
 
       {/* 7. Tailor-Made Travel Section */}
-      <section className="py-20 bg-muted/30 border-y border-border">
-        <div className="container mx-auto px-4 max-w-3xl text-center space-y-4">
+      <section className="py-20 bg-muted/20 border-y border-border">
+        <div className="container mx-auto px-4 max-w-4xl text-center space-y-6">
           <RevealStagger>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground">
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
               {tailorMadeSection.title}
             </h2>
           </RevealStagger>
           <RevealStagger delayOffset={0.1}>
-            <p className="text-base text-primary font-semibold">
+            <p className="text-base text-primary font-bold uppercase tracking-wider text-[#ff9800]">
               {tailorMadeSection.subtitle}
             </p>
           </RevealStagger>
           <RevealStagger delayOffset={0.2}>
-            <p className="text-base text-muted-foreground font-light leading-relaxed">
+            <p className="text-base text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
               {tailorMadeSection.text}
             </p>
           </RevealStagger>
@@ -405,7 +414,7 @@ export default function Home() {
             <Link href="/tailor-made-tours">
               <Button
                 variant="outline"
-                className="mt-4 px-6 py-4 text-sm font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground hover:scale-[1.02] transition-transform"
+                className="mt-4 px-8 py-6 text-sm font-bold border-primary text-primary hover:bg-[#ff9800] hover:border-[#ff9800] hover:text-white rounded-full hover:scale-[1.03] transition-all duration-300"
               >
                 Get a Custom Itinerary
               </Button>
@@ -418,7 +427,7 @@ export default function Home() {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-6xl">
           <RevealStagger>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground mb-12 text-center">
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-foreground mb-12 text-center">
               Voices of Our Guests
             </h2>
           </RevealStagger>
@@ -428,17 +437,22 @@ export default function Home() {
               .slice(0, 3)
               .map((testimonial, idx) => (
                 <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                  <div className="space-y-4 border border-border p-6 h-full flex flex-col justify-between bg-card hover:shadow-md transition-shadow duration-300">
+                  <div className="space-y-4 border border-border p-6 h-full flex flex-col justify-between bg-card hover:shadow-xl hover:border-[#45919c]/30 transition-all duration-300 rounded-2xl group">
                     <p className="text-sm text-foreground italic font-light leading-relaxed">
                       "{testimonial.text}"
                     </p>
-                    <div className="pt-4 border-t border-border">
-                      <h4 className="font-display font-bold text-foreground text-base">
-                        {testimonial.name}
-                      </h4>
-                      <p className="text-xs text-muted-foreground">
-                        {testimonial.tour}
-                      </p>
+                    <div className="pt-4 border-t border-border mt-4 flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-[#45919c]/10 text-[#45919c] font-bold text-sm flex items-center justify-center">
+                        {testimonial.name.charAt(0)}
+                      </div>
+                      <div>
+                        <h4 className="font-display font-bold text-foreground text-sm">
+                          {testimonial.name}
+                        </h4>
+                        <p className="text-[11px] text-muted-foreground">
+                          {testimonial.tour}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </RevealStagger>
@@ -448,15 +462,15 @@ export default function Home() {
       </section>
 
       {/* 9. Responsible Tourism Preview */}
-      <section className="py-20 bg-muted/10 border-y border-border">
-        <div className="container mx-auto px-4 max-w-3xl text-center space-y-4">
+      <section className="py-20 bg-muted/20 border-y border-border">
+        <div className="container mx-auto px-4 max-w-4xl text-center space-y-6">
           <RevealStagger>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground">
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
               {responsibleTourismPreview.title}
             </h2>
           </RevealStagger>
           <RevealStagger delayOffset={0.1}>
-            <p className="text-base text-muted-foreground font-light leading-relaxed">
+            <p className="text-base text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
               {responsibleTourismPreview.text}
             </p>
           </RevealStagger>
@@ -464,7 +478,7 @@ export default function Home() {
             <Link href="/about">
               <Button
                 variant="link"
-                className="text-primary text-sm font-semibold hover:underline p-0"
+                className="text-primary hover:text-[#ff9800] text-sm font-semibold hover:underline p-0 transition-colors"
               >
                 Our Commitment to Local Communities →
               </Button>
@@ -477,7 +491,7 @@ export default function Home() {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-2xl">
           <RevealStagger>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground mb-10 text-center">
+            <h2 className="font-display text-3xl font-extrabold tracking-tight text-foreground mb-10 text-center">
               {faqSection.title}
             </h2>
           </RevealStagger>
@@ -490,7 +504,7 @@ export default function Home() {
                   value={`item-${idx}`}
                   className="border-b border-border py-1"
                 >
-                  <AccordionTrigger className="font-display font-semibold text-base hover:text-primary transition-colors text-left py-3">
+                  <AccordionTrigger className="font-display font-semibold text-base hover:text-[#ff9800] transition-colors text-left py-3">
                     {faq.q}
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground font-light text-sm leading-relaxed pt-1 pb-4">
@@ -504,16 +518,21 @@ export default function Home() {
       </section>
 
       {/* 11. Final CTAs */}
-      <section className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.08),transparent)]" />
+      <section
+        className="py-24 text-white relative overflow-hidden"
+        style={{
+          background: "linear-gradient(135deg, #112a30 0%, #1c4b57 100%)",
+        }}
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.06),transparent)]" />
         <div className="container mx-auto px-4 text-center space-y-6 relative z-10 max-w-2xl">
           <RevealStagger>
-            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight leading-tight">
+            <h2 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
               Start Planning Your Journey
             </h2>
           </RevealStagger>
           <RevealStagger delayOffset={0.1}>
-            <p className="text-primary-foreground/90 text-base font-light leading-relaxed mx-auto max-w-xl">
+            <p className="text-gray-300 text-base font-light leading-relaxed mx-auto max-w-xl">
               Whether you dream of exploring Pakistan's rich cultural heritage,
               discovering the spectacular Karakoram Mountains, following the
               ancient Silk Road, or embarking on a challenging trekking
@@ -525,22 +544,22 @@ export default function Home() {
               <Link href="/contact">
                 <Button
                   size="default"
-                  className="bg-secondary hover:bg-secondary/95 hover:scale-[1.02] text-secondary-foreground text-base font-semibold px-8 py-5 shadow-lg"
+                  className="bg-[#45919c] hover:bg-[#ff9800] hover:scale-[1.02] text-white text-base font-bold px-8 py-6 rounded-full shadow-lg transition-all duration-300"
                 >
                   Plan Your Tour
                 </Button>
               </Link>
               <a
-                href="https://wa.me/923000000000"
+                href="https://wa.me/923468486900"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Button
                   size="default"
                   variant="outline"
-                  className="border-white/20 bg-white/5 hover:bg-white/10 hover:scale-[1.02] text-white text-base font-semibold px-8 py-5 backdrop-blur-sm flex items-center gap-2"
+                  className="border-white/20 bg-white/5 hover:bg-white/10 hover:border-[#ff9800] hover:scale-[1.02] text-white text-base font-semibold px-8 py-6 rounded-full backdrop-blur-sm flex items-center justify-center gap-2 transition-all duration-300"
                 >
-                  <MessageCircle className="h-4 w-4" />
+                  <MessageCircle className="h-4 w-4 text-[#ff9800]" />
                   WhatsApp Our Specialists
                 </Button>
               </a>
