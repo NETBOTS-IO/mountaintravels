@@ -144,7 +144,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
-      <section className="relative min-h-[90vh] md:min-h-[85vh] flex items-center bg-black overflow-hidden pt-28 pb-16">
+      <section className="relative min-h-[75vh] flex items-center bg-black overflow-hidden pt-16 pb-12">
         <div className="absolute inset-0 z-0 select-none">
           <Image
             src="/assets/home/hero-1.jpg"
@@ -158,7 +158,7 @@ export default function Home() {
         </div>
 
         <div className="container mx-auto px-4 z-10 relative">
-          <div className="max-w-3xl space-y-6">
+          <div className="max-w-3xl space-y-4">
             <RevealStagger delayOffset={0.1}>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-[#ff9800] bg-white/10 backdrop-blur-md border border-white/15">
                 Official Tourism Specialist Since 1990
@@ -172,17 +172,17 @@ export default function Home() {
             </RevealStagger>
 
             <RevealStagger delayOffset={0.3}>
-              <p className="text-xs sm:text-sm md:text-base text-gray-200 font-light leading-relaxed max-w-xl drop-shadow-[0_1px_5px_rgba(0,0,0,0.3)]">
+              <p className="text-xs sm:text-sm md:text-base text-gray-200 font-light leading-relaxed max-w-xl drop-shadow-[0_1px_5px_rgba(0,0,0,0.3)] line-clamp-3">
                 {heroSection.subheading}
               </p>
             </RevealStagger>
 
             <RevealStagger delayOffset={0.4}>
-              <div className="flex flex-col sm:flex-row gap-3.5 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Link href="/contact" className="w-full sm:w-auto">
                   <Button
                     size="lg"
-                    className="w-full sm:w-auto bg-[#45919c] hover:bg-[#ff9800] text-white shadow-lg shadow-[#45919c]/10 hover:shadow-[#ff9800]/20 hover:scale-[1.03] transition-all duration-300 font-bold px-8 py-6 rounded-full"
+                    className="w-full sm:w-auto bg-[#45919c] hover:bg-[#ff9800] text-white shadow-lg shadow-[#45919c]/10 hover:shadow-[#ff9800]/20 hover:scale-[1.03] transition-all duration-300 font-bold px-8 py-5 rounded-full"
                   >
                     {heroSection.ctaPrimary}
                   </Button>
@@ -191,7 +191,7 @@ export default function Home() {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="w-full sm:w-auto border-white/30 bg-white/10 hover:bg-white/20 text-white hover:border-[#ff9800] hover:scale-[1.03] transition-all duration-300 font-semibold px-8 py-6 rounded-full backdrop-blur-md"
+                    className="w-full sm:w-auto border-white/30 bg-white/10 hover:bg-white/20 text-white hover:border-[#ff9800] hover:scale-[1.03] transition-all duration-300 font-semibold px-8 py-5 rounded-full backdrop-blur-md"
                   >
                     {heroSection.ctaSecondary}
                   </Button>
