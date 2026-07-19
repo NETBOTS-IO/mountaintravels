@@ -144,7 +144,8 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
-      <section className="relative min-h-[75vh] flex items-center bg-black overflow-hidden pt-16 pb-12">
+      {/* 1. Hero Section - Locked to screen height (fit viewport) */}
+      <section className="relative h-[calc(100vh-100px)] md:h-[calc(100vh-120px)] flex items-center bg-black overflow-hidden py-6">
         <div className="absolute inset-0 z-0 select-none">
           <Image
             src="/assets/home/hero-1.jpg"
@@ -154,25 +155,25 @@ export default function Home() {
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
         </div>
 
         <div className="container mx-auto px-4 z-10 relative">
           <div className="max-w-3xl space-y-4">
             <RevealStagger delayOffset={0.1}>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-[#ff9800] bg-white/10 backdrop-blur-md border border-white/15">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-[#ff9800] bg-white/10 backdrop-blur-md border border-white/15">
                 Official Tourism Specialist Since 1990
               </span>
             </RevealStagger>
 
             <RevealStagger delayOffset={0.2}>
-              <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+              <h1 className="font-display text-xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
                 {heroSection.headline}
               </h1>
             </RevealStagger>
 
             <RevealStagger delayOffset={0.3}>
-              <p className="text-xs sm:text-sm md:text-base text-gray-200 font-light leading-relaxed max-w-xl drop-shadow-[0_1px_5px_rgba(0,0,0,0.3)] line-clamp-3">
+              <p className="text-[11px] sm:text-xs md:text-sm text-gray-200 font-light leading-relaxed max-w-xl drop-shadow-[0_1px_5px_rgba(0,0,0,0.3)] line-clamp-2 md:line-clamp-3">
                 {heroSection.subheading}
               </p>
             </RevealStagger>
@@ -181,17 +182,17 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Link href="/contact" className="w-full sm:w-auto">
                   <Button
-                    size="lg"
-                    className="w-full sm:w-auto bg-[#45919c] hover:bg-[#ff9800] text-white shadow-lg shadow-[#45919c]/10 hover:shadow-[#ff9800]/20 hover:scale-[1.03] transition-all duration-300 font-bold px-8 py-5 rounded-full"
+                    size="default"
+                    className="w-full sm:w-auto bg-[#45919c] hover:bg-[#ff9800] text-white shadow-lg shadow-[#45919c]/10 hover:shadow-[#ff9800]/20 hover:scale-[1.03] transition-all duration-300 font-bold px-6 py-4 rounded-full text-xs sm:text-sm"
                   >
                     {heroSection.ctaPrimary}
                   </Button>
                 </Link>
                 <Link href="/tours" className="w-full sm:w-auto">
                   <Button
-                    size="lg"
+                    size="default"
                     variant="outline"
-                    className="w-full sm:w-auto border-white/30 bg-white/10 hover:bg-white/20 text-white hover:border-[#ff9800] hover:scale-[1.03] transition-all duration-300 font-semibold px-8 py-5 rounded-full backdrop-blur-md"
+                    className="w-full sm:w-auto border-white/30 bg-white/10 hover:bg-white/20 text-white hover:border-[#ff9800] hover:scale-[1.03] transition-all duration-300 font-semibold px-6 py-4 rounded-full backdrop-blur-md text-xs sm:text-sm"
                   >
                     {heroSection.ctaSecondary}
                   </Button>
@@ -202,8 +203,9 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="relative -mt-10 md:-mt-12 z-20 container mx-auto px-4 max-w-5xl">
-        <div className="bg-background/95 backdrop-blur-md border border-border/80 rounded-2xl shadow-xl p-5 md:p-6 hover:shadow-2xl hover:border-[#45919c]/20 transition-all duration-300">
+      {/* Tour Categories Quick Access */}
+      <div className="relative -mt-8 md:-mt-10 z-20 container mx-auto px-4 max-w-5xl">
+        <div className="bg-background/95 backdrop-blur-md border border-border/80 rounded-2xl shadow-xl p-4 md:p-5 hover:shadow-2xl hover:border-[#45919c]/20 transition-all duration-300">
           <TourIcons />
         </div>
       </div>
