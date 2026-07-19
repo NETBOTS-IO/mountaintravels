@@ -9,7 +9,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
