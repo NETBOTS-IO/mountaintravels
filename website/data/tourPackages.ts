@@ -7,8 +7,7 @@ export const tourCategories = [
   { id: "Cultural Tours", name: "Cultural Tours", icon: "landmark" },
   { id: "Safari", name: "Safari", icon: "compass" },
   { id: "Trips", name: "trips", icon: "landmark" },
-
-]
+];
 
 export const tourPackages = [
   {
@@ -25,12 +24,17 @@ export const tourPackages = [
         bestSeason: "June to August",
         description:
           "Experience the adventure of a lifetime with our K2 Base Camp Trek. This challenging 21-day journey takes you through the heart of the Karakoram Range, offering breathtaking views of some of the world's highest peaks. You'll trek through diverse landscapes, from lush valleys to rugged glaciers, and experience the rich culture of the Balti people. The trek culminates at the base of K2, the world's second-highest mountain, where you'll witness its awe-inspiring majesty up close.",
-        images: ["/tours/k2-base-camp-1.jpg", "/tours/k2-base-camp-2.jpg", "/tours/k2-base-camp-3.jpg"],
+        images: [
+          "/images/tours/tour_k2.webp",
+          "/tours/k2-base-camp-2.jpg",
+          "/tours/k2-base-camp-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet and greet at the airport, transfer to hotel, welcome dinner",
+            activities:
+              "Meet and greet at the airport, transfer to hotel, welcome dinner",
             accommodation: "4-star hotel in Islamabad",
             meals: "Dinner",
             distance: "N/A",
@@ -40,7 +44,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Fly to Skardu",
-            activities: "Take a scenic flight to Skardu, the gateway to the Karakoram Range.",
+            activities:
+              "Take a scenic flight to Skardu, the gateway to the Karakoram Range.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -102,12 +107,17 @@ export const tourPackages = [
         groupSize: "2-15 People",
         price: 899,
         bestSeason: "June to September",
-        images: ["/images/fairy-meadows-1.jpg", "/images/fairy-meadows-2.jpg", "/images/fairy-meadows-3.jpg"],
+        images: [
+          "/images/tours/tour_fairy.webp",
+          "/images/fairy-meadows-2.jpg",
+          "/images/fairy-meadows-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -117,7 +127,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Drive to Raikot Bridge",
-            activities: "Drive along the Karakoram Highway to Raikot Bridge, the starting point for Fairy Meadows.",
+            activities:
+              "Drive along the Karakoram Highway to Raikot Bridge, the starting point for Fairy Meadows.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "460 km",
@@ -129,7 +140,8 @@ export const tourPackages = [
         faqs: [
           {
             question: "How difficult is the Fairy Meadows Trek?",
-            answer: "The Fairy Meadows Trek is rated as moderate. Most people with reasonable fitness can complete it.",
+            answer:
+              "The Fairy Meadows Trek is rated as moderate. Most people with reasonable fitness can complete it.",
           },
           {
             question: "What is the best time to visit Fairy Meadows?",
@@ -176,12 +188,17 @@ export const tourPackages = [
         groupSize: "2-10 People",
         price: 1899,
         bestSeason: "June to August",
-        images: ["/images/nanga-parbat-1.jpg", "/images/nanga-parbat-2.jpg", "/images/nanga-parbat-3.jpg"],
+        images: [
+          "/images/tours/tour_nanga.webp",
+          "/images/nanga-parbat-2.jpg",
+          "/images/nanga-parbat-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -191,7 +208,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Fly to Skardu",
-            activities: "Take a scenic flight to Skardu, the gateway to the Karakoram Range.",
+            activities:
+              "Take a scenic flight to Skardu, the gateway to the Karakoram Range.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -257,12 +275,17 @@ export const tourPackages = [
         groupSize: "4-8 People",
         price: 12999,
         bestSeason: "June to August",
-        images: ["/images/broad-peak-1.jpg", "/images/broad-peak-2.jpg", "/images/broad-peak-3.jpg"],
+        images: [
+          "/images/tours/tour_broad.webp",
+          "/images/broad-peak-2.jpg",
+          "/images/broad-peak-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your expedition leader and transfer to your hotel.",
+            activities:
+              "Meet your expedition leader and transfer to your hotel.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -272,7 +295,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Preparation and Briefing",
-            activities: "Equipment check, expedition briefing, and permit formalities in Islamabad.",
+            activities:
+              "Equipment check, expedition briefing, and permit formalities in Islamabad.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -325,19 +349,25 @@ export const tourPackages = [
       {
         id: "gasherbrum-ii-expedition",
         title: "Gasherbrum II Expedition",
-        description: "Climb the 13th highest mountain in the world, Gasherbrum II.",
+        description:
+          "Climb the 13th highest mountain in the world, Gasherbrum II.",
         location: "Karakoram Range, Pakistan",
         days: 50,
         difficulty: "Extreme",
         groupSize: "4-8 People",
         price: 13999,
         bestSeason: "June to August",
-        images: ["/images/gasherbrum-ii-1.jpg", "/images/gasherbrum-ii-2.jpg", "/images/gasherbrum-ii-3.jpg"],
+        images: [
+          "/images/gasherbrum-ii-1.jpg",
+          "/images/gasherbrum-ii-2.jpg",
+          "/images/gasherbrum-ii-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your expedition leader and transfer to your hotel.",
+            activities:
+              "Meet your expedition leader and transfer to your hotel.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -347,7 +377,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Preparation and Briefing",
-            activities: "Equipment check, expedition briefing, and permit formalities in Islamabad.",
+            activities:
+              "Equipment check, expedition briefing, and permit formalities in Islamabad.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -421,7 +452,8 @@ export const tourPackages = [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -491,12 +523,17 @@ export const tourPackages = [
         groupSize: "4-10 People",
         price: 1699,
         bestSeason: "June to August",
-        images: ["/images/skardu-valley-1.jpg", "/images/skardu-valley-2.jpg", "/images/skardu-valley-3.jpg"],
+        images: [
+          "/images/skardu-valley-1.jpg",
+          "/images/skardu-valley-2.jpg",
+          "/images/skardu-valley-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -506,7 +543,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Fly to Skardu",
-            activities: "Take a scenic flight to Skardu, the gateway to the Karakoram Range.",
+            activities:
+              "Take a scenic flight to Skardu, the gateway to the Karakoram Range.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -571,12 +609,17 @@ export const tourPackages = [
         groupSize: "4-8 People",
         price: 1499,
         bestSeason: "December to February",
-        images: ["/images/naltar-valley-1.jpg", "/images/naltar-valley-2.jpg", "/images/naltar-valley-3.jpg"],
+        images: [
+          "/images/naltar-valley-1.jpg",
+          "/images/naltar-valley-2.jpg",
+          "/images/naltar-valley-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -586,7 +629,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Fly to Gilgit",
-            activities: "Take a scenic flight to Gilgit, the gateway to Naltar Valley.",
+            activities:
+              "Take a scenic flight to Gilgit, the gateway to Naltar Valley.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -603,7 +647,8 @@ export const tourPackages = [
           },
           {
             question: "What is the best time to do this tour?",
-            answer: "The best time for the Naltar Valley Ski Tour is from December to February when the snow is best.",
+            answer:
+              "The best time for the Naltar Valley Ski Tour is from December to February when the snow is best.",
           },
           // ... more FAQs ...
         ],
@@ -638,19 +683,25 @@ export const tourPackages = [
       {
         id: "malam-jabba-ski-resort-package",
         title: "Malam Jabba Ski Resort Package",
-        description: "Enjoy skiing at Pakistan's premier ski resort, Malam Jabba.",
+        description:
+          "Enjoy skiing at Pakistan's premier ski resort, Malam Jabba.",
         location: "Swat Valley, Pakistan",
         days: 5,
         difficulty: "Beginner to Intermediate",
         groupSize: "2-20 People",
         price: 899,
         bestSeason: "December to February",
-        images: ["/images/malam-jabba-1.jpg", "/images/malam-jabba-2.jpg", "/images/malam-jabba-3.jpg"],
+        images: [
+          "/images/malam-jabba-1.jpg",
+          "/images/malam-jabba-2.jpg",
+          "/images/malam-jabba-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -725,12 +776,17 @@ export const tourPackages = [
         groupSize: "2-15 People",
         price: 1299,
         bestSeason: "April to October",
-        images: ["/images/hunza-valley-1.jpg", "/images/hunza-valley-2.jpg", "/images/hunza-valley-3.jpg"],
+        images: [
+          "/images/hunza-valley-1.jpg",
+          "/images/hunza-valley-2.jpg",
+          "/images/hunza-valley-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -740,7 +796,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Fly to Gilgit",
-            activities: "Take a scenic flight to Gilgit, the gateway to Hunza Valley.",
+            activities:
+              "Take a scenic flight to Gilgit, the gateway to Hunza Valley.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -793,19 +850,25 @@ export const tourPackages = [
       {
         id: "kalash-valley-festival-tour",
         title: "Kalash Valley Festival Tour",
-        description: "Experience the unique culture and festivals of the Kalash people.",
+        description:
+          "Experience the unique culture and festivals of the Kalash people.",
         location: "Chitral, Pakistan",
         days: 8,
         difficulty: "Easy",
         groupSize: "2-12 People",
         price: 1499,
         bestSeason: "May, August, December",
-        images: ["/images/kalash-valley-1.jpg", "/images/kalash-valley-2.jpg", "/images/kalash-valley-3.jpg"],
+        images: [
+          "/images/kalash-valley-1.jpg",
+          "/images/kalash-valley-2.jpg",
+          "/images/kalash-valley-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -815,7 +878,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Fly to Chitral",
-            activities: "Take a scenic flight to Chitral, the gateway to Kalash Valley.",
+            activities:
+              "Take a scenic flight to Chitral, the gateway to Kalash Valley.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -868,19 +932,25 @@ export const tourPackages = [
       {
         id: "lahore-cultural-heritage-tour",
         title: "Lahore Cultural Heritage Tour",
-        description: "Explore the rich history and culture of Lahore, the heart of Punjab.",
+        description:
+          "Explore the rich history and culture of Lahore, the heart of Punjab.",
         location: "Lahore, Pakistan",
         days: 5,
         difficulty: "Easy",
         groupSize: "2-20 People",
         price: 699,
         bestSeason: "October to March",
-        images: ["/images/lahore-1.jpg", "/images/lahore-2.jpg", "/images/lahore-3.jpg"],
+        images: [
+          "/images/lahore-1.jpg",
+          "/images/lahore-2.jpg",
+          "/images/lahore-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Lahore",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -890,7 +960,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Lahore Fort and Badshahi Mosque",
-            activities: "Explore the historic Lahore Fort and the magnificent Badshahi Mosque.",
+            activities:
+              "Explore the historic Lahore Fort and the magnificent Badshahi Mosque.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -948,19 +1019,25 @@ export const tourPackages = [
       {
         id: "deosai-plains-jeep-safari",
         title: "Deosai Plains Jeep Safari",
-        description: "Explore the second-highest plateau in the world, Deosai Plains.",
+        description:
+          "Explore the second-highest plateau in the world, Deosai Plains.",
         location: "Gilgit-Baltistan, Pakistan",
         days: 6,
         difficulty: "Moderate",
         groupSize: "4-12 People",
         price: 1199,
         bestSeason: "June to September",
-        images: ["/images/deosai-plains-1.jpg", "/images/deosai-plains-2.jpg", "/images/deosai-plains-3.jpg"],
+        images: [
+          "/images/deosai-plains-1.jpg",
+          "/images/deosai-plains-2.jpg",
+          "/images/deosai-plains-3.jpg",
+        ],
         itineraries: [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -970,7 +1047,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Fly to Skardu",
-            activities: "Take a scenic flight to Skardu, the gateway to Deosai Plains.",
+            activities:
+              "Take a scenic flight to Skardu, the gateway to Deosai Plains.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -1023,7 +1101,8 @@ export const tourPackages = [
       {
         id: "khunjerab-national-park-wildlife-safari",
         title: "Khunjerab National Park Wildlife Safari",
-        description: "Spot rare wildlife in the high-altitude Khunjerab National Park.",
+        description:
+          "Spot rare wildlife in the high-altitude Khunjerab National Park.",
         location: "Gilgit-Baltistan, Pakistan",
         days: 8,
         difficulty: "Moderate",
@@ -1039,7 +1118,8 @@ export const tourPackages = [
           {
             day: 1,
             description: "Arrival in Islamabad",
-            activities: "Meet your guide and transfer to your hotel for an overnight stay.",
+            activities:
+              "Meet your guide and transfer to your hotel for an overnight stay.",
             accommodation: "Hotel",
             meals: "Dinner",
             distance: "N/A",
@@ -1049,7 +1129,8 @@ export const tourPackages = [
           {
             day: 2,
             description: "Fly to Gilgit",
-            activities: "Take a scenic flight to Gilgit, the gateway to Khunjerab National Park.",
+            activities:
+              "Take a scenic flight to Gilgit, the gateway to Khunjerab National Park.",
             accommodation: "Hotel",
             meals: "Breakfast, Lunch, Dinner",
             distance: "N/A",
@@ -1060,7 +1141,8 @@ export const tourPackages = [
         ],
         faqs: [
           {
-            question: "How difficult is the Khunjerab National Park Wildlife Safari?",
+            question:
+              "How difficult is the Khunjerab National Park Wildlife Safari?",
             answer:
               "The Khunjerab National Park Wildlife Safari is considered moderate. Participants should be in reasonable physical condition.",
           },
@@ -1101,5 +1183,4 @@ export const tourPackages = [
       },
     ],
   },
-]
-
+];

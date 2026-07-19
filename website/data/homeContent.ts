@@ -257,7 +257,7 @@ export const aboutPreview = {
   title: "About Mountain Travels Pakistan",
   description:
     "Established in 1990, Mountain Travels Pakistan is among the country's most experienced inbound tour operators. For more than 35 years, we have been crafting exceptional travel experiences, cultural journeys, luxury holidays, and mountaineering expeditions across Pakistan and the ancient Silk Road.",
-  image: "/assets/home/about-1.jpg",
+  image: "/assets/home/about-1.webp",
   stats: [
     { value: "35+", label: "Years Experience" },
     { value: "10k+", label: "Happy Clients" },

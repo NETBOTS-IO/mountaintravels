@@ -157,7 +157,7 @@ export default function AboutPage() {
             <RevealStagger delayOffset={0.1}>
               <div className="relative h-[450px] w-full rounded-2xl overflow-hidden bg-muted border border-border shadow-xl hover:shadow-2xl transition-all duration-300 group">
                 <Image
-                  src="/assets/home/hero-1.jpg"
+                  src="/assets/home/hero-1.webp"
                   alt="Karakoram Mountains"
                   fill
                   className="object-cover group-hover:scale-103 transition-transform duration-500"

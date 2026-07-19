@@ -80,7 +80,7 @@ export function Footer() {
               className="inline-block hover:scale-105 transition-transform"
             >
               <Image
-                src="/assets/logo/logo.png"
+                src="/assets/logo/logo.webp"
                 alt={siteConfig.name}
                 width={120}
                 height={60}

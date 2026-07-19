@@ -148,7 +148,7 @@ export default function WhyChooseUsPage() {
             <RevealStagger delayOffset={0.1}>
               <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-muted border border-border">
                 <Image
-                  src="/assets/home/hero-1.jpg"
+                  src="/assets/home/hero-1.webp"
                   alt="Experience"
                   fill
                   className="object-cover"
@@ -162,7 +162,7 @@ export default function WhyChooseUsPage() {
             <RevealStagger className="lg:order-2">
               <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-muted border border-border">
                 <Image
-                  src="/assets/home/hero-1.jpg"
+                  src="/assets/home/hero-1.webp"
                   alt="Specialists"
                   fill
                   className="object-cover"
@@ -267,7 +267,7 @@ export default function WhyChooseUsPage() {
             <RevealStagger delayOffset={0.1}>
               <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-muted border border-border">
                 <Image
-                  src="/assets/home/hero-1.jpg"
+                  src="/assets/home/hero-1.webp"
                   alt="Tailor Made"
                   fill
                   className="object-cover"

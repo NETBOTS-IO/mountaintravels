@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { siteConfig, mainMenu } from "@/data/siteConfig";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,7 +29,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,8 +55,18 @@ export function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleMobileDropdown = (name: string) =>
     setOpenMobileDropdown(openMobileDropdown === name ? null : name);
-  const toggleDesktopDropdown = (name: string) =>
-    setOpenDesktopDropdown(openDesktopDropdown === name ? null : name);
+
+  const handleMouseEnter = (name: string) => {
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+    setOpenDesktopDropdown(name);
+  };
+
+  const handleMouseLeave = () => {
+    const timeout = setTimeout(() => {
+      setOpenDesktopDropdown(null);
+    }, 150);
+    setHoverTimeout(timeout);
+  };
 
   return (
     <header
@@ -109,13 +120,13 @@ export function Header() {
 
       {/* Main Navigation - Locked to solid white background */}
       <div
-        className="w-full bg-white text-gray-900 border-b border-gray-100"
+        className="w-full bg-white text-gray-900 border-b border-gray-100 relative"
         id="navbar-main-container"
       >
         <div className="container mx-auto px-4 py-1.5 md:py-2 flex justify-between items-center">
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center relative z-20">
             <Image
-              src="/assets/logo/logo.png"
+              src="/assets/logo/logo.webp"
               alt={siteConfig.name}
               width={100}
               height={50}
@@ -125,7 +136,7 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden flex items-center transition-colors text-gray-800"
+            className="md:hidden flex items-center transition-colors text-gray-800 relative z-20"
             onClick={toggleMenu}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -137,43 +148,64 @@ export function Header() {
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
+          <nav className="hidden md:flex items-center space-x-1 lg:space-x-3">
             {mainMenu.map((item) =>
               item.children ? (
-                <div key={item.name} className="relative">
-                  <button
-                    onClick={() => toggleDesktopDropdown(item.name)}
-                    className="text-sm lg:text-base font-medium hover:text-[#ff9800] transition-colors flex items-center text-gray-800"
+                <div
+                  key={item.name}
+                  className="relative group"
+                  onMouseEnter={() => handleMouseEnter(item.name)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <Link
+                    href={item.children[0]?.path || "#"}
+                    className="text-sm lg:text-[15px] font-semibold hover:text-[#ff9800] hover:bg-slate-50 px-3 py-2 rounded-full transition-all duration-300 flex items-center text-gray-800"
                   >
                     {item.name}
                     <ChevronDown
-                      className={`ml-1 h-4 w-4 transition-transform ${
-                        openDesktopDropdown === item.name ? "rotate-180" : ""
+                      className={`ml-1 h-3.5 w-3.5 transition-transform duration-300 ${
+                        openDesktopDropdown === item.name
+                          ? "rotate-180 text-[#ff9800]"
+                          : "text-gray-400"
                       }`}
                     />
-                  </button>
-                  {openDesktopDropdown === item.name && (
-                    <div className="absolute left-0 mt-2 w-48 bg-white text-gray-900 shadow-lg rounded-lg border border-gray-100">
-                      <ul className="py-2">
-                        {item.children.map((child) => (
-                          <li key={child.name}>
-                            <Link
-                              href={child.path}
-                              className="block px-4 py-2 text-sm hover:bg-[#ff9800] hover:text-white transition-colors"
-                            >
-                              {child.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  </Link>
+                  <AnimatePresence>
+                    {openDesktopDropdown === item.name && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="absolute left-0 mt-2 w-64 bg-white/95 backdrop-blur-md text-gray-900 shadow-2xl rounded-2xl border border-gray-100/50 overflow-hidden"
+                      >
+                        <div className="p-2">
+                          <ul className="flex flex-col space-y-1">
+                            {item.children.map((child) => (
+                              <li key={child.name}>
+                                <Link
+                                  href={child.path}
+                                  className="block px-4 py-2.5 text-sm font-medium rounded-xl hover:bg-[#ff9800]/10 hover:text-[#ff9800] transition-colors relative group"
+                                  onClick={() => setOpenDesktopDropdown(null)}
+                                >
+                                  <span className="relative z-10">
+                                    {child.name}
+                                  </span>
+                                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-[#ff9800] rounded-r-md group-hover:h-1/2 transition-all duration-300"></div>
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               ) : (
                 <Link
                   key={item.name}
                   href={item.path}
-                  className="text-sm lg:text-base font-medium hover:text-[#ff9800] transition-colors text-gray-800"
+                  className="text-sm lg:text-[15px] font-semibold hover:text-[#ff9800] hover:bg-slate-50 px-3 py-2 rounded-full transition-all duration-300 text-gray-800"
                 >
                   {item.name}
                 </Link>
@@ -183,84 +215,73 @@ export function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        <div
-          className={cn(
-            "md:hidden fixed inset-0 bg-white z-50 transition-transform transform",
-            isMenuOpen ? "translate-x-0" : "translate-x-full",
-          )}
-        >
-          <div className="flex justify-between items-center p-4 border-b">
-            <Link
-              href="/"
-              className="flex items-center"
-              onClick={() => setIsMenuOpen(false)}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-xl overflow-hidden z-40"
             >
-              <Image
-                src="/assets/logo/logo.png"
-                alt={siteConfig.name}
-                width={40}
-                height={40}
-                className="h-8 w-auto"
-              />
-              <span className="ml-2 font-bold text-lg text-primary">
-                {siteConfig.shortName}
-              </span>
-            </Link>
-            <button
-              className="flex items-center"
-              onClick={toggleMenu}
-              aria-label="Close menu"
-            >
-              <X className="h-6 w-6" />
-            </button>
-          </div>
-          <nav className="p-4">
-            <ul className="space-y-4">
-              {mainMenu.map((item) => (
-                <li key={item.name}>
-                  {item.children ? (
-                    <div>
-                      <button
-                        onClick={() => toggleMobileDropdown(item.name)}
-                        className="flex items-center justify-between w-full text-lg font-medium hover:text-primary transition-colors"
-                      >
-                        {item.name}
-                        <ChevronDown
-                          className={`h-5 w-5 transition-transform ${
-                            openMobileDropdown === item.name ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      {openMobileDropdown === item.name && (
-                        <ul className="pl-4 mt-2 space-y-2">
-                          {item.children.map((child) => (
-                            <li key={child.name}>
-                              <Link
-                                href={child.path}
-                                className="text-base hover:text-primary transition-colors block"
-                                onClick={() => setIsMenuOpen(false)}
+              <nav className="p-4 max-h-[80vh] overflow-y-auto">
+                <ul className="space-y-2">
+                  {mainMenu.map((item) => (
+                    <li key={item.name}>
+                      {item.children ? (
+                        <div className="bg-slate-50/50 rounded-xl overflow-hidden">
+                          <button
+                            onClick={() => toggleMobileDropdown(item.name)}
+                            className="flex items-center justify-between w-full px-4 py-3 text-[15px] font-semibold hover:text-[#ff9800] transition-colors"
+                          >
+                            {item.name}
+                            <ChevronDown
+                              className={`h-4 w-4 transition-transform duration-300 ${
+                                openMobileDropdown === item.name
+                                  ? "rotate-180 text-[#ff9800]"
+                                  : "text-gray-400"
+                              }`}
+                            />
+                          </button>
+                          <AnimatePresence>
+                            {openMobileDropdown === item.name && (
+                              <motion.ul
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="bg-white/50 px-4 pb-3 space-y-1"
                               >
-                                {child.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
+                                {item.children.map((child) => (
+                                  <li key={child.name}>
+                                    <Link
+                                      href={child.path}
+                                      className="block text-sm font-medium py-2 px-3 rounded-lg hover:bg-[#ff9800]/10 hover:text-[#ff9800] transition-colors"
+                                      onClick={() => setIsMenuOpen(false)}
+                                    >
+                                      {child.name}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </motion.ul>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ) : (
+                        <Link
+                          href={item.path}
+                          className="block px-4 py-3 text-[15px] font-semibold hover:text-[#ff9800] hover:bg-slate-50 rounded-xl transition-colors"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
                       )}
-                    </div>
-                  ) : (
-                    <Link
-                      href={item.path}
-                      className="text-lg font-medium hover:text-primary transition-colors block"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );

@@ -150,7 +150,7 @@ export default function Home() {
       <section className="relative h-[calc(100vh-100px)] md:h-[calc(100vh-120px)] flex items-center bg-black overflow-hidden py-6">
         <div className="absolute inset-0 z-0 select-none">
           <Image
-            src="/assets/home/hero-1.jpg"
+            src="/assets/home/hero-1.webp"
             alt="Majestic Karakoram Peaks"
             fill
             className="object-cover opacity-65 scale-105 animate-[subtle-zoom_20s_infinite_alternate]"
@@ -218,7 +218,7 @@ export default function Home() {
             <RevealStagger>
               <div className="relative h-[250px] sm:h-[350px] md:h-[450px] w-full rounded-lg border border-border overflow-hidden bg-muted">
                 <Image
-                  src="/assets/home/hero-1.jpg"
+                  src="/assets/home/hero-1.webp"
                   alt="Exploring Silk Road Routes"
                   fill
                   className="object-cover"
@@ -359,7 +359,7 @@ export default function Home() {
                 <div className="group border border-border flex-shrink-0 w-[280px] sm:w-[320px] md:w-[350px] snap-start hover:shadow-xl hover:border-[#45919c]/40 transition-all duration-300 flex flex-col justify-between bg-card rounded-2xl overflow-hidden">
                   <div className="relative h-48 w-full overflow-hidden">
                     <Image
-                      src={experience.image || "/assets/home/hero-1.jpg"}
+                      src={experience.image || "/assets/home/hero-1.webp"}
                       alt={experience.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -422,7 +422,7 @@ export default function Home() {
                 <div className="bg-background border border-border flex-shrink-0 w-[280px] sm:w-[320px] snap-start hover:shadow-xl hover:border-[#45919c]/40 transition-all duration-300 rounded-2xl overflow-hidden group">
                   <div className="relative h-44 w-full overflow-hidden">
                     <Image
-                      src={dest.image || "/assets/home/hero-1.jpg"}
+                      src={dest.image || "/assets/home/hero-1.webp"}
                       alt={dest.name}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
