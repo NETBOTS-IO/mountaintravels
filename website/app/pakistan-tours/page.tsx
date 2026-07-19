@@ -120,10 +120,13 @@ export default function PakistanToursPage() {
   };
 
   const getTourImage = (tour: any, idx: number) => {
-    if (tour.images?.[0] && !tour.images[0].includes("/uploads/tours/")) {
-      return tour.images[0].startsWith("http")
-        ? tour.images[0]
-        : `${BASE_URL}${tour.images[0]}`;
+    if (tour.images?.[0]) {
+      const img = tour.images[0];
+      if (img.startsWith("http")) return img;
+      // Only prepend BASE_URL for backend upload paths
+      if (img.startsWith("/uploads/")) return `${BASE_URL}${img}`;
+      // Local frontend static paths - return as-is
+      return img;
     }
     const unsplashFallbacks = [
       "https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=600&q=80",

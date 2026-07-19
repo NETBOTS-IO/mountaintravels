@@ -126,10 +126,11 @@ export default function MountaineeringPage() {
   };
 
   const getImage = (tour: any, idx: number) => {
-    if (tour.images?.[0] && !tour.images[0].includes("/uploads/tours/")) {
-      return tour.images[0].startsWith("http")
-        ? tour.images[0]
-        : `${BASE_URL}${tour.images[0]}`;
+    if (tour.images?.[0]) {
+      const img = tour.images[0];
+      if (img.startsWith("http")) return img;
+      if (img.startsWith("/uploads/")) return `${BASE_URL}${img}`;
+      return img;
     }
     return placeholderImages[idx % placeholderImages.length];
   };

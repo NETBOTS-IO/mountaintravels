@@ -153,7 +153,10 @@ export default function ToursPage() {
     if (tour.images?.[0]) {
       const img = tour.images[0];
       if (img.startsWith("http")) return img;
-      return `${BASE_URL}${img}`;
+      // Only prepend BASE_URL for backend-served paths (uploads)
+      if (img.startsWith("/uploads/")) return `${BASE_URL}${img}`;
+      // Local frontend static paths - return as-is
+      return img;
     }
     return placeholderImages[tour.category] || placeholderImages.default;
   };

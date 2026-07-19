@@ -57,49 +57,49 @@ export const featuredExperiences = [
     title: "Cultural Tours of Pakistan",
     description:
       "Explore ancient civilizations, Mughal heritage, Buddhist sites, colorful cultures, and vibrant traditions.",
-    image: "/assets/home/cultural.jpg",
+    image: "/images/destinations/dest_lahore.webp",
   },
   {
     id: "northern-pakistan",
     title: "Northern Pakistan Tours",
     description:
       "Discover Hunza, Skardu, Deosai, Fairy Meadows, Chitral, Kalash, and the breathtaking Karakoram Mountains.",
-    image: "/assets/home/northern.jpg",
+    image: "/images/destinations/dest_hunza.webp",
   },
   {
     id: "luxury-private",
     title: "Luxury & Private Journeys",
     description:
       "Bespoke luxury experiences featuring boutique hotels, heritage properties, private guides, and exclusive cultural tours.",
-    image: "/assets/home/luxury.jpg",
+    image: "/images/destinations/dest_skardu.webp",
   },
   {
     id: "silk-road",
     title: "Follow the Ancient Silk Road",
     description:
       "Journey along the historic Karakoram Highway, Buddhist heritage locations, and multi-country Silk Road adventures.",
-    image: "/assets/home/silkroad.jpg",
+    image: "/images/destinations/dest_gilgit.webp",
   },
   {
     id: "central-asia",
     title: "Discover Central Asia",
     description:
       "Explore the ancient Silk Road cities of Uzbekistan, Kazakhstan, Kyrgyzstan, Tajikistan, and Turkmenistan.",
-    image: "/assets/home/centralasia.jpg",
+    image: "/images/destinations/dest_kashmir.webp",
   },
   {
     id: "trekking-expeditions",
     title: "Trekking and Mountaineering Adventures",
     description:
       "Experience world-famous mountain adventures including K2 Base Camp, Gondogoro La, and Snow Lake.",
-    image: "/assets/home/trekking.jpg",
+    image: "/images/tours/tour_k2.webp",
   },
   {
     id: "special-interest",
     title: "Special Interest Tours",
     description:
       "Customized itineraries focusing on Photography, Wildlife & Birdwatching, Archaeology, Jeep Safaris, and Educational tours.",
-    image: "/assets/home/special.jpg",
+    image: "/images/destinations/dest_chitral.webp",
   },
 ];
 
@@ -109,7 +109,7 @@ export const popularDestinations = [
     name: "Hunza Valley",
     description:
       "Ancient forts, glacier-fed rivers, spectacular mountain scenery, and Silk Road heritage.",
-    image: "/assets/destinations/hunza.jpg",
+    image: "/images/destinations/dest_hunza.webp",
     tours: 12,
   },
   {
@@ -117,7 +117,7 @@ export const popularDestinations = [
     name: "Skardu & Baltistan",
     description:
       "Gateway to K2, Baltistan, Shangrila, Upper Kachura Lake, and Deosai National Park.",
-    image: "/assets/destinations/skardu.jpg",
+    image: "/images/destinations/dest_skardu.webp",
     tours: 15,
   },
   {
@@ -125,7 +125,7 @@ export const popularDestinations = [
     name: "Gilgit-Baltistan",
     description:
       "Land of giants. Towering peaks, ancient Silk Road settlements, glaciers, and rich cultural diversity.",
-    image: "/assets/destinations/gilgit.jpg",
+    image: "/images/destinations/dest_gilgit.webp",
     tours: 10,
   },
   {
@@ -133,7 +133,7 @@ export const popularDestinations = [
     name: "Chitral & Kalash",
     description:
       "Unique cultures, festivals, traditions, and dramatic mountain landscapes of Hindu Kush.",
-    image: "/assets/destinations/chitral.jpg",
+    image: "/images/destinations/dest_chitral.webp",
     tours: 6,
   },
   {
@@ -141,7 +141,7 @@ export const popularDestinations = [
     name: "Swat Valley",
     description:
       "The Switzerland of the East. Lush green valleys, rivers, forests, and Gandhara Buddhist heritage.",
-    image: "/assets/destinations/swat.jpg",
+    image: "/images/destinations/dest_swat.webp",
     tours: 5,
   },
   {
@@ -149,7 +149,7 @@ export const popularDestinations = [
     name: "Kashmir",
     description:
       "Paradise on Earth. Picturesque Neelum Valley, Arang Kel, Sharda, and alpine lakes.",
-    image: "/assets/destinations/kashmir.jpg",
+    image: "/images/destinations/dest_kashmir.webp",
     tours: 4,
   },
   {
@@ -157,7 +157,7 @@ export const popularDestinations = [
     name: "Lahore",
     description:
       "The cultural heart of Pakistan, renowned for Mughal architecture, cuisine, and heritage.",
-    image: "/assets/destinations/lahore.jpg",
+    image: "/images/destinations/dest_lahore.webp",
     tours: 8,
   },
   {
@@ -165,7 +165,7 @@ export const popularDestinations = [
     name: "Taxila",
     description:
       "One of South Asia's most important archaeological and Buddhist heritage sites.",
-    image: "/assets/destinations/taxila.jpg",
+    image: "/images/destinations/dest_taxila.webp",
     tours: 4,
   },
   {
@@ -173,7 +173,7 @@ export const popularDestinations = [
     name: "Makran Coast",
     description:
       "Hidden coastal wonder. Hingol National Park, Kund Malir Beach, and the dramatic Coastal Highway.",
-    image: "/assets/destinations/makran.jpg",
+    image: "/images/destinations/dest_makran.webp",
     tours: 3,
   },
 ];
