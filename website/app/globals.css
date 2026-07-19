@@ -108,6 +108,18 @@
 
 
 /* Admin Dashboard Styles */
+a:hover,
+button:hover,
+[role="button"]:hover {
+  color: #ff9800 !important;
+}
+
+/* Force state overrides for class lists */
+.hover\:text-primary:hover,
+.hover\:text-secondary:hover {
+  color: #ff9800 !important;
+}
+
 .admin-dashboard {
   @apply bg-gray-100;
 }
