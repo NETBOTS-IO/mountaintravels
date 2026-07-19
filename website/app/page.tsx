@@ -208,11 +208,11 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="py-20 bg-background">
+      <section className="py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <RevealStagger>
-              <div className="relative h-[450px] w-full rounded-lg border border-border overflow-hidden bg-muted">
+              <div className="relative h-[250px] sm:h-[350px] md:h-[450px] w-full rounded-lg border border-border overflow-hidden bg-muted">
                 <Image
                   src="/assets/home/hero-1.jpg"
                   alt="Exploring Silk Road Routes"
@@ -222,24 +222,24 @@ export default function Home() {
               </div>
             </RevealStagger>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               <RevealStagger delayOffset={0.1}>
-                <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+                <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
                   {aboutPreview.title}
                 </h2>
               </RevealStagger>
 
               <RevealStagger delayOffset={0.2}>
-                <p className="text-muted-foreground text-base leading-relaxed font-light">
+                <p className="text-muted-foreground text-sm md:text-base leading-relaxed font-light">
                   {aboutPreview.description}
                 </p>
               </RevealStagger>
 
               <RevealStagger delayOffset={0.3}>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-6 border-t border-border mt-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-border mt-4">
                   {aboutPreview.stats.map((stat, index) => (
                     <div key={index} className="space-y-1">
-                      <div className="font-display text-3xl font-bold text-primary">
+                      <div className="font-display text-2xl md:text-3xl font-bold text-primary">
                         {stat.value}
                       </div>
                       <div className="text-xs text-muted-foreground">
@@ -251,11 +251,11 @@ export default function Home() {
               </RevealStagger>
 
               <RevealStagger delayOffset={0.4}>
-                <div className="pt-4">
+                <div className="pt-2">
                   <Link href="/about">
                     <Button
                       variant="link"
-                      className="text-primary hover:text-[#ff9800] p-0 text-base font-semibold group transition-colors hover:bg-transparent"
+                      className="text-primary hover:text-[#ff9800] p-0 text-sm font-semibold group transition-colors hover:bg-transparent"
                     >
                       Read Our Complete Story
                       <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
@@ -268,14 +268,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-slate-50 border-y border-border">
+      <section className="py-10 md:py-16 bg-slate-50 border-y border-border">
         <div className="container mx-auto px-4 max-w-6xl">
           <RevealStagger>
-            <div className="max-w-2xl mb-12 space-y-4">
-              <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+            <div className="max-w-2xl mb-8 space-y-3">
+              <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
                 {whyChoose.title}
               </h2>
-              <p className="text-muted-foreground text-base font-light leading-relaxed">
+              <p className="text-muted-foreground text-sm md:text-base font-light leading-relaxed">
                 {whyChoose.description}
               </p>
             </div>
