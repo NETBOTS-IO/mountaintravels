@@ -19,13 +19,13 @@
     --popover: 0 0% 100%;
     --popover-foreground: 210 33% 14%;
 
-    /* PRIMARY — #45919c Teal */
-    --primary: 188 39% 44%;
-    --primary-foreground: 0 0% 100%;
+  /* PRIMARY — #45919c Teal */
+  --primary: 188 39% 44%;
+  --primary-foreground: 0 0% 100%;
 
-    /* SECONDARY — #2596be Sky Blue */
-    --secondary: 196 67% 45%;
-    --secondary-foreground: 0 0% 100%;
+  /* SECONDARY — #2596be Sky Blue */
+  --secondary: 196 67% 45%;
+  --secondary-foreground: 0 0% 100%;
 
     /* Muted / subtle backgrounds */
     --muted: 196 20% 93%;
@@ -107,11 +107,18 @@
 
 
 
-/* Admin Dashboard Styles */
-a:hover,
-button:hover,
-[role="button"]:hover {
+/* UI Interactive Hover Fixes */
+a:hover {
   color: #ff9800 !important;
+}
+
+button:hover,
+.button-hover-state:hover,
+[role="button"]:hover,
+button[type="submit"]:hover {
+  background-color: #ff9800 !important;
+  color: #ffffff !important;
+  border-color: #ff9800 !important;
 }
 
 /* Force state overrides for class lists */

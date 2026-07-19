@@ -1,8 +1,15 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { Mountain, Compass, Landmark, Binoculars, Bike, Snowflake } from "lucide-react"
+import { motion } from "framer-motion";
+import Link from "next/link";
+import {
+  Mountain,
+  Compass,
+  Landmark,
+  Binoculars,
+  Bike,
+  Snowflake,
+} from "lucide-react";
 
 // Define your categories
 const categories = [
@@ -54,46 +61,45 @@ const categories = [
     bgColor: "bg-teal-50",
     borderColor: "border-teal-200",
   },
-]
+];
 
 export default function TourIcons() {
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Explore Tour Categories
-        </h2>
+    <div className="w-full">
+      {/* Section Header */}
+      <h3 className="text-sm font-bold uppercase tracking-wider text-center text-muted-foreground mb-8">
+        Explore Adventure Categories
+      </h3>
 
-        {/* Categories Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-          {categories.map((cat, index) => {
-            const Icon = cat.icon
-            return (
-              <Link key={cat.id} href={`/tours?category=${cat.id}`}>
-                <motion.div
-                  className={`group relative bg-white rounded-2xl border-2 ${cat.borderColor} p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-xl transition-all duration-500`}
-                  whileHover={{ y: -5, scale: 1.05 }}
+      {/* Categories Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        {categories.map((cat) => {
+          const Icon = cat.icon;
+          return (
+            <Link
+              key={cat.id}
+              href={`/tours?category=${cat.id}`}
+              className="group"
+            >
+              <div
+                className={`relative bg-background border border-border rounded-2xl p-5 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#45919c]/40 hover:-translate-y-1.5 transition-all duration-300`}
+              >
+                {/* Colored Icon Wrapper */}
+                <div
+                  className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${cat.color} text-white shadow-md group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 mb-3`}
                 >
-                  {/* Icon */}
-                  <motion.div
-                    className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${cat.color} rounded-full mb-4 group-hover:scale-110 transition-transform duration-300`}
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <Icon className="w-8 h-8 text-white" />
-                  </motion.div>
+                  <Icon className="w-5 h-5" />
+                </div>
 
-                  {/* Title */}
-                  <h3 className="text-base font-semibold text-gray-800 group-hover:text-orange-600 transition-colors duration-300">
-                    {cat.name}
-                  </h3>
-                </motion.div>
-              </Link>
-            )
-          })}
-        </div>
+                {/* Title */}
+                <h4 className="text-xs font-bold text-foreground group-hover:text-[#ff9800] transition-colors duration-300">
+                  {cat.name}
+                </h4>
+              </div>
+            </Link>
+          );
+        })}
       </div>
-    </section>
-  )
+    </div>
+  );
 }

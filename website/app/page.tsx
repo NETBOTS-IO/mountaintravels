@@ -218,7 +218,7 @@ export default function Home() {
                   <Link href="/about">
                     <Button
                       variant="link"
-                      className="text-primary hover:text-primary/80 p-0 text-base font-semibold group"
+                      className="text-primary hover:text-[#ff9800] p-0 text-base font-semibold group transition-colors"
                     >
                       Read Our Complete Story
                       <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
@@ -231,8 +231,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. Why Choose Us */}
-      <section className="py-20 bg-muted/30 border-y border-border">
+      {/* 3. Why Choose Us - Changed bg from bg-muted/30 to slate-50 */}
+      <section className="py-20 bg-slate-50 border-y border-border">
         <div className="container mx-auto px-4 max-w-6xl">
           <RevealStagger>
             <div className="max-w-2xl mb-12 space-y-4">
