@@ -187,15 +187,69 @@ export const fallbackTestimonials = [
   },
   {
     id: 2,
+    name: "Katsutoshi Kanai",
+    tour: "Director, Gyosei Corporation, Japan",
+    text: "Without the kind assistance of Mountain Travels Pakistan, Mr. Hiroki Fujita (renowned Japanese photographer), could not have accomplished his work in the high-altitude mountains.",
+  },
+  {
+    id: 3,
+    name: "Dan Mozena",
+    tour: "Political Attache, American Embassy, Islamabad",
+    text: "Ghulam brings energy and excitement to any outdoor adventure... his enthusiasm is infectious, keeping his fellow travelers in high spirits.",
+  },
+  {
+    id: 4,
+    name: "Evan Brigham",
+    tour: "Trek Coordinator, ISI",
+    text: "Taking a group of junior and senior high school students into the Northern Areas of Pakistan is a challenge... With Ghulam and his friendly and efficient team, I'm always 100% confident.",
+  },
+  {
+    id: 5,
     name: "Reinhold Messner",
     tour: "World-Renowned Mountaineer",
     text: "The quality of the service and knowledge of the guides was excellent. Rozi Ali, one of the guides from Mountain Travels, is an old friend of mine.",
   },
   {
-    id: 3,
-    name: "Evan Brigham",
-    tour: "Trek Coordinator, ISI",
-    text: "Taking a group of junior and senior high school students into the Northern Areas of Pakistan is a challenge... With Ghulam and his friendly and efficient team, I'm always 100% confident.",
+    id: 6,
+    name: "Peter Laurenson",
+    tour: "New Zealand Tourist Board",
+    text: "Ghulam and his team of highly-experienced guides and support staff stand apart from all the other operators that I've used on account of their unswerving drive to satisfy their customers.",
+  },
+  {
+    id: 7,
+    name: "Ryo Higashino & Ide Ikutaro",
+    tour: "NHK, Japan Corporation, Tokyo",
+    text: "We appreciate the efforts of all the highly professional team members organized by Mountain Travels Pakistan whose confidence and dedication made it possible for us to capture some of the breathtaking and rare mountain scenery.",
+  },
+  {
+    id: 8,
+    name: "Hester Noyon",
+    tour: "Amsterdam, The Netherlands",
+    text: "Mountain Travels Pakistan surprised us with a very well organized trek to Baltoro and Gondogoro La. You really have found the perfect combination between professionalism and local insight.",
+  },
+  {
+    id: 9,
+    name: "Kamila Jeevanjee",
+    tour: "Los Angeles, CA, USA",
+    text: "What a wonderful trek- the care and attention of Hamid and all the porters made a very tough trip extremely pleasant, safe, and not so intimidating.",
+  },
+  {
+    id: 10,
+    name: "Georg Heel",
+    tour: "Tyrol, Austria",
+    text: "With an excellent crew, beginning with our guide Ibrahim, the cook Ali who cooked in this area like in a gourmet restaurant, it was an unforgettable experience.",
+  },
+  {
+    id: 11,
+    name: "Peter Klocknu",
+    tour: "Hachenburg, Germany",
+    text: "The trek to Baltoro, Concordia, Gondogoro La and Fairy Meadows was really great and perfectly organized by Mountain Travels Pakistan. MTP gave us the feeling to be at home.",
+  },
+  {
+    id: 12,
+    name: "Galen Murton",
+    tour: "Maine, USA",
+    text: "Thank you very much to Ghulam Ahmed and everyone at Mountain Travels Pakistan for your excellent and professional services in arranging our trip.",
   },
 ];
 

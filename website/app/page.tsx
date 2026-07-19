@@ -22,6 +22,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import TourIcons from "@/app/touricons";
+import CustomItineraryModal from "@/components/customItineraryModal";
 
 import {
   heroSection,
@@ -495,14 +496,13 @@ export default function Home() {
             </p>
           </RevealStagger>
           <RevealStagger delayOffset={0.3}>
-            <Link href="/tailor-made-tours">
-              <Button
-                variant="outline"
-                className="mt-4 px-8 py-6 text-sm font-bold border-primary text-primary hover:bg-[#ff9800] hover:border-[#ff9800] hover:text-white rounded-full hover:scale-[1.03] transition-all duration-300"
-              >
-                Get a Custom Itinerary
-              </Button>
-            </Link>
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              variant="outline"
+              className="mt-4 px-8 py-6 text-sm font-bold border-primary text-primary hover:bg-[#ff9800] hover:border-[#ff9800] hover:text-white rounded-full hover:scale-[1.03] transition-all duration-300"
+            >
+              Get a Custom Itinerary
+            </Button>
           </RevealStagger>
         </div>
       </section>
@@ -672,6 +672,11 @@ export default function Home() {
           </RevealStagger>
         </div>
       </section>
+
+      <CustomItineraryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
