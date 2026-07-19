@@ -14,15 +14,6 @@ export class BookingService {
   static async createBooking(bookingData) {
     // Check if MongoDB replica set is available, otherwise run without transaction
     let session = null;
-    try {
-      session = await mongoose.startSession();
-      await session.startTransaction();
-    } catch (e) {
-      console.log(
-        "⚠️ MongoDB Transaction not supported (Standalone Mode). Executing without transaction.",
-      );
-      session = null;
-    }
 
     try {
       // Validate trip exists and is available
