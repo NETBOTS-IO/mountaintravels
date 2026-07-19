@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/accordion";
 import {
   contactIntro,
-  addressDetails,
+  officeLocations,
   officeHours,
   quickContacts,
   faqs,
@@ -196,30 +196,36 @@ export default function ContactPage() {
 
             {/* Contact Info */}
             <div className="lg:col-span-5 space-y-6">
-              {/* Address details */}
-              <div className="bg-card border border-border p-6 rounded-lg shadow-sm">
-                <h3 className="font-display font-bold text-lg mb-4 text-primary flex items-center gap-2">
+              {/* Office details */}
+              <div className="bg-card border border-border p-6 rounded-lg shadow-sm space-y-6">
+                <h3 className="font-display font-bold text-lg text-primary flex items-center gap-2 border-b border-border pb-3">
                   <MapPin className="w-5 h-5" />
-                  Headquarters
+                  Our Offices
                 </h3>
-                <div className="space-y-3 text-sm font-light text-muted-foreground">
-                  <p className="font-semibold text-foreground">
-                    {addressDetails.company}
+                <div className="space-y-5">
+                  {officeLocations.map((loc, idx) => (
+                    <div key={idx} className="space-y-1 text-sm font-light">
+                      <p className="font-bold text-foreground">{loc.title}</p>
+                      <p className="text-muted-foreground text-xs leading-relaxed">
+                        {loc.address}
+                      </p>
+                      <p className="text-xs font-medium text-foreground">
+                        Phone: {loc.phone}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-3 border-t border-border">
+                  <p className="text-xs font-semibold text-foreground uppercase tracking-wider mb-1">
+                    Office Hours
                   </p>
-                  <p className="whitespace-pre-line leading-relaxed">
-                    {addressDetails.address}
+                  <p className="text-xs text-muted-foreground">
+                    {officeHours.days}: {officeHours.hours}
                   </p>
-                  <div className="pt-3 border-t border-border mt-3">
-                    <p className="text-xs font-semibold text-foreground uppercase tracking-wider mb-1">
-                      Office Hours
-                    </p>
-                    <p className="text-xs">
-                      {officeHours.days}: {officeHours.hours}
-                    </p>
-                    <p className="text-xs text-primary font-medium mt-1">
-                      {officeHours.note}
-                    </p>
-                  </div>
+                  <p className="text-xs text-primary font-medium mt-1">
+                    {officeHours.note}
+                  </p>
                 </div>
               </div>
 
@@ -231,7 +237,9 @@ export default function ContactPage() {
                 </h3>
                 <div className="space-y-4">
                   <a
-                    href={`tel:${quickContacts.phone}`}
+                    href={`https://wa.me/${quickContacts.whatsapp.replace(/\+/g, "").replace(/\s/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
                   >
                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
@@ -239,9 +247,9 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-foreground">
-                        Phone
+                        WhatsApp Support
                       </p>
-                      <p>{quickContacts.phone}</p>
+                      <p>{quickContacts.whatsapp}</p>
                     </div>
                   </a>
                   <a
@@ -253,9 +261,25 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-foreground">
-                        Email
+                        General Support
                       </p>
-                      <p>{quickContacts.email}</p>
+                      <p className="break-all">{quickContacts.email}</p>
+                    </div>
+                  </a>
+                  <a
+                    href={`mailto:${quickContacts.secondaryEmail}`}
+                    className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                        Founder Direct Email
+                      </p>
+                      <p className="break-all">
+                        {quickContacts.secondaryEmail}
+                      </p>
                     </div>
                   </a>
                 </div>
@@ -279,10 +303,10 @@ export default function ContactPage() {
                 className="border-b border-border py-1"
               >
                 <AccordionTrigger className="font-display font-semibold text-base hover:text-primary transition-colors text-left py-3">
-                  {faq.q}
+                  {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground font-light text-sm leading-relaxed pt-1 pb-4">
-                  {faq.a}
+                  {faq.answer}
                 </AccordionContent>
               </AccordionItem>
             ))}

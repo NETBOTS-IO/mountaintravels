@@ -1,24 +1,37 @@
 export const contactIntro = {
   title: "Contact Us",
   description:
-    "Have questions about our trekking routes, mountaineering expeditions, or custom tours? Get in touch with our team in Islamabad or Skardu. We are ready to help you plan an unforgettable journey.",
+    "Have questions about our trekking routes, mountaineering expeditions, or custom tours? Get in touch with our team in Islamabad, Skardu or the USA. We are ready to help you plan an unforgettable journey.",
 };
 
-export const addressDetails = {
-  company: "Mountain Travels Pakistan",
-  address:
-    "Ghangchan House, Aliabad Satellite Town,\nSkardu City, Baltistan, Gilgit-Baltistan, Pakistan",
+export const officeLocations = [
+  {
+    title: "Skardu Head Office",
+    address: "Aliabad Satellite Town, Skardu, Pakistan",
+    phone: "+92 346 8486900",
+  },
+  {
+    title: "Islamabad Office",
+    address: "H#1280, St#29, FMC B-17, Islamabad",
+    phone: "+92 346 8486900",
+  },
+  {
+    title: "USA Office",
+    address: "Federal Way, Washington 98003, USA",
+    phone: "+1 (206) 335-4272",
+  },
+];
+
+export const quickContacts = {
+  email: "info@mountaintravels.com",
+  secondaryEmail: "ghulam_mtp@hotmail.com",
+  whatsapp: "+92 346 8486900",
 };
 
 export const officeHours = {
   days: "Monday – Saturday",
   hours: "9:00 AM – 5:00 PM (GMT+5)",
   note: "Emergency operations support is available 24/7.",
-};
-
-export const quickContacts = {
-  phone: "+92 346 8486900",
-  email: "info@mountaintravels.com",
 };
 
 export const contactFormFields = [
