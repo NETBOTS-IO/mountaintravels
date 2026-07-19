@@ -5,7 +5,7 @@ const customItinerarySchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, required: true },
-    destinations: { type: [String], required: true },
+    destinations: { type: mongoose.Schema.Types.Mixed, required: true },
     duration: { type: String, required: true },
     travelers: { type: Number, required: true },
     budget: { type: String, required: true },

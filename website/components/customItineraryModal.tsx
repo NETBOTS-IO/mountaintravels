@@ -35,12 +35,12 @@ export default function CustomItineraryModal({
   if (!isOpen) return null;
 
   const destinationsOptions = [
-    "Hunza Valley",
-    "Skardu & Baltistan",
-    "Chitral & Kalash",
-    "Swat Valley",
-    "Lahore & Cultural Heritage",
-    "K2 Base Camp & Karakoram",
+    "Culture & Heritage",
+    "Mountain & Trekking",
+    "Safaris & Wildlife",
+    "Desert & Coastal Routes",
+    "Bespoke Luxury Stays",
+    "Custom / Other Valley Trek",
   ];
 
   const handleDestinationToggle = (dest: string) => {
