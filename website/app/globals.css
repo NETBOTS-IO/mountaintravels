@@ -110,11 +110,11 @@
 /* UI Interactive Hover Fixes */
 a:hover {
   color: #ff9800 !important;
+  background-color: transparent !important;
 }
 
 button:hover,
 .button-hover-state:hover,
-[role="button"]:hover,
 button[type="submit"]:hover {
   background-color: #ff9800 !important;
   color: #ffffff !important;

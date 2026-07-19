@@ -59,42 +59,23 @@ export function Header() {
 
   return (
     <header
-      className={cn(
-        "fixed top-0 z-50 w-full transition-all duration-300 transform",
-        visible ? "translate-y-0" : "-translate-y-full",
-      )}
+      className="sticky top-0 z-50 w-full shadow-sm"
       id="main-site-header"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Top Bar */}
-      <div
-        className={cn(
-          "transition-all duration-300 py-1 border-b text-white",
-          scrolled || isHovered
-            ? "bg-white text-gray-800 border-gray-100"
-            : "bg-[#45919c]/90 backdrop-blur-md border-transparent",
-        )}
-        id="top-bar-header"
-      >
+      {/* Top Bar - Locked to primary teal background */}
+      <div className="bg-[#45919c] text-white py-1.5" id="top-bar-header">
         <div className="container mx-auto px-4 flex flex-row justify-between items-center text-[11px] md:text-xs">
           <div className="flex items-center space-x-3">
             <a
               href={`tel:${siteConfig.contact.phone}`}
-              className={cn(
-                "flex items-center transition-colors hover:text-[#ff9800]",
-                scrolled || isHovered ? "text-gray-600" : "text-white",
-              )}
+              className="flex items-center transition-colors hover:text-[#ff9800] text-white"
             >
               <Phone className="h-3 w-3 mr-1" />
               <span>{siteConfig.contact.phone}</span>
             </a>
             <a
               href={`mailto:${siteConfig.contact.email}`}
-              className={cn(
-                "flex items-center transition-colors hover:text-[#ff9800]",
-                scrolled || isHovered ? "text-gray-600" : "text-white",
-              )}
+              className="flex items-center transition-colors hover:text-[#ff9800] text-white"
             >
               <Mail className="h-3 w-3 mr-1" />
               <span>{siteConfig.contact.email}</span>
@@ -107,10 +88,7 @@ export function Header() {
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={cn(
-                  "transition-colors hover:text-[#ff9800]",
-                  scrolled || isHovered ? "text-gray-500" : "text-white",
-                )}
+                className="transition-colors hover:text-[#ff9800] text-white"
                 aria-label={item.name}
               >
                 {item.icon === "facebook" && (
@@ -129,14 +107,9 @@ export function Header() {
         </div>
       </div>
 
-      {/* Main Navigation */}
+      {/* Main Navigation - Locked to solid white background */}
       <div
-        className={cn(
-          "w-full transition-all duration-300 shadow-sm border-b",
-          scrolled || isHovered
-            ? "bg-white text-gray-900 border-gray-100"
-            : "bg-black/35 backdrop-blur-md border-transparent",
-        )}
+        className="w-full bg-white text-gray-900 border-b border-gray-100"
         id="navbar-main-container"
       >
         <div className="container mx-auto px-4 py-1.5 md:py-2 flex justify-between items-center">
@@ -152,10 +125,7 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className={cn(
-              "md:hidden flex items-center transition-colors",
-              scrolled || isHovered ? "text-gray-800" : "text-white",
-            )}
+            className="md:hidden flex items-center transition-colors text-gray-800"
             onClick={toggleMenu}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -173,10 +143,7 @@ export function Header() {
                 <div key={item.name} className="relative">
                   <button
                     onClick={() => toggleDesktopDropdown(item.name)}
-                    className={cn(
-                      "text-sm lg:text-base font-medium hover:text-[#ff9800] transition-colors flex items-center",
-                      scrolled || isHovered ? "text-gray-800" : "text-white",
-                    )}
+                    className="text-sm lg:text-base font-medium hover:text-[#ff9800] transition-colors flex items-center text-gray-800"
                   >
                     {item.name}
                     <ChevronDown
@@ -206,10 +173,7 @@ export function Header() {
                 <Link
                   key={item.name}
                   href={item.path}
-                  className={cn(
-                    "text-sm lg:text-base font-medium hover:text-[#ff9800] transition-colors",
-                    scrolled || isHovered ? "text-gray-800" : "text-white",
-                  )}
+                  className="text-sm lg:text-base font-medium hover:text-[#ff9800] transition-colors text-gray-800"
                 >
                   {item.name}
                 </Link>

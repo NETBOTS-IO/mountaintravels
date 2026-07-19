@@ -127,13 +127,13 @@ export default function Home() {
             </RevealStagger>
 
             <RevealStagger delayOffset={0.2}>
-              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+              <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
                 {heroSection.headline}
               </h1>
             </RevealStagger>
 
             <RevealStagger delayOffset={0.3}>
-              <p className="text-sm sm:text-base md:text-lg text-gray-200 font-light leading-relaxed max-w-2xl drop-shadow-[0_1px_5px_rgba(0,0,0,0.3)]">
+              <p className="text-xs sm:text-sm md:text-base text-gray-200 font-light leading-relaxed max-w-xl drop-shadow-[0_1px_5px_rgba(0,0,0,0.3)]">
                 {heroSection.subheading}
               </p>
             </RevealStagger>
@@ -277,8 +277,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Featured Experiences */}
-      <section className="py-20 bg-background">
+      {/* 4. Featured Experiences - Styled as a responsive horizontal swiper with images */}
+      <section className="py-20 bg-background overflow-hidden">
         <div className="container mx-auto px-4 max-w-6xl">
           <RevealStagger>
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
@@ -293,34 +293,41 @@ export default function Home() {
                 </p>
               </div>
               <Link href="/tours">
-                <Button
-                  variant="outline"
-                  className="border-primary text-primary hover:bg-[#ff9800] hover:border-[#ff9800] hover:text-white px-6 py-4 text-sm font-semibold rounded-full hover:scale-[1.03] transition-all duration-300"
-                >
+                <Button className="border-primary text-primary hover:bg-[#ff9800] hover:border-[#ff9800] hover:text-white px-6 py-4 text-sm font-semibold rounded-full hover:scale-[1.03] transition-all duration-300">
                   View All Experiences
                 </Button>
               </Link>
             </div>
           </RevealStagger>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Swiper Layout / Responsive Scroll Container */}
+          <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory">
             {featuredExperiences.map((experience, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                <div className="group border border-border p-6 hover:shadow-xl hover:border-[#45919c]/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-full bg-card rounded-2xl">
-                  <div>
-                    <h3 className="font-display text-xl font-bold text-foreground mb-2 group-hover:text-[#ff9800] transition-colors">
+                <div className="group border border-border flex-shrink-0 w-[280px] sm:w-[320px] md:w-[350px] snap-start hover:shadow-xl hover:border-[#45919c]/40 transition-all duration-300 flex flex-col justify-between bg-card rounded-2xl overflow-hidden">
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <Image
+                      src={experience.image || "/assets/home/hero-1.jpg"}
+                      alt={experience.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <h3 className="absolute bottom-4 left-4 font-display text-lg font-bold text-white pr-4">
                       {experience.title}
                     </h3>
-                    <p className="text-muted-foreground font-light text-sm leading-relaxed mb-4">
+                  </div>
+                  <div className="p-5 space-y-4 flex flex-col justify-between flex-grow">
+                    <p className="text-muted-foreground font-light text-xs leading-relaxed line-clamp-3">
                       {experience.description}
                     </p>
+                    <Link href="/tours" className="pt-2 block">
+                      <span className="text-primary group-hover:text-[#ff9800] text-xs font-semibold flex items-center group-hover:underline underline-offset-4 transition-colors">
+                        Explore Options
+                        <ArrowRight className="ml-1 h-3.5 w-3.5 transform group-hover:translate-x-1.5 transition-transform" />
+                      </span>
+                    </Link>
                   </div>
-                  <Link href="/tours" className="pt-2">
-                    <span className="text-primary group-hover:text-[#ff9800] text-sm font-semibold flex items-center group-hover:underline underline-offset-4 transition-colors">
-                      Explore Options
-                      <ArrowRight className="ml-1 h-3.5 w-3.5 transform group-hover:translate-x-1.5 transition-transform" />
-                    </span>
-                  </Link>
                 </div>
               </RevealStagger>
             ))}
@@ -328,8 +335,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. Popular Destinations */}
-      <section className="py-20 bg-muted/10 border-y border-border">
+      {/* 5. Popular Destinations - Overhauled as responsive flex row */}
+      <section className="py-20 bg-slate-50 border-y border-border overflow-hidden">
         <div className="container mx-auto px-4 max-w-6xl">
           <RevealStagger>
             <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-12 text-center">
@@ -337,29 +344,38 @@ export default function Home() {
             </h2>
           </RevealStagger>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory">
             {popularDestinations.map((dest, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                <div className="bg-background border border-border p-6 h-full flex flex-col justify-between hover:shadow-xl hover:border-[#45919c]/40 hover:-translate-y-1.5 transition-all duration-300 rounded-2xl group">
-                  <div>
-                    <h3 className="font-display text-xl font-bold text-foreground mb-2 group-hover:text-[#ff9800] transition-colors">
+                <div className="bg-background border border-border flex-shrink-0 w-[280px] sm:w-[320px] snap-start hover:shadow-xl hover:border-[#45919c]/40 transition-all duration-300 rounded-2xl overflow-hidden group">
+                  <div className="relative h-44 w-full overflow-hidden">
+                    <Image
+                      src={dest.image || "/assets/home/hero-1.jpg"}
+                      alt={dest.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <h3 className="absolute bottom-4 left-4 font-display text-lg font-bold text-white">
                       {dest.name}
                     </h3>
-                    <p className="text-muted-foreground font-light text-sm leading-relaxed">
+                  </div>
+                  <div className="p-5 flex flex-col justify-between">
+                    <p className="text-muted-foreground font-light text-xs leading-relaxed line-clamp-3">
                       {dest.description}
                     </p>
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-border flex items-center justify-between">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-primary group-hover:text-[#ff9800] transition-colors">
-                      {dest.tours} Packages
-                    </span>
-                    <Link
-                      href="/destinations"
-                      className="text-xs font-bold text-primary group-hover:text-[#ff9800] hover:underline flex items-center gap-1 transition-colors"
-                    >
-                      View Details{" "}
-                      <ArrowRight className="w-3 h-3 transform group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                    <div className="mt-4 pt-3 border-t border-border flex items-center justify-between">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-primary group-hover:text-[#ff9800] transition-colors">
+                        {dest.tours} Packages
+                      </span>
+                      <Link
+                        href="/destinations"
+                        className="text-[10px] font-bold text-primary group-hover:text-[#ff9800] hover:underline flex items-center gap-1 transition-colors"
+                      >
+                        View Details{" "}
+                        <ArrowRight className="w-3 h-3 transform group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </RevealStagger>
@@ -432,31 +448,32 @@ export default function Home() {
             </h2>
           </RevealStagger>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {(testimonials.length > 0 ? testimonials : fallbackTestimonials)
-              .slice(0, 3)
-              .map((testimonial, idx) => (
-                <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                  <div className="space-y-4 border border-border p-6 h-full flex flex-col justify-between bg-card hover:shadow-xl hover:border-[#45919c]/30 transition-all duration-300 rounded-2xl group">
-                    <p className="text-sm text-foreground italic font-light leading-relaxed">
-                      "{testimonial.text}"
-                    </p>
-                    <div className="pt-4 border-t border-border mt-4 flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-[#45919c]/10 text-[#45919c] font-bold text-sm flex items-center justify-center">
-                        {testimonial.name.charAt(0)}
-                      </div>
-                      <div>
-                        <h4 className="font-display font-bold text-foreground text-sm">
-                          {testimonial.name}
-                        </h4>
-                        <p className="text-[11px] text-muted-foreground">
-                          {testimonial.tour}
-                        </p>
-                      </div>
+          <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory">
+            {(testimonials.length > 0
+              ? testimonials
+              : fallbackTestimonials
+            ).map((testimonial, idx) => (
+              <RevealStagger key={idx} delayOffset={idx * 0.05}>
+                <div className="space-y-4 border border-border p-6 flex-shrink-0 w-[280px] sm:w-[320px] snap-start flex flex-col justify-between bg-card hover:shadow-xl hover:border-[#45919c]/30 transition-all duration-300 rounded-2xl group">
+                  <p className="text-xs text-foreground italic font-light leading-relaxed">
+                    "{testimonial.text}"
+                  </p>
+                  <div className="pt-4 border-t border-border mt-4 flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-[#45919c]/10 text-[#45919c] font-bold text-sm flex items-center justify-center">
+                      {testimonial.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h4 className="font-display font-bold text-foreground text-sm">
+                        {testimonial.name}
+                      </h4>
+                      <p className="text-[10px] text-muted-foreground">
+                        {testimonial.tour}
+                      </p>
                     </div>
                   </div>
-                </RevealStagger>
-              ))}
+                </div>
+              </RevealStagger>
+            ))}
           </div>
         </div>
       </section>
