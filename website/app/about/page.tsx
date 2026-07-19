@@ -33,6 +33,19 @@ function RevealStagger({
   );
 }
 
+import {
+  Quote,
+  Home,
+  ChevronRight,
+  CheckCircle2,
+  Shield,
+  Heart,
+  Award,
+  Users,
+  Compass,
+  Globe,
+} from "lucide-react";
+
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground pt-24">
@@ -52,10 +65,15 @@ export default function AboutPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative pb-12 bg-background overflow-hidden">
+      <section className="relative pb-16 bg-background overflow-hidden">
         <div className="container mx-auto px-4 z-10 relative max-w-5xl">
           <RevealStagger>
-            <h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-foreground max-w-3xl leading-tight">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-[#ff9800] bg-[#ff9800]/10 border border-[#ff9800]/20 mb-4">
+              Our Journey Since 1990
+            </span>
+          </RevealStagger>
+          <RevealStagger delayOffset={0.05}>
+            <h1 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-foreground max-w-3xl leading-tight">
               About Mountain Travels Pakistan
             </h1>
           </RevealStagger>
@@ -66,7 +84,7 @@ export default function AboutPage() {
             </p>
           </RevealStagger>
 
-          <RevealStagger delayOffset={0.2}>
+          <RevealStagger delayOffset={0.15}>
             <div className="mt-8 max-w-3xl space-y-4 text-base text-foreground/80 leading-relaxed font-light">
               <p>
                 For nearly four decades, Mountain Travels Pakistan has been
@@ -92,11 +110,11 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story */}
-      <section className="py-16 bg-muted/30 border-y border-border">
+      <section className="py-20 bg-slate-50/50 border-y border-border">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <RevealStagger>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <h2 className="font-display text-3xl font-bold tracking-tight text-foreground">
                   Our Story
                 </h2>
@@ -134,23 +152,20 @@ export default function AboutPage() {
                     What began as a passion for introducing visitors to
                     Pakistan's mountains has evolved into one of the country's
                     most respected adventure and cultural travel companies.
-                    Today, Mountain Travels Pakistan continues to uphold the
-                    same values upon which it was founded: professionalism,
-                    integrity, safety, environmental responsibility, and genuine
-                    hospitality.
                   </p>
                 </div>
               </div>
             </RevealStagger>
 
             <RevealStagger delayOffset={0.1}>
-              <div className="relative h-[450px] w-full rounded-lg overflow-hidden bg-muted border border-border">
+              <div className="relative h-[450px] w-full rounded-2xl overflow-hidden bg-muted border border-border shadow-xl hover:shadow-2xl transition-all duration-300 group">
                 <Image
                   src="/assets/home/hero-1.jpg"
                   alt="Karakoram Mountains"
                   fill
-                  className="object-cover"
+                  className="object-cover group-hover:scale-103 transition-transform duration-500"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
               </div>
             </RevealStagger>
           </div>
@@ -158,23 +173,24 @@ export default function AboutPage() {
       </section>
 
       {/* Meet Our Founder */}
-      <section className="py-16 bg-background">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-5xl">
           <RevealStagger>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground mb-10 text-center">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground mb-12 text-center">
               Meet Our Founder
             </h2>
           </RevealStagger>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
             <RevealStagger delayOffset={0.05} className="md:col-span-4">
-              <div className="relative rounded-lg overflow-hidden border border-border bg-muted aspect-[3/4]">
+              <div className="relative rounded-2xl overflow-hidden border border-border bg-muted aspect-[3/4] shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <Image
                   src="/assets/about/team/ghulam.jpg"
                   alt="Ghulam Ahmad"
                   fill
-                  className="object-cover"
+                  className="object-cover group-hover:scale-103 transition-transform duration-500"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#112a30]/30 via-transparent to-transparent" />
               </div>
             </RevealStagger>
 
@@ -237,12 +253,6 @@ export default function AboutPage() {
                     lives to his calm leadership and determination during the
                     incident.
                   </p>
-                  <p>
-                    Today, his decades of experience in trekking, mountaineering
-                    expeditions, cultural tourism, eco-tourism, and adventure
-                    travel continue to inspire the values and standards that
-                    define Mountain Travels Pakistan.
-                  </p>
                 </div>
               </RevealStagger>
 
@@ -264,10 +274,10 @@ export default function AboutPage() {
       </section>
 
       {/* What Makes Us Different - Bento Grid */}
-      <section className="py-16 bg-muted/30 border-y border-border">
+      <section className="py-20 bg-slate-50/50 border-y border-border">
         <div className="container mx-auto px-4 max-w-5xl">
           <RevealStagger>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground mb-10 text-center">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground mb-12 text-center">
               What Makes Us Different
             </h2>
           </RevealStagger>
@@ -276,35 +286,44 @@ export default function AboutPage() {
             {[
               {
                 title: "Nearly Four Decades of Experience",
-                desc: "With almost 40 years of operational experience, we understand the challenges and opportunities of travel in Pakistan better than most. Our knowledge is built on decades of practical field experience across mountains, valleys, deserts, and cultural regions.",
+                desc: "With almost 40 years of operational experience, we understand the challenges and opportunities of travel in Pakistan better than most. Our knowledge is built on decades of field experience.",
+                icon: Award,
               },
               {
                 title: "Local Expertise",
-                desc: "Our team consists of experienced local guides, mountaineers, logistics specialists, and travel professionals who possess an intimate understanding of the landscapes, cultures, languages, and traditions of the regions we operate in.",
+                desc: "Our team consists of experienced local guides, mountaineers, logistics specialists, and travel professionals who possess an intimate understanding of Baltistan and the Silk Route valleys.",
+                icon: Users,
               },
               {
                 title: "Safety First",
                 desc: "Adventure travel requires expertise and careful planning. Every itinerary is designed with safety, risk management, emergency preparedness, and guest wellbeing as our highest priorities.",
+                icon: Shield,
               },
               {
                 title: "Personalized Service",
-                desc: "No two travelers are alike. We tailor every journey to suit the interests, fitness levels, schedules, and expectations of our guests.",
+                desc: "No two travelers are alike. We customize every journey to suit the interests, fitness levels, budgets, and expectations of our international guests.",
+                icon: Heart,
               },
               {
                 title: "Responsible Tourism",
-                desc: "We are committed to protecting fragile mountain environments and supporting local communities through responsible and sustainable tourism practices.",
+                desc: "We are committed to protecting fragile mountain environments and supporting local communities through responsible, eco-friendly, and sustainable tourism practices.",
+                icon: Compass,
               },
               {
                 title: "International Trust",
-                desc: "Our long-standing relationships with international travelers, educational institutions, documentary teams, embassies, and expedition groups reflect our commitment to excellence and reliability.",
+                desc: "Our long-standing relationships with international travelers, educational institutions, documentary teams, and embassies reflect our commitment to excellence.",
+                icon: Globe,
               },
             ].map((feature, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                <div className="bg-background border border-border p-6 h-full flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                <div className="bg-background border border-border p-6 h-full flex flex-col hover:shadow-xl hover:border-primary/20 hover:-translate-y-1.5 transition-all duration-300 rounded-2xl group">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-[#ff9800]/10 group-hover:text-[#ff9800] transition-colors duration-300">
+                    <feature.icon className="w-5 h-5" />
+                  </div>
                   <h3 className="font-display text-lg font-bold text-foreground mb-3">
                     {feature.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed font-light text-sm flex-grow">
+                  <p className="text-muted-foreground leading-relaxed font-light text-xs flex-grow">
                     {feature.desc}
                   </p>
                 </div>
@@ -315,10 +334,10 @@ export default function AboutPage() {
       </section>
 
       {/* Our Services */}
-      <section className="py-16 bg-background">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-5xl">
           <RevealStagger>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground mb-10 text-center">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground mb-12 text-center">
               Our Services
             </h2>
           </RevealStagger>
@@ -375,13 +394,16 @@ export default function AboutPage() {
               },
             ].map((service, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                <div className="border border-border p-6 hover:shadow-sm transition-shadow">
-                  <h3 className="font-display text-lg font-bold text-primary border-b border-border pb-3 mb-4">
+                <div className="bg-card border border-border p-6 rounded-2xl hover:shadow-xl hover:border-primary/20 transition-all duration-300">
+                  <h3 className="font-display text-lg font-bold text-primary border-b border-border pb-3 mb-4 flex items-center justify-between">
                     {service.title}
                   </h3>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-muted-foreground font-light text-sm">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-muted-foreground font-light text-xs">
                     {service.list.map((item, i) => (
-                      <li key={i}>• {item}</li>
+                      <li key={i} className="flex items-start gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#ff9800] shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -392,14 +414,14 @@ export default function AboutPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 bg-muted/30 border-y border-border">
+      <section className="py-20 bg-slate-50/50 border-y border-border">
         <div className="container mx-auto px-4 max-w-5xl">
           <RevealStagger>
-            <div className="text-center mb-10 max-w-2xl mx-auto space-y-3">
-              <h2 className="font-display text-3xl font-bold tracking-tight text-foreground">
-                Trusted by Travelers Worldwide Since 1986
+            <div className="text-center mb-12 max-w-2xl mx-auto space-y-3">
+              <h2 className="font-display text-3xl font-bold tracking-tight text-foreground animate-pulse">
+                Trusted by Travelers Worldwide Since 1990
               </h2>
-              <p className="text-sm text-muted-foreground font-light">
+              <p className="text-sm text-muted-foreground font-light leading-relaxed">
                 For nearly four decades, Mountain Travels Pakistan has been
                 guiding adventurers, filmmakers, and cultural explorers. Our
                 commitment to safety, professionalism, and local expertise has
@@ -432,20 +454,27 @@ export default function AboutPage() {
               },
             ].map((quote, idx) => (
               <RevealStagger key={idx} delayOffset={idx * 0.05}>
-                <div className="bg-background border border-border p-6 h-full flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div className="bg-background border border-border p-6 h-full flex flex-col justify-between hover:shadow-xl hover:border-primary/20 transition-all duration-300 rounded-2xl relative overflow-hidden group">
+                  <div className="absolute top-2 right-4 text-6xl text-primary/10 font-serif pointer-events-none select-none">
+                    &ldquo;
+                  </div>
                   <div>
-                    <Quote className="w-6 h-6 text-primary/30 mb-4 shrink-0" />
-                    <p className="text-sm text-foreground font-light leading-relaxed italic">
+                    <p className="text-xs text-foreground font-light leading-relaxed italic relative z-10">
                       "{quote.text}"
                     </p>
                   </div>
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <p className="font-display font-bold text-foreground text-sm">
-                      {quote.author}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {quote.role}
-                    </p>
+                  <div className="mt-4 pt-4 border-t border-border relative z-10 flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-primary/15 text-primary font-bold text-xs flex items-center justify-center shadow-inner">
+                      {quote.author.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-display font-bold text-foreground text-sm">
+                        {quote.author}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground">
+                        {quote.role}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </RevealStagger>
