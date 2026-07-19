@@ -113,7 +113,7 @@ a:hover {
   background-color: transparent !important;
 }
 
-button:hover:not(.text-primary):not([class*="variant-link"]):not([class*="bg-transparent"]),
+button:hover:not(.text-primary):not([class*="variant-link"]):not([class*="bg-transparent"]):not([data-state]):not([class*="AccordionTrigger"]),
 .button-hover-state:hover,
 button[type="submit"]:hover {
   background-color: #ff9800 !important;
