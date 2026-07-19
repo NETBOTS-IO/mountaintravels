@@ -66,44 +66,46 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#112a30] text-gray-200 border-t border-[#45919c]/20 pt-10 pb-4 overflow-hidden">
+    <footer className="relative bg-[#112a30] text-gray-200 border-t border-[#45919c]/20 pt-6 pb-3 overflow-hidden">
       {/* Decorative Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#112a30] via-[#163a43] to-[#1c4b57] opacity-95 pointer-events-none" />
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Top Centered Logo & Brief Intro */}
-        <div className="flex flex-col items-center text-center pb-8 border-b border-white/5 mb-8">
-          <Link href="/" className="mb-3 hover:scale-105 transition-transform">
-            <Image
-              src="/assets/logo/logo.png"
-              alt={siteConfig.name}
-              width={160}
-              height={80}
-              className="h-16 w-auto brightness-110 drop-shadow-[0_2px_10px_rgba(255,255,255,0.1)]"
-            />
-          </Link>
-          <p className="text-xs md:text-sm text-gray-300 max-w-2xl font-light leading-relaxed">
-            Official Tourism Specialist Since 1990. Guiding trekking,
-            mountaineering, and cultural expeditions across Karakoram, Hindu
-            Kush, and Himalaya ranges.
-          </p>
-        </div>
+        {/* Main Grid in a single compact row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-4">
+          {/* Logo & Intro Brand Card */}
+          <div className="space-y-2">
+            <Link
+              href="/"
+              className="inline-block hover:scale-105 transition-transform"
+            >
+              <Image
+                src="/assets/logo/logo.png"
+                alt={siteConfig.name}
+                width={120}
+                height={60}
+                className="h-11 w-auto brightness-110"
+              />
+            </Link>
+            <p className="text-[11px] text-gray-400 font-light leading-relaxed">
+              Official Tourism Specialist Since 1990. Supporting trekking,
+              mountaineering, and expeditions in Pakistan.
+            </p>
+          </div>
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Quick Links */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-2">
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-1.5">
               Quick Links
             </h4>
-            <ul className="grid grid-cols-1 gap-2 text-xs md:text-sm text-gray-300">
+            <ul className="grid grid-cols-1 gap-1 text-[11px] text-gray-300">
               <li>
                 <Link
                   href="/booking-info"
                   className="hover:text-[#ff9800] flex items-center transition-colors"
                 >
-                  <ArrowRight className="h-3 w-3 mr-1.5 text-[#ff9800]/70" />
-                  Booking Information
+                  <ArrowRight className="h-3 w-3 mr-1 text-[#ff9800]/70" />
+                  Booking Info
                 </Link>
               </li>
               <li>
@@ -111,7 +113,7 @@ export function Footer() {
                   href="#"
                   className="hover:text-[#ff9800] flex items-center transition-colors"
                 >
-                  <ArrowRight className="h-3 w-3 mr-1.5 text-[#ff9800]/70" />
+                  <ArrowRight className="h-3 w-3 mr-1 text-[#ff9800]/70" />
                   Blogs
                 </Link>
               </li>
@@ -120,8 +122,8 @@ export function Footer() {
                   href="/terms-of-service"
                   className="hover:text-[#ff9800] flex items-center transition-colors"
                 >
-                  <ArrowRight className="h-3 w-3 mr-1.5 text-[#ff9800]/70" />
-                  Terms of Service
+                  <ArrowRight className="h-3 w-3 mr-1 text-[#ff9800]/70" />
+                  Terms
                 </Link>
               </li>
               <li>
@@ -129,37 +131,29 @@ export function Footer() {
                   href="/privacy-policy"
                   className="hover:text-[#ff9800] flex items-center transition-colors"
                 >
-                  <ArrowRight className="h-3 w-3 mr-1.5 text-[#ff9800]/70" />
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/sitemap-page"
-                  className="hover:text-[#ff9800] flex items-center transition-colors"
-                >
-                  <ArrowRight className="h-3 w-3 mr-1.5 text-[#ff9800]/70" />
-                  Sitemap
+                  <ArrowRight className="h-3 w-3 mr-1 text-[#ff9800]/70" />
+                  Privacy
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Tour Categories */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-2">
-              Tour Categories
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-1.5">
+              Categories
             </h4>
-            <ul className="grid grid-cols-1 gap-2 text-xs md:text-sm text-gray-300">
+            <ul className="grid grid-cols-1 gap-1 text-[11px] text-gray-300">
               {tourCategories
                 .filter((category) => category.id !== "all")
+                .slice(0, 5)
                 .map((category) => (
                   <li key={category.id}>
                     <Link
                       href={`/tours?category=${category.id}`}
                       className="hover:text-[#ff9800] flex items-center transition-colors"
                     >
-                      <ArrowRight className="h-3 w-3 mr-1.5 text-[#ff9800]/70" />
+                      <ArrowRight className="h-3 w-3 mr-1 text-[#ff9800]/70" />
                       {category.name}
                     </Link>
                   </li>
@@ -167,110 +161,70 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Offices Contact Details Column 1 */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-2">
-              Offices In Pakistan
+          {/* Pakistan Offices */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-1.5">
+              Offices
             </h4>
-            <div className="space-y-3 text-xs md:text-sm text-gray-300">
-              <div className="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
-                <p className="font-semibold text-white flex items-center gap-1">
-                  <MapPin className="h-3.5 w-3.5 text-[#ff9800]" />
+            <div className="space-y-1.5 text-[10px] text-gray-400">
+              <div className="leading-tight">
+                <span className="font-semibold text-white block">
                   Skardu Head Office
-                </p>
-                <p className="font-light text-gray-400 leading-tight">
-                  Ghangchan House, Aliabad Satellite Town, Skardu City, GB,
-                  Pakistan
-                </p>
-                <p className="text-gray-300 flex items-center gap-1 pt-1 font-light">
-                  <Phone className="h-3 w-3 text-gray-400" />
-                  +92 346 8486900
-                </p>
+                </span>
+                Aliabad Satellite Town, Skardu, Pakistan
+                <span className="block text-gray-300">+92 346 8486900</span>
               </div>
-
-              <div className="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
-                <p className="font-semibold text-white flex items-center gap-1">
-                  <MapPin className="h-3.5 w-3.5 text-[#ff9800]" />
+              <div className="leading-tight pt-1 border-t border-white/5">
+                <span className="font-semibold text-white block">
                   Islamabad Office
-                </p>
-                <p className="font-light text-gray-400 leading-tight">
-                  Ghangchan House H#1280, St#29, Block A, FMC Sector B-17,
-                  Pakistan
-                </p>
-                <p className="text-gray-300 flex items-center gap-1 pt-1 font-light">
-                  <Phone className="h-3 w-3 text-gray-400" />
-                  +92 346 8486900
-                </p>
+                </span>
+                H#1280, St#29, FMC B-17, Islamabad
+                <span className="block text-gray-300">+92 346 8486900</span>
               </div>
             </div>
           </div>
 
-          {/* Offices Contact Details Column 2 */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-2">
+          {/* USA Support & Channels */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-1.5">
               Global Support
             </h4>
-            <div className="space-y-3 text-xs md:text-sm text-gray-300">
-              <div className="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
-                <p className="font-semibold text-white flex items-center gap-1">
-                  <MapPin className="h-3.5 w-3.5 text-[#ff9800]" />
-                  USA Liaison Office
-                </p>
-                <p className="font-light text-gray-400 leading-tight">
-                  412 S 325th Pl Apt S3, Federal Way, Washington 98003, USA
-                </p>
-                <p className="text-gray-300 flex items-center gap-1 pt-1 font-light">
-                  <Phone className="h-3 w-3 text-gray-400" />
-                  +1 (206) 335-4272
-                </p>
+            <div className="space-y-1.5 text-[10px] text-gray-400">
+              <div className="leading-tight">
+                <span className="font-semibold text-white block">
+                  USA Office
+                </span>
+                Federal Way, Washington 98003, USA
+                <span className="block text-gray-300">+1 (206) 335-4272</span>
               </div>
-
-              <div className="p-3 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-xs">
-                  <span className="text-gray-400 block font-light">
-                    Direct Email
-                  </span>
+              <div className="pt-1 border-t border-white/5 space-y-0.5">
+                <span className="block text-white">
+                  info@mountaintravels.com
+                </span>
+                <span className="block text-white font-medium">
+                  WhatsApp: +92 346 8486900
+                </span>
+              </div>
+              <div className="flex space-x-2.5 pt-1">
+                {siteConfig.social.map((item) => (
                   <a
-                    href="mailto:info@mountaintravels.com"
-                    className="hover:underline hover:text-[#ff9800] text-white"
-                  >
-                    info@mountaintravels.com
-                  </a>
-                </div>
-                <div className="text-xs">
-                  <span className="text-gray-400 block font-light">
-                    WhatsApp Support
-                  </span>
-                  <a
-                    href="https://wa.me/923468486900"
+                    key={item.name}
+                    href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:underline hover:text-[#ff9800] text-white font-medium"
+                    className="hover:text-[#ff9800] text-gray-400 transition-colors"
+                    aria-label={item.name}
                   >
-                    +92 346 8486900
+                    {getIcon(item.icon)}
                   </a>
-                </div>
-                <div className="flex space-x-3 pt-1 border-t border-white/5">
-                  {siteConfig.social.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-[#ff9800] text-gray-400 transition-colors"
-                      aria-label={item.name}
-                    >
-                      {getIcon(item.icon)}
-                    </a>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
         {/* Bottom copyright section */}
-        <div className="border-t border-white/5 pt-4 mt-6 text-center text-[10px] md:text-xs text-gray-500 font-light flex flex-col md:flex-row justify-between items-center gap-2">
+        <div className="border-t border-white/5 pt-2 mt-4 text-center text-[10px] text-gray-500 font-light flex flex-col md:flex-row justify-between items-center gap-1">
           <p>
             &copy; {new Date().getFullYear()} Mountain Travels Pakistan. All
             rights reserved.
