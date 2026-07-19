@@ -66,6 +66,7 @@ export default function Home() {
   const [tours, setTours] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [testimonials, setTestimonials] = useState<any[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function loadInitialData() {
