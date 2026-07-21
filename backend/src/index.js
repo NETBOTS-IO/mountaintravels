@@ -36,23 +36,18 @@ const allowedOrigins = [
   "http://localhost:5001",
   "http://localhost:3001",
   "http://localhost:3002",
-  "https://mountaintravels.site",
+
   "https://mountaintravels.com",
   "http://mountaintravels.com",
+
   "https://www.mountaintravels.com",
   "http://www.mountaintravels.com",
-  "https://www.mountaintravels.site",
-  "https://api.mountaintravels.site",
+
   "http://dashboard.mountaintravels.com",
   "https://dashboard.mountaintravels.com",
+
   "http://api.mountaintravels.com",
   "https://api.mountaintravels.com",
-  "http://api.mountaintravels.site",
-  "https://api.mountaintravels.site",
-  "https://dashboard.mountaintravels.site",
-  "http://dashboard.mountaintravels.site",
-  "https://dashboard.mountaintravels.com",
-  "http://dashboard.mountaintravels.com",
 ];
 
 app.use(
