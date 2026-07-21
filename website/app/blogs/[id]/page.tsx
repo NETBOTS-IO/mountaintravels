@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Share2, Mail, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BASE_URL } from "@/app/Var";
 
@@ -32,6 +32,15 @@ export default async function BlogDetailPage({
   if (!post) {
     notFound();
   }
+
+  const shareUrl = `https://www.mountaintravels.com/blogs/${post._id}`;
+  const shareTitle = encodeURIComponent(post.title || "Mountain Travels Blog");
+  const shareText = encodeURIComponent(
+    `Check out this amazing blog: ${post.title}\n\n`,
+  );
+
+  const whatsappUrl = `https://wa.me/?text=${shareText}${shareUrl}`;
+  const emailUrl = `mailto:?subject=${shareTitle}&body=${shareText}${shareUrl}`;
 
   return (
     <div className="flex flex-col">
@@ -163,6 +172,35 @@ export default async function BlogDetailPage({
           </div>
         </section>
       )}
+
+      {/* Share Section */}
+      <section className="mb-10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-center gap-4 py-6 border-t border-b border-gray-200">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              <Share2 className="w-5 h-5" /> Share this blog:
+            </h3>
+            <div className="flex gap-3">
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 hover:bg-green-50 hover:text-green-600 hover:border-green-600 transition-colors"
+                >
+                  <MessageCircle className="w-4 h-4" /> WhatsApp
+                </Button>
+              </a>
+              <a href={emailUrl}>
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600 transition-colors"
+                >
+                  <Mail className="w-4 h-4" /> Email
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Back to Blogs */}
       <section className="pb-8">
