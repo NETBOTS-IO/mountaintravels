@@ -1,29 +1,13 @@
 /**
- * MASTER SYNC SCRIPT  –  backend/scripts/masterSync.js
- * =====================================================
- * ⚠️  SENSITIVE – DO NOT COMMIT (already in .gitignore)
+ * MASTER SYNC SCRIPT
+ * ==================
+ * 1. Check local DB for tours, destinations, testimonials
+ * 2. Seed missing data into local DB
+ * 3. Backup production DB collections to JSON files
+ * 4. Push local data to production DB
+ * 5. Create admin user on production DB
  *
- * What this script does:
- *   1. Connects to LOCAL and PRODUCTION MongoDB using URIs from .env
- *   2. Checks local DB for: tours, destinations, testimonials
- *   3. Seeds destinations + testimonials into LOCAL DB (if missing)
- *   4. Reports tours count (tours are large – must be seeded separately)
- *   5. Backs up ALL production collections to JSON files in backend/backups/
- *   6. Pushes local tours, destinations, testimonials → production (upsert by _id)
- *   7. Creates admin user on BOTH local and production (info@mountaintravels.com)
- *   8. Prints a final verification table
- *
- * Usage:
- *   node scripts/masterSync.js
- *
- * Environment variables required in backend/.env:
- *   LOCAL_MONGODB_URI   – local DB connection string
- *   PROD_MONGODB_URI    – production DB connection string
- *   BACKEND_BASE_URL    – base URL for image links (e.g. https://api.mountaintravels.com)
- *   BCRYPT_SALT_ROUNDS  – (optional, default 12)
- *
- * To seed tours separately (they are large):
- *   node src/scripts/seedToursFromContent.js
+ * Run: node scripts/masterSync.js
  */
 
 import mongoose from "mongoose";
@@ -31,33 +15,14 @@ import bcrypt from "bcryptjs";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import dotenv from "dotenv";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ─── Load .env from backend root ─────────────────────────────────────────────
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
-
-// ─── Validate required env vars ───────────────────────────────────────────────
-const LOCAL_URI = process.env.LOCAL_MONGODB_URI || process.env.MONGODB_URI;
-const PROD_URI = process.env.PROD_MONGODB_URI;
-const BACKEND_BASE_URL = (
-  process.env.BACKEND_BASE_URL || "http://localhost:5000"
-).replace(/\/$/, "");
-const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS || "12", 10);
-
-function assertEnv() {
-  const missing = [];
-  if (!LOCAL_URI) missing.push("LOCAL_MONGODB_URI (or MONGODB_URI)");
-  if (!PROD_URI) missing.push("PROD_MONGODB_URI");
-  if (missing.length) {
-    console.error("\n❌  Missing required environment variables in .env:");
-    missing.forEach((v) => console.error(`     - ${v}`));
-    console.error("\nAdd them to backend/.env and retry.\n");
-    process.exit(1);
-  }
-}
+// ─── DB URLs ──────────────────────────────────────────────────────────────────
+const LOCAL_URI = "mongodb://localhost:27017/mtp";
+const PROD_URI =
+  "mongodb://mtpUser:MountainTravels%40110@147.93.94.137:27017/mountaintravels?authSource=mountaintravels";
 
 // ─── Backup directory ─────────────────────────────────────────────────────────
 const BACKUP_DIR = path.join(
@@ -65,9 +30,10 @@ const BACKUP_DIR = path.join(
   "../backups",
   `prod-backup-${new Date().toISOString().slice(0, 10)}`,
 );
+if (!fs.existsSync(BACKUP_DIR)) fs.mkdirSync(BACKUP_DIR, { recursive: true });
 
-// ─── Collections to back up ───────────────────────────────────────────────────
-const BACKUP_COLLECTIONS = [
+// ─── Collections to sync ──────────────────────────────────────────────────────
+const COLLECTIONS = [
   "tours",
   "destinations",
   "testimonials",
@@ -80,272 +46,6 @@ const BACKUP_COLLECTIONS = [
   "customitinenaries",
   "bookings",
 ];
-
-// ─── Collections to push local → prod ────────────────────────────────────────
-const SYNC_COLLECTIONS = ["tours", "destinations", "testimonials"];
-
-// ─── Destinations seed data ───────────────────────────────────────────────────
-// Image URLs use BACKEND_BASE_URL so they work on any environment
-function buildDestinations(baseUrl) {
-  return [
-    {
-      slug: "hunza-valley",
-      shortName: "Hunza Valley",
-      name: "Hunza Valley – Jewel of the Karakoram",
-      description:
-        "Nestled amidst some of the world's highest mountains, Hunza Valley is one of Pakistan's most celebrated destinations. Renowned for its breathtaking scenery, hospitable communities, historic forts, and Silk Road heritage, Hunza offers visitors an unforgettable blend of culture and nature.",
-      highlights: [
-        "Baltit Fort",
-        "Altit Fort",
-        "Attabad Lake",
-        "Passu Cones",
-        "Hussaini Suspension Bridge",
-        "Khunjerab National Park",
-        "Khunjerab Pass",
-      ],
-      appeal:
-        "Whether you are interested in photography, cultural exploration, trekking, or simply enjoying spectacular mountain scenery, Hunza Valley is an essential destination on any Pakistan itinerary.",
-      suggestedTours: [
-        "Hunza Valley Discovery",
-        "Northern Pakistan Highlights",
-        "Silk Route Explorer",
-      ],
-      image: `${baseUrl}/uploads/destinations/dest_hunza.webp`,
-      country: "Pakistan",
-      region: "Gilgit-Baltistan",
-      tours: 12,
-      featured: true,
-      tags: ["mountains", "silk-road", "culture", "trekking", "forts"],
-    },
-    {
-      slug: "skardu-baltistan",
-      shortName: "Skardu & Baltistan",
-      name: "Skardu & Baltistan – Gateway to the World's Greatest Mountains",
-      description:
-        "Located in the heart of Baltistan, Skardu serves as the gateway to K2, Broad Peak, Gasherbrum, and many of the world's most famous mountain landscapes. The region is renowned for its dramatic scenery, crystal-clear lakes, ancient forts, and welcoming Balti culture.",
-      highlights: [
-        "Shangrila Resort",
-        "Upper Kachura Lake",
-        "Lower Kachura Lake",
-        "Satpara Lake",
-        "Shigar Fort",
-        "Khaplu Palace",
-        "Deosai National Park",
-        "Manthoka Waterfall",
-      ],
-      appeal:
-        "Skardu is equally appealing to cultural travelers, nature enthusiasts, photographers, and mountaineers.",
-      suggestedTours: [
-        "Skardu & Baltistan Explorer",
-        "Deosai Adventure",
-        "K2 Base Camp Trek",
-      ],
-      image: `${baseUrl}/uploads/destinations/dest_skardu.webp`,
-      country: "Pakistan",
-      region: "Gilgit-Baltistan",
-      tours: 15,
-      featured: true,
-      tags: ["k2", "mountains", "lakes", "forts", "baltistan"],
-    },
-    {
-      slug: "gilgit-baltistan",
-      shortName: "Gilgit-Baltistan",
-      name: "Gilgit-Baltistan – Land of Giants",
-      description:
-        "Gilgit-Baltistan is home to five of the world's fourteen peaks above 8,000 meters and some of the most spectacular mountain scenery anywhere on Earth. Travelers can experience dramatic landscapes while discovering centuries-old traditions and communities.",
-      highlights: [
-        "Towering 8,000m peaks",
-        "Ancient Silk Road settlements",
-        "Glaciers and alpine meadows",
-        "Rich cultural diversity",
-        "Historic trade routes",
-      ],
-      appeal:
-        "Travelers can experience dramatic landscapes while discovering centuries-old traditions and communities that have thrived in these mountains for generations.",
-      suggestedTours: [
-        "Grand Northern Pakistan Tour",
-        "Karakoram Highway Journey",
-        "Silk Road Adventure",
-      ],
-      image: `${baseUrl}/uploads/destinations/dest_gilgit.webp`,
-      country: "Pakistan",
-      region: "Gilgit-Baltistan",
-      tours: 10,
-      featured: true,
-      tags: ["mountains", "8000m", "glaciers", "silk-road", "karakoram"],
-    },
-    {
-      slug: "chitral-kalash",
-      shortName: "Chitral & Kalash",
-      name: "Chitral & Kalash Valleys – A Cultural Treasure",
-      description:
-        "The remote valleys of Chitral and Kalash provide one of the most unique cultural experiences in Asia. Surrounded by the rugged peaks of the Hindu Kush, the Kalash people have preserved distinctive traditions, festivals, and beliefs for centuries.",
-      highlights: [
-        "Bumburet Valley",
-        "Rumbur Valley",
-        "Birir Valley",
-        "Chitral Town",
-        "Chitral Fort",
-        "Traditional Kalash Festivals",
-      ],
-      appeal:
-        "Visitors gain fascinating insights into one of the region's most distinctive cultures while enjoying spectacular mountain scenery.",
-      suggestedTours: [
-        "Kalash Culture Tour",
-        "Chitral Explorer",
-        "Northern Cultural Journey",
-      ],
-      image: `${baseUrl}/uploads/destinations/dest_chitral.webp`,
-      country: "Pakistan",
-      region: "Khyber Pakhtunkhwa",
-      tours: 6,
-      featured: false,
-      tags: ["kalash", "culture", "festivals", "hindu-kush", "unique"],
-    },
-    {
-      slug: "swat-valley",
-      shortName: "Swat Valley",
-      name: "Swat Valley – The Switzerland of Pakistan",
-      description:
-        "Known for its lush green valleys, alpine scenery, rivers, forests, and rich history, Swat Valley has long been one of Pakistan's most beloved travel destinations.",
-      highlights: [
-        "Mingora",
-        "Malam Jabba",
-        "Fizagat Park",
-        "White Palace",
-        "Buddhist Heritage Sites",
-        "Kalam Valley",
-        "Ushu Forest",
-        "Mahodand Lake",
-      ],
-      appeal:
-        "Swat combines natural beauty with cultural and historical significance, making it ideal for families, photographers, and nature lovers.",
-      suggestedTours: [
-        "Swat Valley Tour",
-        "Family Adventure Pakistan",
-        "Cultural Heritage Journey",
-      ],
-      image: `${baseUrl}/uploads/destinations/dest_swat.webp`,
-      country: "Pakistan",
-      region: "Khyber Pakhtunkhwa",
-      tours: 5,
-      featured: false,
-      tags: ["green-valleys", "buddhist", "alpine", "rivers", "forests"],
-    },
-    {
-      slug: "kashmir",
-      shortName: "Kashmir",
-      name: "Kashmir – Paradise on Earth",
-      description:
-        "The breathtaking valleys of Azad Kashmir offer some of Pakistan's most picturesque landscapes, characterized by rolling hills, rivers, forests, and alpine meadows.",
-      highlights: [
-        "Neelum Valley",
-        "Keran",
-        "Arang Kel",
-        "Sharda",
-        "Ratti Gali Lake",
-        "Pir Chinasi",
-      ],
-      appeal:
-        "Kashmir is particularly attractive to travelers seeking scenic beauty, tranquility, and outdoor adventure.",
-      suggestedTours: [
-        "Kashmir Explorer",
-        "Scenic Pakistan Journey",
-        "Nature & Photography Tour",
-      ],
-      image: `${baseUrl}/uploads/destinations/dest_kashmir.webp`,
-      country: "Pakistan",
-      region: "Azad Kashmir",
-      tours: 4,
-      featured: false,
-      tags: ["paradise", "lakes", "alpine-meadows", "scenic", "neelum"],
-    },
-    {
-      slug: "lahore",
-      shortName: "Lahore",
-      name: "Lahore – Cultural Capital of Pakistan",
-      description:
-        "Lahore is a vibrant city where history, culture, architecture, and cuisine come together to create an unforgettable travel experience.",
-      highlights: [
-        "Lahore Fort",
-        "Badshahi Mosque",
-        "Walled City",
-        "Shalimar Gardens",
-        "Lahore Museum",
-        "Wagah Border Ceremony",
-        "Traditional Food Streets",
-      ],
-      appeal:
-        "The city's rich heritage and lively atmosphere make it one of South Asia's most fascinating cultural destinations.",
-      suggestedTours: [
-        "Heritage Pakistan Tour",
-        "Grand Pakistan Tour",
-        "Mughal Heritage Journey",
-      ],
-      image: `${baseUrl}/uploads/destinations/dest_lahore.webp`,
-      country: "Pakistan",
-      region: "Punjab",
-      tours: 8,
-      featured: true,
-      tags: ["mughal", "heritage", "food", "culture", "architecture"],
-    },
-    {
-      slug: "taxila",
-      shortName: "Taxila",
-      name: "Taxila – Cradle of Gandhara Civilization",
-      description:
-        "A UNESCO World Heritage Site, Taxila is one of the most important archaeological destinations in Asia and a key center of Buddhist heritage.",
-      highlights: [
-        "Dharmarajika Stupa",
-        "Jaulian Monastery",
-        "Sirkap",
-        "Taxila Museum",
-        "Ancient Buddhist Sites",
-      ],
-      appeal:
-        "Taxila provides unique insights into the Gandhara Civilization and the spread of Buddhism across Asia.",
-      suggestedTours: [
-        "Buddhist Heritage Tour",
-        "Gandhara Civilization Tour",
-        "Archaeological Pakistan",
-      ],
-      image: `${baseUrl}/uploads/destinations/dest_taxila.webp`,
-      country: "Pakistan",
-      region: "Punjab",
-      tours: 4,
-      featured: false,
-      tags: ["unesco", "buddhist", "gandhara", "archaeological", "heritage"],
-    },
-    {
-      slug: "makran-coast",
-      shortName: "Makran Coast",
-      name: "Makran Coast – Pakistan's Hidden Coastal Wonder",
-      description:
-        "Stretching along the Arabian Sea, the Makran Coast offers dramatic landscapes, pristine beaches, fascinating geological formations, and a completely different side of Pakistan.",
-      highlights: [
-        "Hingol National Park",
-        "Princess of Hope",
-        "Kund Malir Beach",
-        "Buzi Pass",
-        "Mud Volcanoes",
-        "Coastal Highway",
-      ],
-      appeal:
-        "The region is ideal for adventurous travelers seeking off-the-beaten-path experiences.",
-      suggestedTours: [
-        "Makran Coastal Adventure",
-        "Balochistan Explorer",
-        "Photography Expedition",
-      ],
-      image: `${baseUrl}/uploads/destinations/dest_makran.webp`,
-      country: "Pakistan",
-      region: "Balochistan",
-      tours: 3,
-      featured: false,
-      tags: ["coastal", "beach", "adventure", "balochistan", "national-park"],
-    },
-  ];
-}
 
 // ─── Testimonials seed data ───────────────────────────────────────────────────
 const TESTIMONIALS = [
@@ -413,7 +113,7 @@ const TESTIMONIALS = [
     name: "Ryo Higashino & Ide Ikutaro",
     designation: "NHK, Japan Corporation, Tokyo, Japan – September 28th, 2000",
     feedback:
-      "We appreciate the efforts of all the highly professional team members organized by Mountain Travels Pakistan whose confidence and dedication made it possible for us to capture some of the breathtaking and rare mountain scenery. The credit for this successful venture goes to our Liaison Officer Mr. Hamid Hussain from Mountain Travels whose knowledge about the area and perfect Japanese made our trip easier.",
+      "(We) visited Northern Pakistan for filming an educational documentary on the natural beauty and people of Baltistan in 2000 (and)… appreciate the efforts of all the highly professional team members organized by Mountain Travels Pakistan whose confidence and dedication made it possible for us to capture some of the breathtaking and rare mountain scenery...The credit for this successful venture goes to our Liaison Officer Mr. Hamid Hussain from Mountain Travels whose knowledge about the area and perfect Japanese made our trip easier.",
     location: "Japan",
     rating: 5,
     verified: true,
@@ -443,7 +143,7 @@ const TESTIMONIALS = [
     name: "Kamila Jeevanjee",
     designation: "Los Angeles, CA, USA – July, 2003",
     feedback:
-      "What a wonderful trek – the care and attention of Hamid and all the porters made a very tough trip extremely pleasant, safe, and not so intimidating (especially the crossing of the Gondogoro La). The whole team is exceptionally wonderful and caring of every possible detail. The music in the evenings and the great food were an added bonus… Thank you so much Mountain Travels Pakistan.",
+      "What a wonderful trek- the care and attention of Hamid and all the porters made a very tough trip extremely pleasant, safe, and not so intimidating (especially the crossing of the Gondogoro La). The whole team is exceptionally wonderful and caring of every possible detail. The music in the evenings and the great food were an added bonus… Thank you so much Mountain Travels Pakistan.",
     location: "USA",
     rating: 5,
     verified: true,
@@ -493,7 +193,7 @@ const TESTIMONIALS = [
     name: "Erih Hegrelberg",
     designation: "Amsterdam, The Netherlands – 2004",
     feedback:
-      "Our Baltoro/Gondogoro La trek was super-organized and in a mountainous spirit flavoured with Balti flowers and apricots.",
+      "Our Baltoro/ Gondogoro La trek was super-organized and in a mountainous spirit flavoured with Balti flowers and apricots.",
     location: "Netherlands",
     rating: 5,
     verified: true,
@@ -541,15 +241,284 @@ const TESTIMONIALS = [
   },
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-const log = (msg) => console.log(`\n${"─".repeat(60)}\n${msg}`);
-const ok = (msg) => console.log(`  ✅  ${msg}`);
-const warn = (msg) => console.log(`  ⚠️   ${msg}`);
-const err = (msg) => console.error(`  ❌  ${msg}`);
+// ─── Destinations seed data ───────────────────────────────────────────────────
+const DESTINATIONS = [
+  {
+    slug: "hunza-valley",
+    shortName: "Hunza Valley",
+    name: "Hunza Valley – Jewel of the Karakoram",
+    description:
+      "Nestled amidst some of the world's highest mountains, Hunza Valley is one of Pakistan's most celebrated destinations. Renowned for its breathtaking scenery, hospitable communities, historic forts, and Silk Road heritage, Hunza offers visitors an unforgettable blend of culture and nature.",
+    highlights: [
+      "Baltit Fort",
+      "Altit Fort",
+      "Attabad Lake",
+      "Passu Cones",
+      "Hussaini Suspension Bridge",
+      "Khunjerab National Park",
+      "Khunjerab Pass",
+    ],
+    appeal:
+      "Whether you are interested in photography, cultural exploration, trekking, or simply enjoying spectacular mountain scenery, Hunza Valley is an essential destination on any Pakistan itinerary.",
+    suggestedTours: [
+      "Hunza Valley Discovery",
+      "Northern Pakistan Highlights",
+      "Silk Route Explorer",
+    ],
+    image: "http://localhost:5000/uploads/destinations/dest_hunza.webp",
+    country: "Pakistan",
+    region: "Gilgit-Baltistan",
+    tours: 12,
+    featured: true,
+    tags: ["mountains", "silk-road", "culture", "trekking", "forts"],
+  },
+  {
+    slug: "skardu-baltistan",
+    shortName: "Skardu & Baltistan",
+    name: "Skardu & Baltistan – Gateway to the World's Greatest Mountains",
+    description:
+      "Located in the heart of Baltistan, Skardu serves as the gateway to K2, Broad Peak, Gasherbrum, and many of the world's most famous mountain landscapes. The region is renowned for its dramatic scenery, crystal-clear lakes, ancient forts, and welcoming Balti culture.",
+    highlights: [
+      "Shangrila Resort",
+      "Upper Kachura Lake",
+      "Lower Kachura Lake",
+      "Satpara Lake",
+      "Shigar Fort",
+      "Khaplu Palace",
+      "Deosai National Park",
+      "Manthoka Waterfall",
+    ],
+    appeal:
+      "Skardu is equally appealing to cultural travelers, nature enthusiasts, photographers, and mountaineers.",
+    suggestedTours: [
+      "Skardu & Baltistan Explorer",
+      "Deosai Adventure",
+      "K2 Base Camp Trek",
+    ],
+    image: "http://localhost:5000/uploads/destinations/dest_skardu.webp",
+    country: "Pakistan",
+    region: "Gilgit-Baltistan",
+    tours: 15,
+    featured: true,
+    tags: ["k2", "mountains", "lakes", "forts", "baltistan"],
+  },
+  {
+    slug: "gilgit-baltistan",
+    shortName: "Gilgit-Baltistan",
+    name: "Gilgit-Baltistan – Land of Giants",
+    description:
+      "Gilgit-Baltistan is home to five of the world's fourteen peaks above 8,000 meters and some of the most spectacular mountain scenery anywhere on Earth. Travelers can experience dramatic landscapes while discovering centuries-old traditions and communities.",
+    highlights: [
+      "Towering 8,000m peaks",
+      "Ancient Silk Road settlements",
+      "Glaciers and alpine meadows",
+      "Rich cultural diversity",
+      "Historic trade routes",
+    ],
+    appeal:
+      "Travelers can experience dramatic landscapes while discovering centuries-old traditions and communities that have thrived in these mountains for generations.",
+    suggestedTours: [
+      "Grand Northern Pakistan Tour",
+      "Karakoram Highway Journey",
+      "Silk Road Adventure",
+    ],
+    image: "http://localhost:5000/uploads/destinations/dest_gilgit.webp",
+    country: "Pakistan",
+    region: "Gilgit-Baltistan",
+    tours: 10,
+    featured: true,
+    tags: ["mountains", "8000m", "glaciers", "silk-road", "karakoram"],
+  },
+  {
+    slug: "chitral-kalash",
+    shortName: "Chitral & Kalash",
+    name: "Chitral & Kalash Valleys – A Cultural Treasure",
+    description:
+      "The remote valleys of Chitral and Kalash provide one of the most unique cultural experiences in Asia. Surrounded by the rugged peaks of the Hindu Kush, the Kalash people have preserved distinctive traditions, festivals, and beliefs for centuries.",
+    highlights: [
+      "Bumburet Valley",
+      "Rumbur Valley",
+      "Birir Valley",
+      "Chitral Town",
+      "Chitral Fort",
+      "Traditional Kalash Festivals",
+    ],
+    appeal:
+      "Visitors gain fascinating insights into one of the region's most distinctive cultures while enjoying spectacular mountain scenery.",
+    suggestedTours: [
+      "Kalash Culture Tour",
+      "Chitral Explorer",
+      "Northern Cultural Journey",
+    ],
+    image: "http://localhost:5000/uploads/destinations/dest_chitral.webp",
+    country: "Pakistan",
+    region: "Khyber Pakhtunkhwa",
+    tours: 6,
+    featured: false,
+    tags: ["kalash", "culture", "festivals", "hindu-kush", "unique"],
+  },
+  {
+    slug: "swat-valley",
+    shortName: "Swat Valley",
+    name: "Swat Valley – The Switzerland of Pakistan",
+    description:
+      "Known for its lush green valleys, alpine scenery, rivers, forests, and rich history, Swat Valley has long been one of Pakistan's most beloved travel destinations.",
+    highlights: [
+      "Mingora",
+      "Malam Jabba",
+      "Fizagat Park",
+      "White Palace",
+      "Buddhist Heritage Sites",
+      "Kalam Valley",
+      "Ushu Forest",
+      "Mahodand Lake",
+    ],
+    appeal:
+      "Swat combines natural beauty with cultural and historical significance, making it ideal for families, photographers, and nature lovers.",
+    suggestedTours: [
+      "Swat Valley Tour",
+      "Family Adventure Pakistan",
+      "Cultural Heritage Journey",
+    ],
+    image: "http://localhost:5000/uploads/destinations/dest_swat.webp",
+    country: "Pakistan",
+    region: "Khyber Pakhtunkhwa",
+    tours: 5,
+    featured: false,
+    tags: ["green-valleys", "buddhist", "alpine", "rivers", "forests"],
+  },
+  {
+    slug: "kashmir",
+    shortName: "Kashmir",
+    name: "Kashmir – Paradise on Earth",
+    description:
+      "The breathtaking valleys of Azad Kashmir offer some of Pakistan's most picturesque landscapes, characterized by rolling hills, rivers, forests, and alpine meadows.",
+    highlights: [
+      "Neelum Valley",
+      "Keran",
+      "Arang Kel",
+      "Sharda",
+      "Ratti Gali Lake",
+      "Pir Chinasi",
+    ],
+    appeal:
+      "Kashmir is particularly attractive to travelers seeking scenic beauty, tranquility, and outdoor adventure.",
+    suggestedTours: [
+      "Kashmir Explorer",
+      "Scenic Pakistan Journey",
+      "Nature & Photography Tour",
+    ],
+    image: "http://localhost:5000/uploads/destinations/dest_kashmir.webp",
+    country: "Pakistan",
+    region: "Azad Kashmir",
+    tours: 4,
+    featured: false,
+    tags: ["paradise", "lakes", "alpine-meadows", "scenic", "neelum"],
+  },
+  {
+    slug: "lahore",
+    shortName: "Lahore",
+    name: "Lahore – Cultural Capital of Pakistan",
+    description:
+      "Lahore is a vibrant city where history, culture, architecture, and cuisine come together to create an unforgettable travel experience.",
+    highlights: [
+      "Lahore Fort",
+      "Badshahi Mosque",
+      "Walled City",
+      "Shalimar Gardens",
+      "Lahore Museum",
+      "Wagah Border Ceremony",
+      "Traditional Food Streets",
+    ],
+    appeal:
+      "The city's rich heritage and lively atmosphere make it one of South Asia's most fascinating cultural destinations.",
+    suggestedTours: [
+      "Heritage Pakistan Tour",
+      "Grand Pakistan Tour",
+      "Mughal Heritage Journey",
+    ],
+    image: "http://localhost:5000/uploads/destinations/dest_lahore.webp",
+    country: "Pakistan",
+    region: "Punjab",
+    tours: 8,
+    featured: true,
+    tags: ["mughal", "heritage", "food", "culture", "architecture"],
+  },
+  {
+    slug: "taxila",
+    shortName: "Taxila",
+    name: "Taxila – Cradle of Gandhara Civilization",
+    description:
+      "A UNESCO World Heritage Site, Taxila is one of the most important archaeological destinations in Asia and a key center of Buddhist heritage.",
+    highlights: [
+      "Dharmarajika Stupa",
+      "Jaulian Monastery",
+      "Sirkap",
+      "Taxila Museum",
+      "Ancient Buddhist Sites",
+    ],
+    appeal:
+      "Taxila provides unique insights into the Gandhara Civilization and the spread of Buddhism across Asia.",
+    suggestedTours: [
+      "Buddhist Heritage Tour",
+      "Gandhara Civilization Tour",
+      "Archaeological Pakistan",
+    ],
+    image: "http://localhost:5000/uploads/destinations/dest_taxila.webp",
+    country: "Pakistan",
+    region: "Punjab",
+    tours: 4,
+    featured: false,
+    tags: ["unesco", "buddhist", "gandhara", "archaeological", "heritage"],
+  },
+  {
+    slug: "makran-coast",
+    shortName: "Makran Coast",
+    name: "Makran Coast – Pakistan's Hidden Coastal Wonder",
+    description:
+      "Stretching along the Arabian Sea, the Makran Coast offers dramatic landscapes, pristine beaches, fascinating geological formations, and a completely different side of Pakistan.",
+    highlights: [
+      "Hingol National Park",
+      "Princess of Hope",
+      "Kund Malir Beach",
+      "Buzi Pass",
+      "Mud Volcanoes",
+      "Coastal Highway",
+    ],
+    appeal:
+      "The region is ideal for adventurous travelers seeking off-the-beaten-path experiences.",
+    suggestedTours: [
+      "Makran Coastal Adventure",
+      "Balochistan Explorer",
+      "Photography Expedition",
+    ],
+    image: "http://localhost:5000/uploads/destinations/dest_makran.webp",
+    country: "Pakistan",
+    region: "Balochistan",
+    tours: 3,
+    featured: false,
+    tags: ["coastal", "beach", "adventure", "balochistan", "national-park"],
+  },
+];
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function log(msg) {
+  console.log(`\n${"─".repeat(60)}\n${msg}`);
+}
+function ok(msg) {
+  console.log(`  ✅ ${msg}`);
+}
+function warn(msg) {
+  console.log(`  ⚠️  ${msg}`);
+}
+function err(msg) {
+  console.error(`  ❌ ${msg}`);
+}
+
+// ─── Connect to a DB ──────────────────────────────────────────────────────────
 async function connectTo(uri, label) {
   const conn = mongoose.createConnection(uri, {
-    serverSelectionTimeoutMS: 12000,
+    serverSelectionTimeoutMS: 10000,
     connectTimeoutMS: 15000,
   });
   await new Promise((resolve, reject) => {
@@ -560,50 +529,55 @@ async function connectTo(uri, label) {
   return conn;
 }
 
+// ─── Count docs in a collection ───────────────────────────────────────────────
 async function countDocs(conn, colName) {
   try {
-    return await conn.db.collection(colName).countDocuments();
+    const col = conn.db.collection(colName);
+    return await col.countDocuments();
   } catch {
     return 0;
   }
 }
 
-// ─── STEP 1: Check local DB status ───────────────────────────────────────────
+// ─── Step 1: Check local DB status ───────────────────────────────────────────
 async function checkLocalDB(localConn) {
-  log("STEP 1 – Checking Local DB status");
-  const tours = await countDocs(localConn, "tours");
-  const dests = await countDocs(localConn, "destinations");
-  const tests = await countDocs(localConn, "testimonials");
-  const users = await countDocs(localConn, "users");
-
+  log("STEP 1: Checking Local DB status...");
+  const toursCount = await countDocs(localConn, "tours");
+  const destsCount = await countDocs(localConn, "destinations");
+  const testCount = await countDocs(localConn, "testimonials");
+  const usersCount = await countDocs(localConn, "users");
   console.log(`
-  Collection      | Count | Status
-  ────────────────|───────|────────────────────────────────────────────
-  tours           | ${String(tours).padStart(5)} | ${tours > 0 ? "✅ OK" : "❌ EMPTY – seed with: node src/scripts/seedToursFromContent.js"}
-  destinations    | ${String(dests).padStart(5)} | ${dests > 0 ? "✅ OK" : "⚠️  Will be seeded by this script"}
-  testimonials    | ${String(tests).padStart(5)} | ${tests > 0 ? "✅ OK" : "⚠️  Will be seeded by this script"}
-  users           | ${String(users).padStart(5)} | ${users > 0 ? "✅ OK" : "⚠️  Admin user will be created"}
+  Collection        | Count
+  ──────────────────|──────
+  tours             | ${toursCount}
+  destinations      | ${destsCount}
+  testimonials      | ${testCount}
+  users             | ${usersCount}
   `);
-  return { tours, dests, tests, users };
+  return { toursCount, destsCount, testCount, usersCount };
 }
 
-// ─── STEP 2: Seed local DB ────────────────────────────────────────────────────
+// ─── Step 2: Seed local DB ────────────────────────────────────────────────────
 async function seedLocalDB(localConn, counts) {
-  log("STEP 2 – Seeding missing data into Local DB");
-  const destinations = buildDestinations(BACKEND_BASE_URL);
-  const now = new Date();
+  log("STEP 2: Seeding missing data into Local DB...");
 
-  // Destinations
-  if (counts.dests === 0) {
+  // ── Destinations ──
+  if (counts.destsCount === 0) {
     const col = localConn.db.collection("destinations");
-    const res = await col.insertMany(
-      destinations.map((d) => ({ ...d, createdAt: now, updatedAt: now })),
-    );
-    ok(`Inserted ${res.insertedCount} destinations`);
+    const now = new Date();
+    const docs = DESTINATIONS.map((d) => ({
+      ...d,
+      createdAt: now,
+      updatedAt: now,
+    }));
+    const res = await col.insertMany(docs);
+    ok(`Seeded ${res.insertedCount} destinations`);
   } else {
+    // Upsert each destination
     const col = localConn.db.collection("destinations");
     let upserted = 0;
-    for (const d of destinations) {
+    for (const d of DESTINATIONS) {
+      const now = new Date();
       await col.updateOne(
         { slug: d.slug },
         { $set: { ...d, updatedAt: now }, $setOnInsert: { createdAt: now } },
@@ -611,124 +585,123 @@ async function seedLocalDB(localConn, counts) {
       );
       upserted++;
     }
-    ok(`Upserted ${upserted} destinations (existing records preserved)`);
+    ok(`Upserted ${upserted} destinations (existing preserved)`);
   }
 
-  // Testimonials
-  if (counts.tests === 0) {
+  // ── Testimonials ──
+  if (counts.testCount === 0) {
     const col = localConn.db.collection("testimonials");
-    const res = await col.insertMany(
-      TESTIMONIALS.map((t) => ({ ...t, createdAt: now, updatedAt: now })),
-    );
-    ok(`Inserted ${res.insertedCount} testimonials`);
+    const now = new Date();
+    const docs = TESTIMONIALS.map((t) => ({
+      ...t,
+      createdAt: now,
+      updatedAt: now,
+    }));
+    const res = await col.insertMany(docs);
+    ok(`Seeded ${res.insertedCount} testimonials`);
   } else {
-    ok(`Testimonials already exist (${counts.tests}) – skipping`);
+    ok(`Testimonials already exist (${counts.testCount}) - skipping seed`);
   }
 
-  // Tours – report only, do NOT auto-seed (too large, managed separately)
-  if (counts.tours === 0) {
-    warn("Tours collection is EMPTY on local DB.");
-    warn("Seed tours separately using:");
-    warn("  node src/scripts/seedToursFromContent.js");
-    warn("Tours will NOT be pushed to production until they exist locally.");
-  } else {
-    ok(
-      `Tours already exist locally (${counts.tours}) – will sync to production`,
+  // ── Tours ──
+  if (counts.toursCount === 0) {
+    warn(
+      "No tours found in local DB! Run: node src/scripts/seedToursFromContent.js to seed tours.",
     );
+    warn(
+      "Tours seeding is skipped here because the tour data is very large. Please seed separately.",
+    );
+  } else {
+    ok(`Tours already exist (${counts.toursCount}) - skipping seed`);
   }
 }
 
-// ─── STEP 3: Backup production DB ────────────────────────────────────────────
+// ─── Step 3: Backup production DB ────────────────────────────────────────────
 async function backupProdDB(prodConn) {
-  log("STEP 3 – Backing up production DB to local JSON files");
-  if (!fs.existsSync(BACKUP_DIR)) fs.mkdirSync(BACKUP_DIR, { recursive: true });
-
-  let totalDocs = 0;
-  for (const colName of BACKUP_COLLECTIONS) {
+  log("STEP 3: Backing up production DB collections...");
+  let totalBacked = 0;
+  for (const colName of COLLECTIONS) {
     try {
-      const docs = await prodConn.db.collection(colName).find({}).toArray();
+      const col = prodConn.db.collection(colName);
+      const docs = await col.find({}).toArray();
       if (docs.length > 0) {
-        const file = path.join(BACKUP_DIR, `${colName}.json`);
-        fs.writeFileSync(file, JSON.stringify(docs, null, 2), "utf8");
-        ok(
-          `  '${colName}': ${docs.length} docs → ${path.relative(path.join(__dirname, ".."), file)}`,
-        );
-        totalDocs += docs.length;
+        const filePath = path.join(BACKUP_DIR, `${colName}.json`);
+        fs.writeFileSync(filePath, JSON.stringify(docs, null, 2));
+        ok(`Backed up ${docs.length} docs from '${colName}' → ${filePath}`);
+        totalBacked += docs.length;
       } else {
-        warn(`  '${colName}': empty on production`);
+        warn(`Collection '${colName}' is empty on production, skipping`);
       }
     } catch (e) {
-      warn(`  '${colName}': could not backup – ${e.message}`);
+      warn(`Could not backup '${colName}': ${e.message}`);
     }
   }
-  ok(
-    `Backup complete – ${totalDocs} total docs saved to backups/${path.basename(BACKUP_DIR)}/`,
-  );
+  ok(`Total backup: ${totalBacked} documents saved to ${BACKUP_DIR}`);
 }
 
-// ─── STEP 4: Push local → production (upsert by _id) ────────────────────────
+// ─── Step 4: Push local data to production ────────────────────────────────────
 async function pushToProd(localConn, prodConn) {
-  log("STEP 4 – Syncing local data → Production DB");
+  log("STEP 4: Pushing local data to production DB...");
+  const syncCols = ["tours", "destinations", "testimonials"];
 
-  for (const colName of SYNC_COLLECTIONS) {
+  for (const colName of syncCols) {
     const localCol = localConn.db.collection(colName);
     const prodCol = prodConn.db.collection(colName);
 
     const localDocs = await localCol.find({}).toArray();
-    const prodCount = await prodCol.countDocuments();
-
     if (localDocs.length === 0) {
-      warn(`'${colName}': local is empty – skipping push to production`);
+      warn(`Local '${colName}' is empty - skipping push`);
       continue;
     }
 
+    const prodCount = await prodCol.countDocuments();
     ok(
-      `'${colName}': local=${localDocs.length}, prod=${prodCount} → upserting…`,
+      `Local '${colName}': ${localDocs.length} docs | Prod '${colName}': ${prodCount} docs`,
     );
 
+    // For each local doc, upsert on production by _id
     let upserted = 0;
-    let errorCount = 0;
+    let errors = 0;
     for (const doc of localDocs) {
       try {
-        const { _id, createdAt, ...rest } = doc;
+        const { _id, ...rest } = doc;
         await prodCol.updateOne(
           { _id },
           {
             $set: { ...rest, updatedAt: new Date() },
-            $setOnInsert: { _id, createdAt: createdAt || new Date() },
+            $setOnInsert: { _id, createdAt: doc.createdAt || new Date() },
           },
           { upsert: true },
         );
         upserted++;
       } catch (e) {
-        errorCount++;
+        errors++;
+        // Ignore duplicate key errors silently
       }
     }
     ok(
-      `'${colName}': ${upserted} upserted` +
-        (errorCount > 0
-          ? `, ${errorCount} errors (duplicate key – ignored)`
-          : ""),
+      `'${colName}': ${upserted} upserted to production${errors > 0 ? `, ${errors} errors` : ""}`,
     );
   }
 }
 
-// ─── STEP 5: Create admin user ────────────────────────────────────────────────
-async function ensureAdminUser(conn, label) {
+// ─── Step 5: Create admin user on production ──────────────────────────────────
+async function createProdUser(prodConn) {
+  log("STEP 5: Creating admin user on production DB...");
   const email = "info@mountaintravels.com";
   const password = "AdminMTP@110";
-  const col = conn.db.collection("users");
+  const col = prodConn.db.collection("users");
 
   const existing = await col.findOne({ email });
   if (existing) {
-    ok(`[${label}] User '${email}' already exists`);
+    ok(`User '${email}' already exists on production`);
     return;
   }
 
-  const salt = await bcrypt.genSalt(SALT_ROUNDS);
+  const salt = await bcrypt.genSalt(12);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  await col.insertOne({
+  const newUser = {
     email,
     password: hashedPassword,
     firstName: "Mountain",
@@ -755,65 +728,96 @@ async function ensureAdminUser(conn, label) {
     emailVerificationExpires: null,
     createdAt: new Date(),
     updatedAt: new Date(),
-  });
-  ok(`[${label}] Admin user created:`);
-  console.log(`         Email:    ${email}`);
-  console.log(`         Password: ${password}`);
+  };
+
+  await col.insertOne(newUser);
+  ok(`Admin user created on production:`);
+  ok(`  Email: ${email}`);
+  ok(`  Password: ${password}`);
 }
 
-// ─── STEP 6: Final verification table ────────────────────────────────────────
+// ─── Also create user on local DB ─────────────────────────────────────────────
+async function createLocalUser(localConn) {
+  log("Creating admin user on local DB (if not exists)...");
+  const email = "info@mountaintravels.com";
+  const password = "AdminMTP@110";
+  const col = localConn.db.collection("users");
+
+  const existing = await col.findOne({ email });
+  if (existing) {
+    ok(`User '${email}' already exists on local DB`);
+    return;
+  }
+
+  const salt = await bcrypt.genSalt(12);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  const newUser = {
+    email,
+    password: hashedPassword,
+    firstName: "Mountain",
+    lastName: "Travels",
+    role: "admin",
+    permissions: {
+      tours: true,
+      blogs: true,
+      gallery: true,
+      testimonials: true,
+      partnerFeedbacks: true,
+      inquiries: true,
+      userManagement: true,
+      systemSettings: true,
+    },
+    isActive: true,
+    emailVerified: true,
+    lastLogin: null,
+    failedLoginAttempts: 0,
+    lockedUntil: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+  await col.insertOne(newUser);
+  ok(`Admin user created on local DB: ${email}`);
+}
+
+// ─── Final verification ───────────────────────────────────────────────────────
 async function verify(localConn, prodConn) {
-  log("FINAL VERIFICATION");
-  console.log(
-    `\n  ${"Collection".padEnd(18)} | ${"Local".padStart(6)} | ${"Prod".padStart(6)}`,
-  );
-  console.log(`  ${"─".repeat(18)}-|-${"─".repeat(6)}-|-${"─".repeat(6)}`);
+  log("FINAL VERIFICATION:");
   for (const colName of ["tours", "destinations", "testimonials", "users"]) {
     const lCount = await countDocs(localConn, colName);
     const pCount = await countDocs(prodConn, colName);
-    const status =
-      lCount > 0 && pCount > 0 ? "✅" : lCount === 0 ? "⚠️ " : "❓";
     console.log(
-      `  ${status} ${colName.padEnd(16)} | ${String(lCount).padStart(6)} | ${String(pCount).padStart(6)}`,
+      `  ${colName.padEnd(16)} | Local: ${String(lCount).padStart(4)} | Prod: ${String(pCount).padStart(4)}`,
     );
   }
-  console.log();
 }
 
-// ─── MAIN ─────────────────────────────────────────────────────────────────────
+// ─── Main ─────────────────────────────────────────────────────────────────────
 async function main() {
-  console.log("\n🏔️   MOUNTAIN TRAVELS – MASTER SYNC SCRIPT");
+  console.log("\n🚀 MOUNTAIN TRAVELS - MASTER SYNC SCRIPT");
   console.log("=".repeat(60));
-  console.log(`  BACKEND_BASE_URL : ${BACKEND_BASE_URL}`);
-  console.log(
-    `  Local DB         : ${LOCAL_URI?.replace(/\/\/.*@/, "//<credentials>@")}`,
-  );
-  console.log(
-    `  Prod DB          : ${PROD_URI?.replace(/\/\/.*@/, "//<credentials>@")}`,
-  );
-
-  assertEnv();
 
   let localConn, prodConn;
-  try {
-    log("Connecting to databases…");
-    localConn = await connectTo(LOCAL_URI, "LOCAL DB");
-    prodConn = await connectTo(PROD_URI, "PROD DB");
 
+  try {
+    // Connect to both DBs
+    log("Connecting to databases...");
+    localConn = await connectTo(
+      LOCAL_URI,
+      "LOCAL DB (mongodb://localhost:27017/mtp)",
+    );
+    prodConn = await connectTo(PROD_URI, "PROD DB (147.93.94.137)");
+
+    // Run all steps
     const counts = await checkLocalDB(localConn);
     await seedLocalDB(localConn, counts);
+    await createLocalUser(localConn);
     await backupProdDB(prodConn);
     await pushToProd(localConn, prodConn);
-
-    log("STEP 5 – Ensuring admin user exists on both DBs");
-    await ensureAdminUser(localConn, "LOCAL");
-    await ensureAdminUser(prodConn, "PROD");
-
+    await createProdUser(prodConn);
     await verify(localConn, prodConn);
 
-    log("✅  ALL STEPS COMPLETE");
-    console.log(`\n  ⚡  Tours reminder: if local tours = 0, run:`);
-    console.log(`       node src/scripts/seedToursFromContent.js\n`);
+    log("✅ ALL DONE! Master sync completed successfully.");
   } catch (e) {
     err(`Fatal error: ${e.message}`);
     console.error(e);
