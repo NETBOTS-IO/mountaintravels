@@ -1,6 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Compass, Calendar, Clock } from "lucide-react";
+import {
+  ArrowRight,
+  Compass,
+  Calendar,
+  Clock,
+  Share2,
+  MessageCircle,
+  Mail,
+} from "lucide-react";
 import { BASE_URL } from "@/app/Var";
 
 // Function to unslugify for display purposes
@@ -87,13 +95,14 @@ export default async function DynamicTravelGuideHub({
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {guidePosts.map((post: any) => (
-                <Link
+                <div
                   key={post._id}
-                  href={`/blogs/${post._id}`}
                   className="group flex flex-col bg-card rounded-xl border border-border overflow-hidden hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 transform hover:-translate-y-1"
                 >
-                  {/* Image Container */}
-                  <div className="relative w-full h-32 md:h-40 overflow-hidden bg-muted shrink-0">
+                  <Link
+                    href={`/blogs/${post._id}`}
+                    className="block relative w-full h-32 md:h-40 overflow-hidden bg-muted shrink-0"
+                  >
                     <Image
                       src={
                         post.coverImage?.startsWith("http")
@@ -115,28 +124,36 @@ export default async function DynamicTravelGuideHub({
                         </span>
                       )}
                     </div>
-                  </div>
+                  </Link>
 
                   {/* Content Container */}
                   <div className="p-4 md:p-5 flex flex-col flex-grow relative">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                      <Calendar className="w-3.5 h-3.5" />
-                      <span>
-                        {new Date(post.createdAt).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </span>
-                    </div>
+                    <Link
+                      href={`/blogs/${post._id}`}
+                      className="block flex-grow"
+                    >
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>
+                          {new Date(post.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            },
+                          )}
+                        </span>
+                      </div>
 
-                    <h2 className="font-display text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
-                      {post.title}
-                    </h2>
+                      <h2 className="font-display text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                        {post.title}
+                      </h2>
 
-                    <p className="text-muted-foreground font-light text-sm leading-relaxed line-clamp-2 mb-6 flex-grow">
-                      {post.summary}
-                    </p>
+                      <p className="text-muted-foreground font-light text-sm leading-relaxed line-clamp-2 mb-6 flex-grow">
+                        {post.summary}
+                      </p>
+                    </Link>
 
                     <div className="pt-4 border-t border-border flex items-center justify-between mt-auto">
                       <div className="flex items-center gap-3">
@@ -148,13 +165,27 @@ export default async function DynamicTravelGuideHub({
                         </span>
                       </div>
 
-                      <div className="flex items-center text-primary font-medium text-sm group-hover:bg-primary/5 px-3 py-1.5 rounded-full transition-colors">
-                        Read Guide
-                        <ArrowRight className="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" />
+                      <div className="flex gap-2">
+                        <a
+                          href={`https://wa.me/?text=${encodeURIComponent(`Check out this travel guide: ${post.title}\n\nhttps://www.mountaintravels.com/blogs/${post._id}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-green-600 transition-colors p-1.5 rounded-full hover:bg-green-50"
+                          title="Share on WhatsApp"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                        </a>
+                        <a
+                          href={`mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent(`Check out this travel guide: ${post.title}\n\nhttps://www.mountaintravels.com/blogs/${post._id}`)}`}
+                          className="text-muted-foreground hover:text-blue-600 transition-colors p-1.5 rounded-full hover:bg-blue-50"
+                          title="Share via Email"
+                        >
+                          <Mail className="w-4 h-4" />
+                        </a>
                       </div>
                     </div>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           )}
