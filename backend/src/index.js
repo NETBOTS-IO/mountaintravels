@@ -20,7 +20,7 @@ import tipsRoutes from "./routes/tipsRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import trustedRoutes from "./routes/trustedRoutes.js";
 import customItineraryRoutes from "./routes/customItineraryRoutes.js";
-
+import mediaRoutes from "./routes/mediaRoutes.js";
 dotenv.config();
 console.log("MongoDB URI:", process.env.MONGODB_URI);
 
@@ -110,6 +110,7 @@ app.use("/api/tips", tipsRoutes);
 app.use("/api", bookingRoutes);
 app.use("/api/trusted", trustedRoutes);
 app.use("/api/custom-itineraries", customItineraryRoutes);
+app.use("/api/media", mediaRoutes);
 
 // app.use('/api/inquiries', inquiryRoutes);
 // app.use('/api/contacts', contactRoutes);
