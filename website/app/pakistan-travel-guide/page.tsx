@@ -1,6 +1,12 @@
 import { getAllPosts } from "@/lib/markdown";
 import Link from "next/link";
-import { ArrowRight, BookOpen } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Share2,
+  MessageCircle,
+  Mail,
+} from "lucide-react";
 
 export const metadata = {
   title: "Pakistan Travel Guide | Mountain Travels Pakistan",
@@ -40,30 +46,53 @@ export default function TravelGuideHub() {
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {guidePosts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/${post.slug}`}
-                className="group h-full flex"
-              >
-                <div className="bg-card border border-border p-8 hover:shadow-xl transition-all duration-300 h-full flex flex-col w-full">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform shrink-0">
-                    <BookOpen className="w-5 h-5" />
-                  </div>
-                  <h2 className="font-display text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors line-clamp-2">
-                    {post.title}
-                  </h2>
-                  <p className="text-muted-foreground font-light text-base leading-relaxed line-clamp-3 mb-8 flex-grow">
-                    {post.content
-                      .split("\n")
-                      .find((line) => line.length > 50) ||
-                      "Read our comprehensive guide to learn more."}
-                  </p>
-                  <div className="pt-4 border-t border-border flex items-center text-primary font-medium text-base">
-                    Read Guide{" "}
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              <div key={post.slug} className="group h-full flex">
+                <div className="bg-card border border-border p-8 hover:shadow-xl transition-all duration-300 h-full flex flex-col w-full relative">
+                  <Link href={`/${post.slug}`} className="block flex-grow">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform shrink-0">
+                      <BookOpen className="w-5 h-5" />
+                    </div>
+                    <h2 className="font-display text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors line-clamp-2">
+                      {post.title}
+                    </h2>
+                    <p className="text-muted-foreground font-light text-base leading-relaxed line-clamp-3 mb-8 flex-grow">
+                      {post.content
+                        .split("\n")
+                        .find((line) => line.length > 50) ||
+                        "Read our comprehensive guide to learn more."}
+                    </p>
+                  </Link>
+
+                  <div className="pt-4 border-t border-border flex items-center justify-between mt-auto">
+                    <Link
+                      href={`/${post.slug}`}
+                      className="flex items-center text-primary font-medium text-base hover:opacity-80"
+                    >
+                      Read Guide{" "}
+                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+
+                    <div className="flex gap-2">
+                      <a
+                        href={`https://wa.me/?text=${encodeURIComponent(`Check out this travel guide: ${post.title}\n\nhttps://www.mountaintravels.com/${post.slug}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-green-600 transition-colors p-1.5 rounded-full hover:bg-green-50 z-10"
+                        title="Share on WhatsApp"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                      </a>
+                      <a
+                        href={`mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent(`Check out this travel guide: ${post.title}\n\nhttps://www.mountaintravels.com/${post.slug}`)}`}
+                        className="text-muted-foreground hover:text-blue-600 transition-colors p-1.5 rounded-full hover:bg-blue-50 z-10"
+                        title="Share via Email"
+                      >
+                        <Mail className="w-4 h-4" />
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
