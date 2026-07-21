@@ -66,7 +66,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#112a30] text-gray-200 border-t border-[#45919c]/20 pt-6 pb-3 overflow-hidden">
+    <footer className="relative bg-[#112a30] text-gray-200 border-t border-[#45919c]/20 pt-10 pb-6 overflow-hidden">
       {/* Decorative Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#112a30] via-[#163a43] to-[#1c4b57] opacity-95 pointer-events-none" />
 
@@ -84,10 +84,10 @@ export function Footer() {
                 alt={siteConfig.name}
                 width={120}
                 height={60}
-                className="h-11 w-auto brightness-110"
+                className="h-11 w-auto brightness-110 rounded-md"
               />
             </Link>
-            <p className="text-[11px] text-gray-400 font-light leading-relaxed">
+            <p className="text-xs text-gray-400 font-light leading-relaxed">
               Official Tourism Specialist Since 1990. Supporting trekking,
               mountaineering, and expeditions in Pakistan.
             </p>
@@ -98,7 +98,7 @@ export function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-1.5">
               Quick Links
             </h4>
-            <ul className="grid grid-cols-1 gap-1 text-[11px] text-gray-300">
+            <ul className="grid grid-cols-1 gap-1.5 text-xs text-gray-300">
               <li>
                 <Link
                   href="/booking-info"
@@ -108,15 +108,7 @@ export function Footer() {
                   Booking Info
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-[#ff9800] flex items-center transition-colors"
-                >
-                  <ArrowRight className="h-3 w-3 mr-1 text-[#ff9800]/70" />
-                  Blogs
-                </Link>
-              </li>
+
               <li>
                 <Link
                   href="/terms-of-service"
@@ -143,7 +135,7 @@ export function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-1.5">
               Categories
             </h4>
-            <ul className="grid grid-cols-1 gap-1 text-[11px] text-gray-300">
+            <ul className="grid grid-cols-1 gap-1.5 text-xs text-gray-300">
               {tourCategories
                 .filter((category) => category.id !== "all")
                 .slice(0, 5)
@@ -166,20 +158,24 @@ export function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-1.5">
               Offices
             </h4>
-            <div className="space-y-1.5 text-[10px] text-gray-400">
+            <div className="space-y-2 text-xs text-gray-400">
               <div className="leading-tight">
                 <span className="font-semibold text-white block">
                   Skardu Head Office
                 </span>
                 Aliabad Satellite Town, Skardu, Pakistan
-                <span className="block text-gray-300">+92 346 8486900</span>
+                <span className="block text-gray-300 mt-1">
+                  +92 339 8486900
+                </span>
               </div>
               <div className="leading-tight pt-1 border-t border-white/5">
                 <span className="font-semibold text-white block">
                   Islamabad Office
                 </span>
                 H#1280, St#29, FMC B-17, Islamabad
-                <span className="block text-gray-300">+92 346 8486900</span>
+                <span className="block text-gray-300 mt-1">
+                  +92 339 8486900
+                </span>
               </div>
             </div>
           </div>
@@ -189,7 +185,7 @@ export function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-white border-l-2 border-[#ff9800] pl-1.5">
               Global Support
             </h4>
-            <div className="space-y-1.5 text-[10px] text-gray-400">
+            <div className="space-y-2 text-xs text-gray-400">
               <div className="leading-tight">
                 <span className="font-semibold text-white block">
                   USA Office
@@ -202,7 +198,7 @@ export function Footer() {
                   info@mountaintravels.com
                 </span>
                 <span className="block text-white font-medium">
-                  WhatsApp: +92 346 8486900
+                  WhatsApp: +92 339 8486900
                 </span>
               </div>
               <div className="flex space-x-2.5 pt-1">
@@ -224,7 +220,7 @@ export function Footer() {
         </div>
 
         {/* Bottom copyright section */}
-        <div className="border-t border-white/5 pt-2 mt-4 text-center text-[10px] text-gray-500 font-light flex flex-col md:flex-row justify-between items-center gap-1">
+        <div className="border-t border-white/5 pt-4 mt-6 text-center text-xs text-gray-500 font-light flex flex-col md:flex-row justify-between items-center gap-1">
           <p>
             &copy; {new Date().getFullYear()} Mountain Travels Pakistan. All
             rights reserved.
@@ -237,7 +233,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="underline hover:text-[#ff9800] transition-colors"
             >
-              Net-bots (SMC-Private) Limited
+              Net Bots (SMC-Private) Limited
             </a>
           </p>
         </div>

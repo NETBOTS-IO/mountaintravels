@@ -48,7 +48,7 @@ export default function BlogManagement() {
   }, [page, searchTerm]);
 
   const filteredBlogs = (blogs || []).filter((blog) =>
-    blog.title.toLowerCase().includes(searchTerm.toLowerCase())
+    (blog.title || "").toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleDelete = async (id: string) => {
@@ -62,7 +62,7 @@ export default function BlogManagement() {
           toast.error("Failed to delete blog");
         }
       } catch (error: any) {
-        toast.error( error.message || "An error occurred while deleting");
+        toast.error(error.message || "An error occurred while deleting");
       }
     }
   };
@@ -122,13 +122,38 @@ export default function BlogManagement() {
           ) : (
             filteredBlogs.map((blog) => (
               <TableRow key={blog._id}>
-                <TableCell><Image src={`${BASE_URL}${blog.coverImage}`} alt={blog.title} width={60} height={40} /></TableCell>
-                <TableCell className="truncate">{blog.title}</TableCell>
-                <TableCell>{blog.author.name}</TableCell>
                 <TableCell>
-                  {new Date(blog.createdAt).toLocaleDateString()}{" "}
+                  <Image
+                    src={
+                      blog.coverImage?.startsWith("http")
+                        ? blog.coverImage
+                        : `${BASE_URL}${blog.coverImage || ""}`
+                    }
+                    alt={blog.title || "Blog Image"}
+                    width={60}
+                    height={40}
+                    className="object-cover rounded-sm"
+                  />
                 </TableCell>
-                <TableCell><span className={`${blog.status==="published" ? "bg-green-500" : "bg-amber-600"} text-white text-xs font-medium p-2 rounded-md`}>{blog.status}</span></TableCell>
+                <TableCell
+                  className="max-w-[250px] truncate"
+                  title={blog.title || "Untitled"}
+                >
+                  {blog.title || "Untitled"}
+                </TableCell>
+                <TableCell>{blog.author?.name || "Unknown"}</TableCell>
+                <TableCell>
+                  {blog.createdAt
+                    ? new Date(blog.createdAt).toLocaleDateString()
+                    : "N/A"}{" "}
+                </TableCell>
+                <TableCell>
+                  <span
+                    className={`${blog.status === "published" ? "bg-green-500" : "bg-amber-600"} text-white text-xs font-medium p-2 rounded-md`}
+                  >
+                    {blog.status || "draft"}
+                  </span>
+                </TableCell>
                 <TableCell>
                   <Button
                     variant="ghost"

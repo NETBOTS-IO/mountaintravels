@@ -21,6 +21,7 @@ import {
   ShieldCheck,
   Radio,
   LifeBuoy,
+  Tent,
 } from "lucide-react";
 import Animation from "@/components/animations/animations";
 import { Badge } from "@/components/ui/badge";

@@ -68,7 +68,7 @@ export default function TestimonialsPage() {
   const [filterRating, setFilterRating] = useState<string>("all");
   const [filterVerified, setFilterVerified] = useState<string>("all");
   const [testimonialToDelete, setTestimonialToDelete] = useState<string | null>(
-    null
+    null,
   );
   const router = useRouter();
 
@@ -114,7 +114,7 @@ export default function TestimonialsPage() {
         toast.success(
           `Testimonial ${
             updatedTestimonial.verified ? "verified" : "unverified"
-          } successfully`
+          } successfully`,
         );
         fetchTestimonials();
       } else {
@@ -128,10 +128,16 @@ export default function TestimonialsPage() {
 
   const filteredTestimonials = testimonials.filter((testimonial) => {
     const matchesSearch =
-      testimonial.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      testimonial.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (testimonial.tripName &&
-        testimonial.tripName.toLowerCase().includes(searchTerm.toLowerCase()));
+      (testimonial?.name || "")
+        .toLowerCase()
+        .includes((searchTerm || "").toLowerCase()) ||
+      (testimonial?.location || "")
+        .toLowerCase()
+        .includes((searchTerm || "").toLowerCase()) ||
+      (testimonial?.tripName &&
+        (testimonial.tripName || "")
+          .toLowerCase()
+          .includes((searchTerm || "").toLowerCase()));
 
     const matchesRating =
       filterRating === "all" || testimonial.rating.toString() === filterRating;
@@ -288,8 +294,12 @@ export default function TestimonialsPage() {
                           <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
                             {testimonial.image ? (
                               <Image
-                                src={`${BASE_URL}${testimonial.image}` || "/placeholder-user.jpg"}
-                                alt={testimonial.name}
+                                src={
+                                  testimonial.image?.startsWith("http")
+                                    ? testimonial.image
+                                    : `${BASE_URL}${testimonial.image || ""}`
+                                }
+                                alt={testimonial.name || "Customer"}
                                 width={40}
                                 height={40}
                                 className="object-cover"
@@ -342,7 +352,7 @@ export default function TestimonialsPage() {
                             size="icon"
                             onClick={() =>
                               router.push(
-                                `/admin/testimonials/${testimonial.id}`
+                                `/admin/testimonials/${testimonial.id}`,
                               )
                             }
                             title="View"
@@ -368,7 +378,7 @@ export default function TestimonialsPage() {
                             size="icon"
                             onClick={() =>
                               router.push(
-                                `/admin/testimonials/edit/${testimonial.id}`
+                                `/admin/testimonials/edit/${testimonial.id}`,
                               )
                             }
                             title="Edit"

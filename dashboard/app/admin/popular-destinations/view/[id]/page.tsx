@@ -29,7 +29,7 @@ export default function ViewDestinationPage() {
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/admin/popular-destinations">
-          <Button variant="outline">← Back to Popular Destinations</Button>
+          <Button variant="outline">← Back to Destinations</Button>
         </Link>
       </div>
 
@@ -37,15 +37,16 @@ export default function ViewDestinationPage() {
       <h1 className="text-2xl font-bold mb-4">{destination.name}</h1>
 
       {destination.image && (
-  <img
-    src={`${BASE_URL}${destination.image}`}
-    alt={destination.name}
-    className="w-full max-w-md rounded shadow mb-4"
-  />
-)}
+        <img
+          src={`${BASE_URL}${destination.image}`}
+          alt={destination.name}
+          className="w-full max-w-md rounded shadow mb-4"
+        />
+      )}
 
       <p className="text-gray-700 mb-2">
-        <span className="font-semibold">Description:</span> {destination.description}
+        <span className="font-semibold">Description:</span>{" "}
+        {destination.description}
       </p>
 
       <p className="text-gray-700 mb-2">

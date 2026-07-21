@@ -1,0 +1,267 @@
+[
+  {
+    "_id": "6a5f274c76ef5d3621ab5e56",
+    "appeal": "Whether you are interested in photography, cultural exploration, trekking, or simply enjoying spectacular mountain scenery, Hunza Valley is an essential destination on any Pakistan itinerary.",
+    "country": "Pakistan",
+    "createdAt": "2026-07-21T08:01:16.576Z",
+    "description": "Nestled amidst some of the world's highest mountains, Hunza Valley is one of Pakistan's most celebrated destinations. Renowned for its breathtaking scenery, hospitable communities, historic forts, and Silk Road heritage, Hunza offers visitors an unforgettable blend of culture and nature.",
+    "featured": true,
+    "highlights": [
+      "Baltit Fort",
+      "Altit Fort",
+      "Attabad Lake",
+      "Passu Cones",
+      "Hussaini Suspension Bridge",
+      "Khunjerab National Park",
+      "Khunjerab Pass"
+    ],
+    "image": "http://localhost:5000/uploads/destinations/dest_hunza.webp",
+    "name": "Hunza Valley – Jewel of the Karakoram",
+    "region": "Gilgit-Baltistan",
+    "shortName": "Hunza Valley",
+    "slug": "hunza-valley",
+    "suggestedTours": [
+      "Hunza Valley Discovery",
+      "Northern Pakistan Highlights",
+      "Silk Route Explorer"
+    ],
+    "tags": ["mountains", "silk-road", "culture", "trekking", "forts"],
+    "tours": 12,
+    "updatedAt": "2026-07-21T08:01:19.435Z"
+  },
+  {
+    "_id": "6a5f274c76ef5d3621ab5e57",
+    "appeal": "Skardu is equally appealing to cultural travelers, nature enthusiasts, photographers, and mountaineers.",
+    "country": "Pakistan",
+    "createdAt": "2026-07-21T08:01:16.576Z",
+    "description": "Located in the heart of Baltistan, Skardu serves as the gateway to K2, Broad Peak, Gasherbrum, and many of the world's most famous mountain landscapes. The region is renowned for its dramatic scenery, crystal-clear lakes, ancient forts, and welcoming Balti culture.",
+    "featured": true,
+    "highlights": [
+      "Shangrila Resort",
+      "Upper Kachura Lake",
+      "Lower Kachura Lake",
+      "Satpara Lake",
+      "Shigar Fort",
+      "Khaplu Palace",
+      "Deosai National Park",
+      "Manthoka Waterfall"
+    ],
+    "image": "http://localhost:5000/uploads/destinations/dest_skardu.webp",
+    "name": "Skardu & Baltistan – Gateway to the World's Greatest Mountains",
+    "region": "Gilgit-Baltistan",
+    "shortName": "Skardu & Baltistan",
+    "slug": "skardu-baltistan",
+    "suggestedTours": [
+      "Skardu & Baltistan Explorer",
+      "Deosai Adventure",
+      "K2 Base Camp Trek"
+    ],
+    "tags": ["k2", "mountains", "lakes", "forts", "baltistan"],
+    "tours": 15,
+    "updatedAt": "2026-07-21T08:01:19.684Z"
+  },
+  {
+    "_id": "6a5f274c76ef5d3621ab5e58",
+    "appeal": "Travelers can experience dramatic landscapes while discovering centuries-old traditions and communities that have thrived in these mountains for generations.",
+    "country": "Pakistan",
+    "createdAt": "2026-07-21T08:01:16.576Z",
+    "description": "Gilgit-Baltistan is home to five of the world's fourteen peaks above 8,000 meters and some of the most spectacular mountain scenery anywhere on Earth. Travelers can experience dramatic landscapes while discovering centuries-old traditions and communities.",
+    "featured": true,
+    "highlights": [
+      "Towering 8,000m peaks",
+      "Ancient Silk Road settlements",
+      "Glaciers and alpine meadows",
+      "Rich cultural diversity",
+      "Historic trade routes"
+    ],
+    "image": "http://localhost:5000/uploads/destinations/dest_gilgit.webp",
+    "name": "Gilgit-Baltistan – Land of Giants",
+    "region": "Gilgit-Baltistan",
+    "shortName": "Gilgit-Baltistan",
+    "slug": "gilgit-baltistan",
+    "suggestedTours": [
+      "Grand Northern Pakistan Tour",
+      "Karakoram Highway Journey",
+      "Silk Road Adventure"
+    ],
+    "tags": ["mountains", "8000m", "glaciers", "silk-road", "karakoram"],
+    "tours": 10,
+    "updatedAt": "2026-07-21T08:01:19.856Z"
+  },
+  {
+    "_id": "6a5f274c76ef5d3621ab5e59",
+    "appeal": "Visitors gain fascinating insights into one of the region's most distinctive cultures while enjoying spectacular mountain scenery.",
+    "country": "Pakistan",
+    "createdAt": "2026-07-21T08:01:16.576Z",
+    "description": "The remote valleys of Chitral and Kalash provide one of the most unique cultural experiences in Asia. Surrounded by the rugged peaks of the Hindu Kush, the Kalash people have preserved distinctive traditions, festivals, and beliefs for centuries.",
+    "featured": false,
+    "highlights": [
+      "Bumburet Valley",
+      "Rumbur Valley",
+      "Birir Valley",
+      "Chitral Town",
+      "Chitral Fort",
+      "Traditional Kalash Festivals"
+    ],
+    "image": "http://localhost:5000/uploads/destinations/dest_chitral.webp",
+    "name": "Chitral & Kalash Valleys – A Cultural Treasure",
+    "region": "Khyber Pakhtunkhwa",
+    "shortName": "Chitral & Kalash",
+    "slug": "chitral-kalash",
+    "suggestedTours": [
+      "Kalash Culture Tour",
+      "Chitral Explorer",
+      "Northern Cultural Journey"
+    ],
+    "tags": ["kalash", "culture", "festivals", "hindu-kush", "unique"],
+    "tours": 6,
+    "updatedAt": "2026-07-21T08:01:20.006Z"
+  },
+  {
+    "_id": "6a5f274c76ef5d3621ab5e5a",
+    "appeal": "Swat combines natural beauty with cultural and historical significance, making it ideal for families, photographers, and nature lovers.",
+    "country": "Pakistan",
+    "createdAt": "2026-07-21T08:01:16.576Z",
+    "description": "Known for its lush green valleys, alpine scenery, rivers, forests, and rich history, Swat Valley has long been one of Pakistan's most beloved travel destinations.",
+    "featured": false,
+    "highlights": [
+      "Mingora",
+      "Malam Jabba",
+      "Fizagat Park",
+      "White Palace",
+      "Buddhist Heritage Sites",
+      "Kalam Valley",
+      "Ushu Forest",
+      "Mahodand Lake"
+    ],
+    "image": "http://localhost:5000/uploads/destinations/dest_swat.webp",
+    "name": "Swat Valley – The Switzerland of Pakistan",
+    "region": "Khyber Pakhtunkhwa",
+    "shortName": "Swat Valley",
+    "slug": "swat-valley",
+    "suggestedTours": [
+      "Swat Valley Tour",
+      "Family Adventure Pakistan",
+      "Cultural Heritage Journey"
+    ],
+    "tags": ["green-valleys", "buddhist", "alpine", "rivers", "forests"],
+    "tours": 5,
+    "updatedAt": "2026-07-21T08:01:20.195Z"
+  },
+  {
+    "_id": "6a5f274c76ef5d3621ab5e5b",
+    "appeal": "Kashmir is particularly attractive to travelers seeking scenic beauty, tranquility, and outdoor adventure.",
+    "country": "Pakistan",
+    "createdAt": "2026-07-21T08:01:16.576Z",
+    "description": "The breathtaking valleys of Azad Kashmir offer some of Pakistan's most picturesque landscapes, characterized by rolling hills, rivers, forests, and alpine meadows.",
+    "featured": false,
+    "highlights": [
+      "Neelum Valley",
+      "Keran",
+      "Arang Kel",
+      "Sharda",
+      "Ratti Gali Lake",
+      "Pir Chinasi"
+    ],
+    "image": "http://localhost:5000/uploads/destinations/dest_kashmir.webp",
+    "name": "Kashmir – Paradise on Earth",
+    "region": "Azad Kashmir",
+    "shortName": "Kashmir",
+    "slug": "kashmir",
+    "suggestedTours": [
+      "Kashmir Explorer",
+      "Scenic Pakistan Journey",
+      "Nature & Photography Tour"
+    ],
+    "tags": ["paradise", "lakes", "alpine-meadows", "scenic", "neelum"],
+    "tours": 4,
+    "updatedAt": "2026-07-21T08:01:20.400Z"
+  },
+  {
+    "_id": "6a5f274c76ef5d3621ab5e5c",
+    "appeal": "The city's rich heritage and lively atmosphere make it one of South Asia's most fascinating cultural destinations.",
+    "country": "Pakistan",
+    "createdAt": "2026-07-21T08:01:16.576Z",
+    "description": "Lahore is a vibrant city where history, culture, architecture, and cuisine come together to create an unforgettable travel experience.",
+    "featured": true,
+    "highlights": [
+      "Lahore Fort",
+      "Badshahi Mosque",
+      "Walled City",
+      "Shalimar Gardens",
+      "Lahore Museum",
+      "Wagah Border Ceremony",
+      "Traditional Food Streets"
+    ],
+    "image": "http://localhost:5000/uploads/destinations/dest_lahore.webp",
+    "name": "Lahore – Cultural Capital of Pakistan",
+    "region": "Punjab",
+    "shortName": "Lahore",
+    "slug": "lahore",
+    "suggestedTours": [
+      "Heritage Pakistan Tour",
+      "Grand Pakistan Tour",
+      "Mughal Heritage Journey"
+    ],
+    "tags": ["mughal", "heritage", "food", "culture", "architecture"],
+    "tours": 8,
+    "updatedAt": "2026-07-21T08:01:20.605Z"
+  },
+  {
+    "_id": "6a5f274c76ef5d3621ab5e5d",
+    "appeal": "Taxila provides unique insights into the Gandhara Civilization and the spread of Buddhism across Asia.",
+    "country": "Pakistan",
+    "createdAt": "2026-07-21T08:01:16.576Z",
+    "description": "A UNESCO World Heritage Site, Taxila is one of the most important archaeological destinations in Asia and a key center of Buddhist heritage.",
+    "featured": false,
+    "highlights": [
+      "Dharmarajika Stupa",
+      "Jaulian Monastery",
+      "Sirkap",
+      "Taxila Museum",
+      "Ancient Buddhist Sites"
+    ],
+    "image": "http://localhost:5000/uploads/destinations/dest_taxila.webp",
+    "name": "Taxila – Cradle of Gandhara Civilization",
+    "region": "Punjab",
+    "shortName": "Taxila",
+    "slug": "taxila",
+    "suggestedTours": [
+      "Buddhist Heritage Tour",
+      "Gandhara Civilization Tour",
+      "Archaeological Pakistan"
+    ],
+    "tags": ["unesco", "buddhist", "gandhara", "archaeological", "heritage"],
+    "tours": 4,
+    "updatedAt": "2026-07-21T08:01:20.809Z"
+  },
+  {
+    "_id": "6a5f274c76ef5d3621ab5e5e",
+    "appeal": "The region is ideal for adventurous travelers seeking off-the-beaten-path experiences.",
+    "country": "Pakistan",
+    "createdAt": "2026-07-21T08:01:16.576Z",
+    "description": "Stretching along the Arabian Sea, the Makran Coast offers dramatic landscapes, pristine beaches, fascinating geological formations, and a completely different side of Pakistan.",
+    "featured": false,
+    "highlights": [
+      "Hingol National Park",
+      "Princess of Hope",
+      "Kund Malir Beach",
+      "Buzi Pass",
+      "Mud Volcanoes",
+      "Coastal Highway"
+    ],
+    "image": "http://localhost:5000/uploads/destinations/dest_makran.webp",
+    "name": "Makran Coast – Pakistan's Hidden Coastal Wonder",
+    "region": "Balochistan",
+    "shortName": "Makran Coast",
+    "slug": "makran-coast",
+    "suggestedTours": [
+      "Makran Coastal Adventure",
+      "Balochistan Explorer",
+      "Photography Expedition"
+    ],
+    "tags": ["coastal", "beach", "adventure", "balochistan", "national-park"],
+    "tours": 3,
+    "updatedAt": "2026-07-21T08:01:21.014Z"
+  }
+]

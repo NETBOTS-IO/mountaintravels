@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getPopularDestinations, deletePopularDestination } from "@/lib/data-utils";
+import {
+  getPopularDestinations,
+  deletePopularDestination,
+} from "@/lib/data-utils";
 import { toast } from "react-hot-toast";
 import { Eye, Pencil, Trash2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -31,7 +34,7 @@ export default function PopularDestinationsPage() {
   return (
     <div className="p-6">
       <div className="flex justify-between mb-6">
-        <h1 className="text-2xl font-bold">Popular Destinations</h1>
+        <h1 className="text-2xl font-bold">Destinations</h1>
         <Link href="/admin/popular-destinations/new">
           <Button>
             <Plus className="w-4 h-4 mr-2" />

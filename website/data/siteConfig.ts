@@ -9,15 +9,31 @@ export const siteConfig = {
     address: `Ghangchan House, Aliabad
 Satellite Town, 
 Skardu City, Gilgit-Baltistan, Pakistan`,
-    phone: "+92 346 8486900",
+    phone: "+92 339 8486900",
     email: "info@mountaintravels.com",
     website: "mountaintravels.com",
   },
   social: [
-    { name: "Facebook", url: "https://www.facebook.com/mountaintravels", icon: "facebook" },
-    { name: "Instagram", url: "https://instagram.com/mountaintravels", icon: "instagram" },
-    { name: "Twitter", url: "https://twitter.com/mountaintravels", icon: "twitter" },
-    { name: "LinkedIn", url: "https://linkedin.com/company/mountaintravels", icon: "linkedin" },
+    {
+      name: "Facebook",
+      url: "https://www.facebook.com/mountaintravels",
+      icon: "facebook",
+    },
+    {
+      name: "Instagram",
+      url: "https://instagram.com/mountaintravels",
+      icon: "instagram",
+    },
+    {
+      name: "Twitter",
+      url: "https://twitter.com/mountaintravels",
+      icon: "twitter",
+    },
+    {
+      name: "LinkedIn",
+      url: "https://linkedin.com/company/mountaintravels",
+      icon: "linkedin",
+    },
   ],
 };
 
@@ -25,7 +41,6 @@ const mainCategories = ["Trekking", "Expeditions", "Cultural Tours"];
 const otherCategories = ["Mountain Biking", "Skiing", "Safari", "Trips"];
 
 export const mainMenu = [
-  { name: "Home", path: "/" },
   { name: "Destinations", path: "/destinations" },
   { name: "Tours", path: "/pakistan-tours" },
   {
@@ -42,6 +57,7 @@ export const mainMenu = [
       { name: "Travel Information", path: "/travel-information-pakistan" },
     ],
   },
+  { name: "Media", path: "/media" },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
 ];

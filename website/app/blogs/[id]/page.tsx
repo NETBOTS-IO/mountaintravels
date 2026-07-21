@@ -1,30 +1,36 @@
 // app/blogs/[id]/page.tsx
-import { notFound } from "next/navigation"
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { BASE_URL } from "@/app/Var"
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BASE_URL } from "@/app/Var";
 
 async function getBlog(id: string) {
   try {
-    const res = await fetch(`${BASE_URL}/api/blogs/${id}`, { cache: "no-store" })
-    const data = await res.json()
+    const res = await fetch(`${BASE_URL}/api/blogs/${id}`, {
+      cache: "no-store",
+    });
+    const data = await res.json();
 
     if (data.success && data.data) {
-      return data.data
+      return data.data;
     }
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-  return null
+  return null;
 }
 
-export default async function BlogDetailPage({ params }: { params: { id: string } }) {
-  const post = await getBlog(params.id)
+export default async function BlogDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const post = await getBlog(params.id);
 
   if (!post) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -33,7 +39,11 @@ export default async function BlogDetailPage({ params }: { params: { id: string 
       <section className="relative h-[40vh] md:h-[50vh] flex items-center justify-center overflow-hidden">
         {/* Blurred Background */}
         <Image
-          src={`${BASE_URL}${post.coverImage}`}
+          src={
+            post.coverImage?.startsWith("http")
+              ? post.coverImage
+              : `${BASE_URL}${post.coverImage || ""}`
+          }
           alt={`${post.title} background`}
           fill
           priority
@@ -43,7 +53,11 @@ export default async function BlogDetailPage({ params }: { params: { id: string 
         {/* Main Image */}
         <div className="relative w-full h-full flex items-center justify-center">
           <Image
-            src={`${BASE_URL}${post.coverImage}`}
+            src={
+              post.coverImage?.startsWith("http")
+                ? post.coverImage
+                : `${BASE_URL}${post.coverImage || ""}`
+            }
             alt={post.title}
             fill
             priority
@@ -56,7 +70,9 @@ export default async function BlogDetailPage({ params }: { params: { id: string 
       <section className="mt-6 mb-4">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-2xl md:text-4xl font-bold mb-2">{post.title}</h1>
+            <h1 className="text-2xl md:text-4xl font-bold mb-2">
+              {post.title}
+            </h1>
             <p className="text-sm md:text-base text-gray-600">
               By {post.author?.name || "Unknown"} |{" "}
               {new Date(post.createdAt).toLocaleDateString("en-US", {
@@ -75,12 +91,13 @@ export default async function BlogDetailPage({ params }: { params: { id: string 
           <div className="max-w-3xl mx-auto prose prose-lg">
             {post.content?.blocks?.map((block: any) => {
               if (block.type === "paragraph") {
-                return <p key={block.id}>{block.data.text}</p>
+                return <p key={block.id}>{block.data.text}</p>;
               }
 
               if (block.type === "header") {
-                const Tag = `h${block.data.level}` as keyof JSX.IntrinsicElements
-                return <Tag key={block.id}>{block.data.text}</Tag>
+                const Tag =
+                  `h${block.data.level}` as keyof JSX.IntrinsicElements;
+                return <Tag key={block.id}>{block.data.text}</Tag>;
               }
 
               if (block.type === "list") {
@@ -96,10 +113,32 @@ export default async function BlogDetailPage({ params }: { params: { id: string 
                       <li key={i}>{item}</li>
                     ))}
                   </ol>
-                )
+                );
               }
 
-              return null
+              if (block.type === "image") {
+                const imageUrl = block.data.file?.url;
+                const isAbsolute = imageUrl?.startsWith("http");
+                const src = isAbsolute
+                  ? imageUrl
+                  : `${BASE_URL}${imageUrl || ""}`;
+                return (
+                  <figure key={block.id} className="my-8">
+                    <img
+                      src={src}
+                      alt={block.data.caption || "Blog Image"}
+                      className="w-full rounded-lg shadow-md"
+                    />
+                    {block.data.caption && (
+                      <figcaption className="text-center text-sm text-gray-500 mt-2">
+                        {block.data.caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+              }
+
+              return null;
             })}
           </div>
         </div>
@@ -113,7 +152,9 @@ export default async function BlogDetailPage({ params }: { params: { id: string 
               <h2 className="text-lg font-semibold mb-2">About the Author</h2>
               <p className="font-medium">{post.author.name}</p>
               {post.author.designation && (
-                <p className="text-sm text-gray-600">{post.author.designation}</p>
+                <p className="text-sm text-gray-600">
+                  {post.author.designation}
+                </p>
               )}
               {post.author.description && (
                 <p className="mt-2 text-gray-700">{post.author.description}</p>
@@ -134,5 +175,5 @@ export default async function BlogDetailPage({ params }: { params: { id: string 
         </div>
       </section>
     </div>
-  )
+  );
 }

@@ -8,12 +8,12 @@ export const officeLocations = [
   {
     title: "Skardu Head Office",
     address: "Aliabad Satellite Town, Skardu, Pakistan",
-    phone: "+92 346 8486900",
+    phone: "+92 339 8486900",
   },
   {
     title: "Islamabad Office",
     address: "H#1280, St#29, FMC B-17, Islamabad",
-    phone: "+92 346 8486900",
+    phone: "+92 339 8486900",
   },
   {
     title: "USA Office",
@@ -25,7 +25,7 @@ export const officeLocations = [
 export const quickContacts = {
   email: "info@mountaintravels.com",
   secondaryEmail: "ghulam_mtp@hotmail.com",
-  whatsapp: "+92 346 8486900",
+  whatsapp: "+92 339 8486900",
 };
 
 export const officeHours = {

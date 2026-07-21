@@ -1,61 +1,61 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { BASE_URL } from "@/app/Var"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BASE_URL } from "@/app/Var";
 
 // const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
 interface Blog {
-  _id: string
-  title: string
-  coverImage: string
-  summary: string
-  category: string
-  createdAt: string
+  _id: string;
+  title: string;
+  coverImage: string;
+  summary: string;
+  category: string;
+  createdAt: string;
   author: {
-    name: string
-    designation: string
-    image: string
-  }
+    name: string;
+    designation: string;
+    image: string;
+  };
 }
 
 export default function BlogsPage() {
-  const [blogs, setBlogs] = useState<Blog[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        setLoading(true)
-        const res = await fetch(`${BASE_URL}/api/blogs`)
-        const data = await res.json()
+        setLoading(true);
+        const res = await fetch(`${BASE_URL}/api/blogs`);
+        const data = await res.json();
 
         if (data.success && data.data?.blogs) {
-          setBlogs(data.data.blogs)
+          setBlogs(data.data.blogs);
         } else {
-          setError("Failed to fetch blogs")
+          setError("Failed to fetch blogs");
         }
       } catch (err) {
-        console.error(err)
-        setError("Something went wrong while fetching blogs")
+        console.error(err);
+        setError("Something went wrong while fetching blogs");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchBlogs()
-  }, [])
+    fetchBlogs();
+  }, []);
 
   if (loading) {
-    return <p className="text-center py-12">Loading blogs...</p>
+    return <p className="text-center py-12">Loading blogs...</p>;
   }
 
   if (error) {
-    return <p className="text-center py-12 text-red-500">{error}</p>
+    return <p className="text-center py-12 text-red-500">{error}</p>;
   }
 
   return (
@@ -66,8 +66,12 @@ export default function BlogsPage() {
           <Link key={post._id} href={`/blogs/${post._id}`}>
             <Card className="h-full hover:shadow-lg transition-shadow">
               <Image
-                src={`${BASE_URL}${post.coverImage}`}
-                alt={post.title}
+                src={
+                  post.coverImage?.startsWith("http")
+                    ? post.coverImage
+                    : `${BASE_URL}${post.coverImage || ""}`
+                }
+                alt={post.title || "Blog post"}
                 width={400}
                 height={200}
                 className="w-full h-48 object-cover rounded-t-lg"
@@ -87,5 +91,5 @@ export default function BlogsPage() {
         ))}
       </div>
     </div>
-  )
+  );
 }

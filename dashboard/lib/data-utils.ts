@@ -1,7 +1,21 @@
 "use client";
 import axios from "axios";
 import { BASE_URL } from "@/Var";
-import { Tour, Blog, GalleryPhoto, Inquiry, BlogAPIResponse, Testimonial, PartnerFeedback, PopularDestination,TravelTip ,BookingStats,Booking, ApiResponse, Departure } from "./types";
+import {
+  Tour,
+  Blog,
+  GalleryPhoto,
+  Inquiry,
+  BlogAPIResponse,
+  Testimonial,
+  PartnerFeedback,
+  PopularDestination,
+  TravelTip,
+  BookingStats,
+  Booking,
+  ApiResponse,
+  Departure,
+} from "./types";
 
 const inquiriesData: Inquiry[] = [
   {
@@ -68,7 +82,7 @@ export async function getTourById(id: string): Promise<Tour | undefined> {
 
 export async function updateTourById(
   id: string,
-  tourData: Partial<Tour>
+  tourData: Partial<Tour>,
 ): Promise<Tour | undefined> {
   try {
     const response = await axios.put(`${BASE_URL}/api/tours/${id}`, tourData);
@@ -80,7 +94,7 @@ export async function updateTourById(
   }
 }
 export async function createTour(
-  tour: Omit<Tour, "id">
+  tour: Omit<Tour, "id">,
 ): Promise<Tour | undefined> {
   try {
     const response = await axios.post(`${BASE_URL}/api/tours`, tour);
@@ -106,7 +120,7 @@ export async function deleteTour(id: string): Promise<boolean> {
   } catch (error: any) {
     console.error(
       "Error deleting tour:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     return false;
   }
@@ -142,7 +156,7 @@ export const getBlogById = async (id: string): Promise<Blog> => {
 
 // Create a new blog
 export const createBlog = async (
-  formData: FormData
+  formData: FormData,
 ): Promise<BlogAPIResponse> => {
   try {
     const res = await axios.post(`${BASE_URL}/api/blogs`, formData);
@@ -155,7 +169,7 @@ export const createBlog = async (
 // Update existing blog
 export const updateBlog = async (
   id: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<BlogAPIResponse> => {
   try {
     const res = await axios.put(`${BASE_URL}/api/blogs/${id}`, formData);
@@ -194,7 +208,7 @@ export const getPopularBlogs = async (): Promise<Blog[]> => {
     return res.data.blogs;
   } catch (error: any) {
     throw new Error(
-      error?.response?.data?.message || "Failed to load popular blogs"
+      error?.response?.data?.message || "Failed to load popular blogs",
     );
   }
 };
@@ -206,7 +220,7 @@ export const getRelatedBlogs = async (blogId: string): Promise<Blog[]> => {
     return res.data.blogs;
   } catch (error: any) {
     throw new Error(
-      error?.response?.data?.message || "Failed to load related blogs"
+      error?.response?.data?.message || "Failed to load related blogs",
     );
   }
 };
@@ -226,7 +240,9 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   }
 }
 
-export async function getTestimonialById(id: string): Promise<Testimonial | undefined> {
+export async function getTestimonialById(
+  id: string,
+): Promise<Testimonial | undefined> {
   try {
     const response = await axios.get(`${BASE_URL}/api/testimonials/${id}`);
     const testimonial = response.data.data;
@@ -237,9 +253,13 @@ export async function getTestimonialById(id: string): Promise<Testimonial | unde
   }
 }
 
-export async function getFeaturedTestimonials(limit: number = 6): Promise<Testimonial[]> {
+export async function getFeaturedTestimonials(
+  limit: number = 6,
+): Promise<Testimonial[]> {
   try {
-    const response = await axios.get(`${BASE_URL}/api/testimonials/featured?limit=${limit}`);
+    const response = await axios.get(
+      `${BASE_URL}/api/testimonials/featured?limit=${limit}`,
+    );
     return response.data.data.map((testimonial: any) => ({
       ...testimonial,
       id: testimonial._id,
@@ -265,13 +285,19 @@ export async function getTestimonialStats() {
   }
 }
 
-export async function createTestimonial(testimonialData: FormData): Promise<Testimonial | undefined> {
+export async function createTestimonial(
+  testimonialData: FormData,
+): Promise<Testimonial | undefined> {
   try {
-    const response = await axios.post(`${BASE_URL}/api/testimonials`, testimonialData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await axios.post(
+      `${BASE_URL}/api/testimonials`,
+      testimonialData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
-    });
+    );
     return response.data.data;
   } catch (error) {
     console.error("Failed to create testimonial:", error);
@@ -279,13 +305,20 @@ export async function createTestimonial(testimonialData: FormData): Promise<Test
   }
 }
 
-export async function updateTestimonial(id: string, testimonialData: FormData): Promise<Testimonial | undefined> {
+export async function updateTestimonial(
+  id: string,
+  testimonialData: FormData,
+): Promise<Testimonial | undefined> {
   try {
-    const response = await axios.put(`${BASE_URL}/api/testimonials/${id}`, testimonialData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await axios.put(
+      `${BASE_URL}/api/testimonials/${id}`,
+      testimonialData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
-    });
+    );
     return response.data.data;
   } catch (error) {
     console.error(`Failed to update testimonial with ID ${id}:`, error);
@@ -303,12 +336,19 @@ export async function deleteTestimonial(id: string): Promise<boolean> {
   }
 }
 
-export async function toggleTestimonialVerification(id: string): Promise<Testimonial | undefined> {
+export async function toggleTestimonialVerification(
+  id: string,
+): Promise<Testimonial | undefined> {
   try {
-    const response = await axios.patch(`${BASE_URL}/api/testimonials/${id}/verify`);
+    const response = await axios.patch(
+      `${BASE_URL}/api/testimonials/${id}/verify`,
+    );
     return response.data.data;
   } catch (error) {
-    console.error(`Failed to toggle verification for testimonial with ID ${id}:`, error);
+    console.error(
+      `Failed to toggle verification for testimonial with ID ${id}:`,
+      error,
+    );
     return undefined;
   }
 }
@@ -324,7 +364,7 @@ export function getInquiryById(id: string): Inquiry | undefined {
 
 export function updateInquiryStatus(
   id: string,
-  status: "new" | "in-progress" | "resolved"
+  status: "new" | "in-progress" | "resolved",
 ): Inquiry | undefined {
   const inquiry = getInquiryById(id);
   if (!inquiry) return undefined;
@@ -351,7 +391,7 @@ export async function createGalleryPhoto(formData: FormData) {
     throw new Error(
       error.response?.data?.message ||
         error.message ||
-        "Failed to create gallery photo"
+        "Failed to create gallery photo",
     );
   }
 }
@@ -369,7 +409,7 @@ export async function getGalleryPhotos(params?: {
     if (params?.search) query.append("search", params.search);
     if (params?.category) query.append("category", params.category);
     const response = await axios.get(
-      `${BASE_URL}/api/gallery${query.toString() ? `?${query.toString()}` : ""}`
+      `${BASE_URL}/api/gallery${query.toString() ? `?${query.toString()}` : ""}`,
     );
     // Map _id to id for each photo
     return {
@@ -386,7 +426,7 @@ export async function getGalleryPhotos(params?: {
 }
 
 export async function getGalleryPhotoById(
-  id: string
+  id: string,
 ): Promise<GalleryPhoto | null> {
   try {
     const response = await axios.get(`${BASE_URL}/api/gallery/${id}`);
@@ -410,7 +450,7 @@ export async function deleteGalleryPhoto(id: string): Promise<boolean> {
   } catch (error: any) {
     console.error(
       "Error deleting gallery photo:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     return false;
   }
@@ -424,14 +464,14 @@ export async function updateGalleryPhoto(id: string, formData: FormData) {
       {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
-      }
+      },
     );
     return response.data;
   } catch (error: any) {
     throw new Error(
       error.response?.data?.message ||
         error.message ||
-        "Failed to update gallery photo"
+        "Failed to update gallery photo",
     );
   }
 }
@@ -447,21 +487,21 @@ export async function getPartnerFeedbacks(params?: {
     if (params?.page) query.append("page", String(params.page));
     if (params?.limit) query.append("limit", String(params.limit));
     if (params?.search) query.append("search", params.search);
-    
+
     const response = await axios.get(
-      `${BASE_URL}/api/partner-feedbacks${query.toString() ? `?${query.toString()}` : ""}`
+      `${BASE_URL}/api/partner-feedbacks${query.toString() ? `?${query.toString()}` : ""}`,
     );
-    
+
     // Map _id to id for each feedback
     const items = response.data.items.map((feedback: any) => ({
       ...feedback,
       id: feedback._id,
     }));
-    
+
     return {
       items,
       total: response.data.total || items.length,
-      pages: response.data.pages || 1
+      pages: response.data.pages || 1,
     };
   } catch (error) {
     console.error("Failed to fetch partner feedbacks:", error);
@@ -469,7 +509,9 @@ export async function getPartnerFeedbacks(params?: {
   }
 }
 
-export async function getPartnerFeedbackById(id: string): Promise<PartnerFeedback | undefined> {
+export async function getPartnerFeedbackById(
+  id: string,
+): Promise<PartnerFeedback | undefined> {
   try {
     const response = await axios.get(`${BASE_URL}/api/partner-feedbacks/${id}`);
     const feedback = response.data.data || response.data;
@@ -480,13 +522,19 @@ export async function getPartnerFeedbackById(id: string): Promise<PartnerFeedbac
   }
 }
 
-export async function createPartnerFeedback(formData: FormData): Promise<PartnerFeedback | undefined> {
+export async function createPartnerFeedback(
+  formData: FormData,
+): Promise<PartnerFeedback | undefined> {
   try {
-    const response = await axios.post(`${BASE_URL}/api/partner-feedbacks`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await axios.post(
+      `${BASE_URL}/api/partner-feedbacks`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
-    });
+    );
     return response.data.data || response.data;
   } catch (error) {
     console.error("Failed to create partner feedback:", error);
@@ -494,13 +542,20 @@ export async function createPartnerFeedback(formData: FormData): Promise<Partner
   }
 }
 
-export async function updatePartnerFeedback(id: string, formData: FormData): Promise<PartnerFeedback | undefined> {
+export async function updatePartnerFeedback(
+  id: string,
+  formData: FormData,
+): Promise<PartnerFeedback | undefined> {
   try {
-    const response = await axios.put(`${BASE_URL}/api/partner-feedbacks/${id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await axios.put(
+      `${BASE_URL}/api/partner-feedbacks/${id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
-    });
+    );
     return response.data.data || response.data;
   } catch (error) {
     console.error(`Failed to update partner feedback with ID ${id}:`, error);
@@ -510,7 +565,9 @@ export async function updatePartnerFeedback(id: string, formData: FormData): Pro
 
 export async function deletePartnerFeedback(id: string): Promise<boolean> {
   try {
-    const response = await axios.delete(`${BASE_URL}/api/partner-feedbacks/${id}`);
+    const response = await axios.delete(
+      `${BASE_URL}/api/partner-feedbacks/${id}`,
+    );
     return response.status >= 200 && response.status < 300;
   } catch (error) {
     console.error(`Failed to delete partner feedback with ID ${id}:`, error);
@@ -518,10 +575,9 @@ export async function deletePartnerFeedback(id: string): Promise<boolean> {
   }
 }
 
-
 // Create
 export async function createPopularDestination(formData: FormData) {
-  const res = await fetch(`${BASE_URL}/api/popular/create`, {
+  const res = await fetch(`${BASE_URL}/api/destinations`, {
     method: "POST",
     body: formData,
   });
@@ -531,7 +587,7 @@ export async function createPopularDestination(formData: FormData) {
 
 // Update
 export async function updatePopularDestination(id: string, formData: FormData) {
-  const res = await fetch(`${BASE_URL}/api/popular/${id}`, {
+  const res = await fetch(`${BASE_URL}/api/destinations/${id}`, {
     method: "PUT",
     body: formData,
   });
@@ -541,7 +597,7 @@ export async function updatePopularDestination(id: string, formData: FormData) {
 
 // Get all
 export async function getPopularDestinations(): Promise<any[] | null> {
-  const res = await fetch(`${BASE_URL}/api/popular`, {
+  const res = await fetch(`${BASE_URL}/api/destinations`, {
     cache: "no-store",
   });
   if (!res.ok) return null;
@@ -553,15 +609,14 @@ export async function getPopularDestinations(): Promise<any[] | null> {
 // Get by ID
 // in data-utils.ts
 export async function getPopularDestinationById(id: string) {
-  const res = await fetch(`${BASE_URL}/api/popular/${id}`);
+  const res = await fetch(`${BASE_URL}/api/destinations/id/${id}`);
   const json = await res.json();
   return json.data; // not the whole json
 }
 
-
 // Delete
 export async function deletePopularDestination(id: string) {
-  const res = await fetch(`${BASE_URL}/api/popular/${id}`, {
+  const res = await fetch(`${BASE_URL}/api/destinations/${id}`, {
     method: "DELETE",
   });
   if (!res.ok) return null;
@@ -603,9 +658,10 @@ export async function getTravelTips(): Promise<TravelTip[] | null> {
   return json.data; // return only the array
 }
 
-
 // Get by ID
-export async function getTravelTipById(id: string): Promise<{ success: boolean; data: TravelTip } | null> {
+export async function getTravelTipById(
+  id: string,
+): Promise<{ success: boolean; data: TravelTip } | null> {
   const res = await fetch(`${BASE_URL}/api/tips/getby/${id}`);
   if (!res.ok) return null;
   return res.json();
@@ -613,7 +669,9 @@ export async function getTravelTipById(id: string): Promise<{ success: boolean; 
 
 // Delete
 export async function deleteTravelTip(id: string) {
-  const res = await fetch(`${BASE_URL}/api/tips/delete/${id}`, { method: "DELETE" });
+  const res = await fetch(`${BASE_URL}/api/tips/delete/${id}`, {
+    method: "DELETE",
+  });
   if (!res.ok) return null;
   return res.json();
 }
@@ -695,15 +753,15 @@ export const createDeparture = async (departureData: {
   try {
     const response = await axios.post<ApiResponse<Departure>>(
       `${BASE_URL}/api/departures`,
-      departureData
+      departureData,
     );
-    
+
     if (response.data.success && response.data.data) {
       return response.data.data;
     }
-    throw new Error(response.data.message || 'Failed to create departure');
+    throw new Error(response.data.message || "Failed to create departure");
   } catch (error) {
-    console.error('Error creating departure:', error);
+    console.error("Error creating departure:", error);
     throw error;
   }
 };
@@ -727,7 +785,7 @@ export const fetchAllDepartures = async (params?: {
   try {
     const response = await axios.get<ApiResponse<Departure[]>>(
       `${BASE_URL}/api/departures`,
-      { params }
+      { params },
     );
 
     if (response.data.success && response.data.data) {
@@ -746,20 +804,20 @@ export const fetchAllDepartures = async (params?: {
 
 export const updateDeparture = async (
   departureId: string,
-  updateData: Partial<Departure>
+  updateData: Partial<Departure>,
 ): Promise<Departure> => {
   try {
     const response = await axios.patch<ApiResponse<Departure>>(
       `${BASE_URL}/api/departures/${departureId}`,
-      updateData
+      updateData,
     );
-    
+
     if (response.data.success && response.data.data) {
       return response.data.data;
     }
-    throw new Error(response.data.message || 'Failed to update departure');
+    throw new Error(response.data.message || "Failed to update departure");
   } catch (error) {
-    console.error('Error updating departure:', error);
+    console.error("Error updating departure:", error);
     throw error;
   }
 };
@@ -767,14 +825,14 @@ export const updateDeparture = async (
 export const deleteDeparture = async (departureId: string): Promise<void> => {
   try {
     const response = await axios.delete<ApiResponse<Departure>>(
-      `${BASE_URL}/api/departures/${departureId}`
+      `${BASE_URL}/api/departures/${departureId}`,
     );
-    
+
     if (!response.data.success) {
-      throw new Error(response.data.message || 'Failed to delete departure');
+      throw new Error(response.data.message || "Failed to delete departure");
     }
   } catch (error) {
-    console.error('Error deleting departure:', error);
+    console.error("Error deleting departure:", error);
     throw error;
   }
 };
@@ -802,17 +860,20 @@ export const fetchAllBookings = async (params?: {
   };
 }> => {
   try {
-    const response = await axios.get<ApiResponse<Booking[]>>(`${BASE_URL}/api/bookings`, { params });
-    
+    const response = await axios.get<ApiResponse<Booking[]>>(
+      `${BASE_URL}/api/bookings`,
+      { params },
+    );
+
     if (response.data.success && response.data.data) {
       return {
         bookings: response.data.data,
         pagination: response.data.pagination,
       };
     }
-    throw new Error(response.data.message || 'Failed to fetch bookings');
+    throw new Error(response.data.message || "Failed to fetch bookings");
   } catch (error) {
-    console.error('Error fetching all bookings:', error);
+    console.error("Error fetching all bookings:", error);
     throw error;
   }
 };
@@ -820,15 +881,15 @@ export const fetchAllBookings = async (params?: {
 export const fetchBookingById = async (bookingId: string): Promise<Booking> => {
   try {
     const response = await axios.get<ApiResponse<Booking>>(
-      `${BASE_URL}/api/bookings/${bookingId}`
+      `${BASE_URL}/api/bookings/${bookingId}`,
     );
-    
+
     if (response.data.success && response.data.data) {
       return response.data.data;
     }
-    throw new Error(response.data.message || 'Booking not found');
+    throw new Error(response.data.message || "Booking not found");
   } catch (error) {
-    console.error('Error fetching booking by ID:', error);
+    console.error("Error fetching booking by ID:", error);
     throw error;
   }
 };
@@ -836,24 +897,24 @@ export const fetchBookingById = async (bookingId: string): Promise<Booking> => {
 export const updateBooking = async (
   bookingId: string,
   updateData: {
-    status?: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
-    paymentStatus?: 'PENDING' | 'PAID' | 'REFUNDED' | 'FAILED';
+    status?: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
+    paymentStatus?: "PENDING" | "PAID" | "REFUNDED" | "FAILED";
     paymentMethod?: string;
     specialRequests?: string;
-  }
+  },
 ): Promise<Booking> => {
   try {
     const response = await axios.patch<ApiResponse<Booking>>(
       `${BASE_URL}/api/bookings/${bookingId}`,
-      updateData
+      updateData,
     );
-    
+
     if (response.data.success && response.data.data) {
       return response.data.data;
     }
-    throw new Error(response.data.message || 'Failed to update booking');
+    throw new Error(response.data.message || "Failed to update booking");
   } catch (error) {
-    console.error('Error updating booking:', error);
+    console.error("Error updating booking:", error);
     throw error;
   }
 };
@@ -861,15 +922,17 @@ export const updateBooking = async (
 export const fetchBookingStats = async (): Promise<BookingStats> => {
   try {
     const response = await axios.get<ApiResponse<BookingStats>>(
-      `${BASE_URL}/api/bookings/stats`
+      `${BASE_URL}/api/bookings/stats`,
     );
-    
+
     if (response.data.success && response.data.data) {
       return response.data.data;
     }
-    throw new Error(response.data.message || 'Failed to fetch booking statistics');
+    throw new Error(
+      response.data.message || "Failed to fetch booking statistics",
+    );
   } catch (error) {
-    console.error('Error fetching booking stats:', error);
+    console.error("Error fetching booking stats:", error);
     throw error;
   }
 };

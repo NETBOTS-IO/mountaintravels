@@ -1,17 +1,30 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus, Edit, Trash, Search, Eye } from "lucide-react"
-import { getTours, deleteTour } from "@/lib/data-utils"
-import { type Tour } from "@/lib/types"
-import { toast } from "react-hot-toast"
-import { useTourStore } from "@/store/tourStore"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Plus, Edit, Trash, Search, Eye } from "lucide-react";
+import { getTours, deleteTour } from "@/lib/data-utils";
+import { type Tour } from "@/lib/types";
+import { toast } from "react-hot-toast";
+import { useTourStore } from "@/store/tourStore";
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -22,65 +35,68 @@ import {
   AlertDialogDescription,
   AlertDialogAction,
   AlertDialogCancel,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 
 export default function TourListPage() {
-  const [tourList, setTourList] = useState<Tour[]>([])
-  const [searchTerm, setSearchTerm] = useState("")
-  const [sortBy, setSortBy] = useState("name")
-  const [filterDifficulty, setFilterDifficulty] = useState("all")
-  const router = useRouter()
-  const [deleteId, setDeleteId] = useState<string | null>(null)
-  const [isDeleting, setIsDeleting] = useState(false)
+  const [tourList, setTourList] = useState<Tour[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("name");
+  const [filterDifficulty, setFilterDifficulty] = useState("all");
+  const router = useRouter();
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchTours = async () => {
-      const tours = await getTours()
-      setTourList(tours || [])
-    }
-    fetchTours()
-  }, [])
+      const tours = await getTours();
+      setTourList(tours || []);
+    };
+    fetchTours();
+  }, []);
 
   const handleEdit = (tourId: string) => {
-    const selectedTour = tourList.find((tour) => tour.id === tourId)
+    const selectedTour = tourList.find((tour) => tour.id === tourId);
     if (selectedTour) {
-      useTourStore.getState().setTour(selectedTour)
-      router.push(`/admin/tours/edit/${tourId}`)
+      useTourStore.getState().setTour(selectedTour);
+      router.push(`/admin/tours/edit/${tourId}`);
     } else {
-      toast.error("Tour not found!")
+      toast.error("Tour not found!");
     }
-  }
+  };
 
   const handleDelete = async () => {
-    if (!deleteId) return
-    setIsDeleting(true)
-    const success = await deleteTour(deleteId)
-    setIsDeleting(false)
+    if (!deleteId) return;
+    setIsDeleting(true);
+    const success = await deleteTour(deleteId);
+    setIsDeleting(false);
     if (success) {
-      setTourList((prevTours) => prevTours.filter((tour) => tour.id !== deleteId))
-      toast.success("Tour deleted successfully")
+      setTourList((prevTours) =>
+        prevTours.filter((tour) => tour.id !== deleteId),
+      );
+      toast.success("Tour deleted successfully");
     } else {
-      toast.error("Failed to delete tour")
+      toast.error("Failed to delete tour");
     }
-    setDeleteId(null)
-  }
+    setDeleteId(null);
+  };
 
   const filteredTours = tourList
-    .filter(
-      (tour) =>
-        typeof tour.name === "string" &&
-        tour.name.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter((tour) =>
+      (tour?.name || "")
+        .toLowerCase()
+        .includes((searchTerm || "").toLowerCase()),
     )
     .filter(
       (tour) =>
         filterDifficulty === "all" ||
-        (typeof tour.difficulty === "string" && tour.difficulty === filterDifficulty)
+        (typeof tour.difficulty === "string" &&
+          tour.difficulty === filterDifficulty),
     )
     .sort((a, b) => {
-      if (sortBy === "price") return a.price - b.price
-      if (sortBy === "days") return a.days - b.days
-      return (a.name ?? "").localeCompare(b.name ?? "")
-    })
+      if (sortBy === "price") return a.price - b.price;
+      if (sortBy === "days") return a.days - b.days;
+      return (a.name ?? "").localeCompare(b.name ?? "");
+    });
 
   return (
     <div className="container">
@@ -178,7 +194,8 @@ export default function TourListPage() {
                         <AlertDialogHeader>
                           <AlertDialogTitle>Delete Tour</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to delete this tour? This action cannot be undone.
+                            Are you sure you want to delete this tour? This
+                            action cannot be undone.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
@@ -207,5 +224,5 @@ export default function TourListPage() {
         <p className="text-center text-gray-500">No tours found.</p>
       )}
     </div>
-  )
+  );
 }
