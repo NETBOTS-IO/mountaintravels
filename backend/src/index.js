@@ -39,6 +39,8 @@ const allowedOrigins = [
   "https://mountaintravels.site",
   "https://mountaintravels.com",
   "http://mountaintravels.com",
+  "https://www.mountaintravels.com",
+  "http://www.mountaintravels.com",
   "https://www.mountaintravels.site",
   "https://api.mountaintravels.site",
   "http://dashboard.mountaintravels.com",
