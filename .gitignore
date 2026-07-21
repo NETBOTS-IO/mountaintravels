@@ -74,7 +74,7 @@ graphify-out/*
 ./backend/.env
 ./dashboard/.env
 ./website/.env
-
+backend/local_db_data/
 .agents/*
 .claude/*
 agents/*
