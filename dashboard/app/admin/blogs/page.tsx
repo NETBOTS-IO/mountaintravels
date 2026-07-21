@@ -101,11 +101,28 @@ export default function BlogManagement() {
         </TableHeader>
         <TableBody>
           {loading ? (
-            <TableRow>
-              <TableCell colSpan={4}>
-                <Skeleton className="h-10 w-full" />
-              </TableCell>
-            </TableRow>
+            [...Array(5)].map((_, i) => (
+              <TableRow key={i}>
+                <TableCell>
+                  <Skeleton className="h-[40px] w-[60px] rounded-sm" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[200px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[100px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[80px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-6 w-[60px] rounded-md" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-8 w-[100px]" />
+                </TableCell>
+              </TableRow>
+            ))
           ) : filteredBlogs.length === 0 ? (
             <TableRow>
               <TableCell

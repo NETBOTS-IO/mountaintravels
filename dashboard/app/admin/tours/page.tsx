@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -45,11 +46,14 @@ export default function TourListPage() {
   const router = useRouter();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchTours = async () => {
+      setIsLoading(true);
       const tours = await getTours();
       setTourList(tours || []);
+      setIsLoading(false);
     };
     fetchTours();
   }, []);
@@ -146,7 +150,44 @@ export default function TourListPage() {
         </div>
       </div>
 
-      {filteredTours.length > 0 ? (
+      {isLoading ? (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Package Title</TableHead>
+              <TableHead>Duration</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Difficulty</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {[...Array(5)].map((_, i) => (
+              <TableRow key={i}>
+                <TableCell>
+                  <Skeleton className="h-4 w-[200px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[80px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[60px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[100px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[80px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-8 w-[150px]" />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : filteredTours.length > 0 ? (
         <Table>
           <TableHeader>
             <TableRow>

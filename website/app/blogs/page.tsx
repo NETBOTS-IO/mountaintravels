@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BASE_URL } from "@/app/Var";
+import { AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 // const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
@@ -55,7 +57,27 @@ export default function BlogsPage() {
   }
 
   if (error) {
-    return <p className="text-center py-12 text-red-500">{error}</p>;
+    return (
+      <div className="container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center min-h-[50vh]">
+        <div className="bg-red-50 text-red-500 p-4 rounded-full mb-4">
+          <AlertCircle className="w-10 h-10" />
+        </div>
+        <h2 className="text-2xl font-bold text-slate-800 mb-2">
+          Blogs Unavailable
+        </h2>
+        <p className="text-slate-500 max-w-md mx-auto mb-6">
+          We couldn't load the blogs at the moment. Please check your connection
+          and try again later.
+        </p>
+        <Button
+          onClick={() => window.location.reload()}
+          variant="outline"
+          className="rounded-full font-semibold px-6"
+        >
+          Refresh Page
+        </Button>
+      </div>
+    );
   }
 
   return (

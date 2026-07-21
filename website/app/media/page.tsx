@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { GalleryCard } from "@/components/gallery/gallery-card";
 import { Lightbox } from "@/components/gallery/lightbox";
 import { BASE_URL } from "@/app/Var";
-import { Film, Image as ImageIcon } from "lucide-react";
+import { Film, Image as ImageIcon, AlertCircle } from "lucide-react";
 
 const getImageUrl = (photo: any) => {
   if (photo?.src && photo.src.length > 0) {
@@ -110,7 +110,25 @@ export default function MediaPage() {
 
   if (error) {
     return (
-      <p className="text-center py-12 text-red-500 font-semibold">{error}</p>
+      <div className="container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center min-h-[50vh]">
+        <div className="bg-red-50 text-red-500 p-4 rounded-full mb-4">
+          <AlertCircle className="w-10 h-10" />
+        </div>
+        <h2 className="text-2xl font-bold text-slate-800 mb-2">
+          Media Unavailable
+        </h2>
+        <p className="text-slate-500 max-w-md mx-auto mb-6">
+          We couldn't load the media library at the moment. Please check your
+          connection and try again later.
+        </p>
+        <Button
+          onClick={() => window.location.reload()}
+          variant="outline"
+          className="rounded-full font-semibold px-6"
+        >
+          Refresh Page
+        </Button>
+      </div>
     );
   }
 

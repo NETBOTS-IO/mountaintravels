@@ -268,10 +268,20 @@ export default function ToursPage() {
 
         {/* Error */}
         {error && (
-          <div className="text-center py-12 bg-destructive/10 rounded-2xl border border-destructive/20">
-            <p className="text-destructive text-lg font-medium">{error}</p>
-            <Button className="mt-4" onClick={() => window.location.reload()}>
-              Try Again
+          <div className="container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
+            <div className="bg-red-50 text-red-500 p-4 rounded-full mb-4">
+              <Mountain className="w-10 h-10" />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">
+              Tours Unavailable
+            </h2>
+            <p className="text-slate-500 max-w-md mx-auto mb-6">{error}</p>
+            <Button
+              onClick={() => window.location.reload()}
+              variant="outline"
+              className="rounded-full font-semibold px-6"
+            >
+              Refresh Page
             </Button>
           </div>
         )}

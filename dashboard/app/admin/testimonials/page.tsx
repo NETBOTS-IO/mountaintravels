@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -261,8 +262,51 @@ export default function TestimonialsPage() {
           </div>
 
           {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <p>Loading testimonials...</p>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Customer</TableHead>
+                    <TableHead>Trip & Location</TableHead>
+                    <TableHead>Rating</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[...Array(5)].map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell>
+                        <div className="flex items-center space-x-3">
+                          <Skeleton className="h-10 w-10 rounded-full" />
+                          <div className="space-y-2">
+                            <Skeleton className="h-4 w-[120px]" />
+                            <Skeleton className="h-3 w-[80px]" />
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-[150px] mb-2" />
+                        <Skeleton className="h-3 w-[100px]" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-[60px]" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-[80px] rounded-full" />
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end space-x-2">
+                          <Skeleton className="h-9 w-9 rounded-md" />
+                          <Skeleton className="h-9 w-9 rounded-md" />
+                          <Skeleton className="h-9 w-9 rounded-md" />
+                          <Skeleton className="h-9 w-9 rounded-md" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           ) : filteredTestimonials.length === 0 ? (
             <div className="flex justify-center items-center h-64">

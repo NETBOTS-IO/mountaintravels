@@ -46,7 +46,7 @@ const tourCategories = [
   "Safari",
   "Skiing",
   "Trips",
-  "Hunting"
+  "Hunting",
 ];
 
 const ImagePreview = ({
@@ -59,7 +59,7 @@ const ImagePreview = ({
   return (
     <div className="relative group">
       <img
-        src={src.startsWith('/uploads/') ? `${BASE_URL}${src}` : src}
+        src={src.startsWith("/uploads/") ? `${BASE_URL}${src}` : src}
         alt="Tour image"
         className="w-full h-32 object-cover rounded-md border"
       />
@@ -85,7 +85,7 @@ const defaultTour: Tour = {
   days: 1,
   groupSize: "",
   difficulty: "Easy",
-  rating: 0,
+  rating: 4.9,
   reviews: 0,
   price: 0,
   originalPrice: 0,
@@ -195,14 +195,14 @@ export default function TourForm({
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number | null = null,
-    field: keyof Tour | null = null
+    field: keyof Tour | null = null,
   ) => {
     const { name, value } = e.target;
     if (index !== null && field) {
       setTour((prevTour: Tour) => ({
         ...prevTour,
         [field]: (prevTour[field] as any[]).map((item: any, i: number) =>
-          i === index ? { ...item, [name]: value } : item
+          i === index ? { ...item, [name]: value } : item,
         ),
       }));
     } else {
@@ -221,13 +221,13 @@ export default function TourForm({
   const handleArrayChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
-    field: keyof Tour
+    field: keyof Tour,
   ) => {
     const { value } = e.target;
     setTour((prevTour: Tour) => ({
       ...prevTour,
       [field]: (prevTour[field] as string[]).map((item: string, i: number) =>
-        i === index ? value : item
+        i === index ? value : item,
       ),
     }));
   };
@@ -243,7 +243,7 @@ export default function TourForm({
     setTour((prevTour: Tour) => ({
       ...prevTour,
       [field]: (prevTour[field] as string[]).filter(
-        (_, i: number) => i !== index
+        (_, i: number) => i !== index,
       ),
     }));
   };
@@ -301,7 +301,7 @@ export default function TourForm({
 
   const handleItineraryImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
-    dayIndex: number
+    dayIndex: number,
   ) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const files = Array.from(e.target.files) as File[];
@@ -317,7 +317,7 @@ export default function TourForm({
     setTour((prevTour: Tour) => ({
       ...prevTour,
       itineraries: prevTour.itineraries.map((day, i) =>
-        i === dayIndex ? { ...day, images: [...day.images, ...fileUrls] } : day
+        i === dayIndex ? { ...day, images: [...day.images, ...fileUrls] } : day,
       ),
     }));
   };
@@ -343,13 +343,14 @@ export default function TourForm({
               ...day,
               images: day.images.filter((_, imgI) => imgI !== imageIndex),
             }
-          : day
+          : day,
       ),
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     // console.log("Tour data:", tour);
     // console.log("Tour Id:", tourId);
 
@@ -391,7 +392,7 @@ export default function TourForm({
         ...itinerary,
         images: undefined,
         imageCount: (itineraryImageFiles[index] || []).length,
-      })
+      }),
     );
 
     // Append text data as JSON
@@ -401,7 +402,7 @@ export default function TourForm({
         ...tourData,
         ...(isUpdating ? { id: tour.id } : {}),
         itineraries: processedItineraries || [],
-      })
+      }),
     );
 
     const url = isUpdating
@@ -432,15 +433,17 @@ export default function TourForm({
       if (error instanceof Error) {
         console.error(
           "Error saving tour:",
-          (error as any).response?.data || error.message
+          (error as any).response?.data || error.message,
         );
         toast.error(
-          (error as any).response?.data?.message || "Failed to save tour"
+          (error as any).response?.data?.message || "Failed to save tour",
         );
       } else {
         console.error("Unknown error saving tour:", error);
         toast.error("Failed to save tour");
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -624,14 +627,15 @@ export default function TourForm({
                 <Star className="w-4 h-4 mr-2" />
                 Rating
               </Label>
-              <input
+              <Input
                 id="rating"
                 name="rating"
                 type="number"
+                step="0.1"
                 min="0"
                 max="5"
                 value={tour.rating}
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
               />
             </div>
 
@@ -707,28 +711,6 @@ export default function TourForm({
                 />
               </div>
             </div>
-
-            {/* <div className="space-y-2">
-              <Label htmlFor="availability">Availability</Label>
-              <Input
-                id="availability"
-                name="availability"
-                value={tour.availability}
-                onChange={handleChange}
-                placeholder="e.g., Year-round"
-              />
-            </div> */}
-
-            {/* <div className="space-y-2">
-              <Label htmlFor="nextDeparture">Next Departure</Label>
-              <Input
-                id="nextDeparture"
-                name="nextDeparture"
-                type="date"
-                value={tour.nextDeparture}
-                onChange={handleChange}
-              />
-            </div> */}
           </div>
         </CardContent>
       </Card>
@@ -754,19 +736,6 @@ export default function TourForm({
               rows={3}
             />
           </div>
-
-          {/* <div className="space-y-2">
-            <Label htmlFor="longDescription">Detailed Description</Label>
-            <Textarea
-              id="longDescription"
-              name="longDescription"
-              value={tour.longDescription}
-              onChange={handleChange}
-              required
-              placeholder="Full tour description"
-              rows={5}
-            />
-          </div> */}
 
           <div className="space-y-2">
             <Label htmlFor="overview">Tour Overview/Features</Label>
@@ -824,199 +793,84 @@ export default function TourForm({
 
       {/* Features & Highlights Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-  {/* Inclusions Card */}
-  <Card className="w-full">
-    <CardHeader className="bg-gray-50">
-      <CardTitle className="flex items-center">
-        <Shield className="w-5 h-5 mr-2" />
-        Included Features
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      {tour.inclusions.map((item, index) => (
-        <div key={index} className="flex items-center mb-2">
-          <Input
-            value={item}
-            onChange={(e) => handleArrayChange(e, index, "inclusions")}
-            className="flex-grow"
-            placeholder="What's included"
-          />
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={() => removeArrayItem(index, "inclusions")}
-          >
-            <MinusCircle className="h-4 w-4" />
-          </Button>
-        </div>
-      ))}
-      <Button
-        type="button"
-        variant="outline"
-        onClick={() => addArrayItem("inclusions")}
-        className="w-full mt-2"
-      >
-        <PlusCircle className="h-4 w-4 mr-2" />
-        Add Inclusion
-      </Button>
-    </CardContent>
-  </Card>
-
-  {/* Exclusions Card */}
-  <Card className="w-full">
-    <CardHeader className="bg-gray-50">
-      <CardTitle className="flex items-center">
-        <Shield className="w-5 h-5 mr-2" />
-        Excluded Features
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      {tour.exclusions.map((item, index) => (
-        <div key={index} className="flex items-center mb-2">
-          <Input
-            value={item}
-            onChange={(e) => handleArrayChange(e, index, "exclusions")}
-            className="flex-grow"
-            placeholder="What's not included"
-          />
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={() => removeArrayItem(index, "exclusions")}
-          >
-            <MinusCircle className="h-4 w-4" />
-          </Button>
-        </div>
-      ))}
-      <Button
-        type="button"
-        variant="outline"
-        onClick={() => addArrayItem("exclusions")}
-        className="w-full mt-2"
-      >
-        <PlusCircle className="h-4 w-4 mr-2" />
-        Add Exclusion
-      </Button>
-    </CardContent>
-  </Card>
-</div>
-
-
-
-
-      {/* Why Choose Section */}
-      {/* <Card>
-        <CardHeader className="bg-gray-50">
-          <CardTitle className="flex items-center">
-            <HelpCircle className="w-5 h-5 mr-2" />
-            Why Choose This Tour
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {tour.whyChoose.map((item, index) => (
-            <div key={index} className="mb-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <Label>Reason #{index + 1}</Label>
+        {/* Inclusions Card */}
+        <Card className="w-full">
+          <CardHeader className="bg-gray-50">
+            <CardTitle className="flex items-center">
+              <Shield className="w-5 h-5 mr-2" />
+              Included Features
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {tour.inclusions.map((item, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <Input
+                  value={item}
+                  onChange={(e) => handleArrayChange(e, index, "inclusions")}
+                  className="flex-grow"
+                  placeholder="What's included"
+                />
                 <Button
                   type="button"
                   variant="ghost"
-                  size="sm"
-                  onClick={() =>
-                    setTour((prev) => ({
-                      ...prev,
-                      whyChoose: prev.whyChoose.filter((_, i) => i !== index),
-                    }))
-                  }
+                  size="icon"
+                  onClick={() => removeArrayItem(index, "inclusions")}
                 >
-                  Remove
+                  <MinusCircle className="h-4 w-4" />
                 </Button>
               </div>
-              <Input
-                value={item.title}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setTour((prev) => ({
-                    ...prev,
-                    whyChoose: prev.whyChoose.map((w, i) =>
-                      i === index ? { ...w, title: value } : w
-                    ),
-                  }));
-                }}
-                placeholder="Title"
-              />
-              <Textarea
-                value={item.description}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setTour((prev) => ({
-                    ...prev,
-                    whyChoose: prev.whyChoose.map((w, i) =>
-                      i === index ? { ...w, description: value } : w
-                    ),
-                  }));
-                }}
-                placeholder="Description"
-                rows={3}
-              />
-            </div>
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() =>
-              setTour((prev) => ({
-                ...prev,
-                whyChoose: [...prev.whyChoose, { title: "", description: "" }],
-              }))
-            }
-            className="w-full"
-          >
-            <PlusCircle className="h-4 w-4 mr-2" />
-            Add Reason
-          </Button>
-        </CardContent>
-      </Card> */}
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => addArrayItem("inclusions")}
+              className="w-full mt-2"
+            >
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Add Inclusion
+            </Button>
+          </CardContent>
+        </Card>
 
-      {/* Features Section */}
-      {/* <Card>
-        <CardHeader className="bg-gray-50">
-          <CardTitle className="flex items-center">
-            <Star className="w-5 h-5 mr-2" />
-            Features
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {tour.features.map((feature, index) => (
-            <div key={index} className="flex items-center mb-2">
-              <Input
-                value={feature}
-                onChange={(e) => handleArrayChange(e, index, "features")}
-                className="flex-grow"
-                placeholder="Enter feature"
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={() => removeArrayItem(index, "features")}
-              >
-                <MinusCircle className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => addArrayItem("features")}
-            className="w-full mt-2"
-          >
-            <PlusCircle className="h-4 w-4 mr-2" />
-            Add Feature
-          </Button>
-        </CardContent>
-      </Card> */}
+        {/* Exclusions Card */}
+        <Card className="w-full">
+          <CardHeader className="bg-gray-50">
+            <CardTitle className="flex items-center">
+              <Shield className="w-5 h-5 mr-2" />
+              Excluded Features
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {tour.exclusions.map((item, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <Input
+                  value={item}
+                  onChange={(e) => handleArrayChange(e, index, "exclusions")}
+                  className="flex-grow"
+                  placeholder="What's not included"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeArrayItem(index, "exclusions")}
+                >
+                  <MinusCircle className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => addArrayItem("exclusions")}
+              className="w-full mt-2"
+            >
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Add Exclusion
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Itinerary Section */}
       <Card>
@@ -1099,89 +953,6 @@ export default function TourForm({
                   />
                 </div>
 
-                {/* <div className="space-y-2">
-                  <Label htmlFor={`day-${index}-duration`}>Duration</Label>
-                  <Input
-                    id={`day-${index}-duration`}
-                    name="duration"
-                    value={day.duration || ""}
-                    onChange={(e) => handleChange(e, index, "itineraries")}
-                    placeholder="Duration of activities"
-                  />
-                </div> */}
-
-                {/* <div className="space-y-2">
-                  <Label>Activities</Label>
-                  {day.activities?.map((activity, activityIndex) => (
-                    <div key={activityIndex} className="flex items-center mb-2">
-                      <Input
-                        value={activity}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          setTour((prev) => ({
-                            ...prev,
-                            itineraries: prev.itineraries.map((it, i) =>
-                              i === index
-                                ? {
-                                    ...it,
-                                    activities: it.activities.map((a, ai) =>
-                                      ai === activityIndex ? value : a
-                                    ),
-                                  }
-                                : it
-                            ),
-                          }));
-                        }}
-                        placeholder="Activity"
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => {
-                          setTour((prev) => ({
-                            ...prev,
-                            itineraries: prev.itineraries.map((it, i) =>
-                              i === index
-                                ? {
-                                    ...it,
-                                    activities: it.activities.filter(
-                                      (_, ai) => ai !== activityIndex
-                                    ),
-                                  }
-                                : it
-                            ),
-                          }));
-                        }}
-                      >
-                        <MinusCircle className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setTour((prev) => ({
-                        ...prev,
-                        itineraries: prev.itineraries.map((it, i) =>
-                          i === index
-                            ? {
-                                ...it,
-                                activities: [...it.activities, ""],
-                              }
-                            : it
-                        ),
-                      }));
-                    }}
-                    className="w-full"
-                  >
-                    <PlusCircle className="h-4 w-4 mr-2" />
-                    Add Activity
-                  </Button>
-                </div> */}
-
                 <div className="space-y-2">
                   <Label>Meals</Label>
                   {day.meals?.map((meal, mealIndex) => (
@@ -1197,10 +968,10 @@ export default function TourForm({
                                 ? {
                                     ...it,
                                     meals: it.meals.map((m, mi) =>
-                                      mi === mealIndex ? value : m
+                                      mi === mealIndex ? value : m,
                                     ),
                                   }
-                                : it
+                                : it,
                             ),
                           }));
                         }}
@@ -1218,10 +989,10 @@ export default function TourForm({
                                 ? {
                                     ...it,
                                     meals: it.meals.filter(
-                                      (_, mi) => mi !== mealIndex
+                                      (_, mi) => mi !== mealIndex,
                                     ),
                                   }
-                                : it
+                                : it,
                             ),
                           }));
                         }}
@@ -1243,7 +1014,7 @@ export default function TourForm({
                                 ...it,
                                 meals: [...it.meals, ""],
                               }
-                            : it
+                            : it,
                         ),
                       }));
                     }}
@@ -1254,130 +1025,6 @@ export default function TourForm({
                   </Button>
                 </div>
               </div>
-
-              {/* Itinerary Images */}
-              {/* <div className="mt-4">
-                <Label>Day Images</Label>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Upload images specific to this day
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  {(itineraryImagePreviews[index] || []).map(
-                    (preview, imgIndex) => (
-                      <div key={imgIndex} className="relative group">
-                        <img
-                          src={preview || "/placeholder.svg"}
-                          alt={`Day ${day.day} image ${imgIndex + 1}`}
-                          className="w-full h-24 object-cover rounded-md border"
-                        />
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="icon"
-                          className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={() => removeItineraryImage(index, imgIndex)}
-                        >
-                          <MinusCircle className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    )
-                  )}
-                  <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed rounded-md cursor-pointer hover:border-primary hover:bg-gray-50 transition-colors">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleItineraryImageUpload(e, index)}
-                      className="hidden"
-                      multiple
-                    />
-                    <PlusCircle className="h-6 w-6 mb-1" />
-                    <span className="text-xs">Add Images</span>
-                  </label>
-                </div>
-              </div> */}
-
-              {/* New fields for day */}
-              {/* <div className="space-y-2">
-                <Label htmlFor={`day-${index}-type`}>Type</Label>
-                <Input
-                  id={`day-${index}-type`}
-                  name="type"
-                  value={day.type || ""}
-                  onChange={(e) => handleChange(e, index, "itineraries")}
-                  placeholder="Type of day (e.g., Arrival, Trekking)"
-                />
-              </div> */}
-              {/* <div className="space-y-2">
-                <Label>Day Highlights</Label>
-                {day.highlights?.map((highlight, highlightIndex) => (
-                  <div key={highlightIndex} className="flex items-center mb-2">
-                    <Input
-                      value={highlight}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        setTour((prev) => ({
-                          ...prev,
-                          itineraries: prev.itineraries.map((it, i) =>
-                            i === index
-                              ? {
-                                  ...it,
-                                  highlights: it.highlights.map((h, hi) =>
-                                    hi === highlightIndex ? value : h
-                                  ),
-                                }
-                              : it
-                          ),
-                        }));
-                      }}
-                      placeholder="Highlight"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        setTour((prev) => ({
-                          ...prev,
-                          itineraries: prev.itineraries.map((it, i) =>
-                            i === index
-                              ? {
-                                  ...it,
-                                  highlights: it.highlights.filter(
-                                    (_, hi) => hi !== highlightIndex
-                                  ),
-                                }
-                              : it
-                          ),
-                        }));
-                      }}
-                    >
-                      <MinusCircle className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setTour((prev) => ({
-                      ...prev,
-                      itineraries: prev.itineraries.map((it, i) =>
-                        i === index
-                          ? {
-                              ...it,
-                              highlights: [...it.highlights, ""],
-                            }
-                          : it
-                      ),
-                    }));
-                  }}
-                  className="w-full"
-                >
-                  <PlusCircle className="h-4 w-4 mr-2" />
-                  Add Highlight
-                </Button>
-              </div> */}
             </div>
           ))}
 
@@ -1507,7 +1154,7 @@ export default function TourForm({
                 className="w-full mt-2"
               >
                 <PlusCircle className="h-4 w-4 mr-2" />
-                Add Terms & Policies 
+                Add Terms & Policies
               </Button>
             </div>
 
@@ -1549,145 +1196,69 @@ export default function TourForm({
 
       {/* Physical Requirements & Best Time */}
       <Card>
-  <CardHeader className="bg-gray-50">
-    <CardTitle className="flex items-center">
-      <HelpCircle className="w-5 h-5 mr-2" />
-      Physical Requirements for this Tour & Best Time
-    </CardTitle>
-  </CardHeader>
-  <CardContent>
-    <div className="space-y-4">
-      {/* Physical Requirements */}
-      <div className="space-y-2">
-        <Label htmlFor="physicalRequirements">Physical Requirements</Label>
-        <Textarea
-          id="physicalRequirements"
-          name="physicalRequirements"
-          value={tour.physicalRequirements}
-          onChange={handleChange}
-          placeholder="Describe physical requirements for this tour"
-          rows={3}
-        />
-      </div>
+        <CardHeader className="bg-gray-50">
+          <CardTitle className="flex items-center">
+            <HelpCircle className="w-5 h-5 mr-2" />
+            Physical Requirements for this Tour & Best Time
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {/* Physical Requirements */}
+            <div className="space-y-2">
+              <Label htmlFor="physicalRequirements">
+                Physical Requirements
+              </Label>
+              <Textarea
+                id="physicalRequirements"
+                name="physicalRequirements"
+                value={tour.physicalRequirements}
+                onChange={handleChange}
+                placeholder="Describe physical requirements for this tour"
+                rows={3}
+              />
+            </div>
 
-      {/* Best Time */}
-      <div className="space-y-2">
-        <Label htmlFor="bestTime">Best Time/Season</Label>
-        <Input
-          id="bestTime"
-          name="bestTime"
-          value={tour.bestTime}
-          onChange={handleChange}
-          placeholder="e.g., June to August"
-        />
-      </div>
+            {/* Best Time */}
+            <div className="space-y-2">
+              <Label htmlFor="bestTime">Best Time/Season</Label>
+              <Input
+                id="bestTime"
+                name="bestTime"
+                value={tour.bestTime}
+                onChange={handleChange}
+                placeholder="e.g., June to August"
+              />
+            </div>
 
-      {/* Distance */}
-      <div className="space-y-2">
-        <Label htmlFor="distance">Total Distance We will Cover in this tours</Label>
-        <Input
-          id="distance"
-          name="distance"
-          value={tour.distance || ""}
-          onChange={handleChange}
-          placeholder="e.g., 12 km"
-        />
-      </div>
+            {/* Distance */}
+            <div className="space-y-2">
+              <Label htmlFor="distance">
+                Total Distance We will Cover in this tours
+              </Label>
+              <Input
+                id="distance"
+                name="distance"
+                value={tour.distance || ""}
+                onChange={handleChange}
+                placeholder="e.g., 12 km"
+              />
+            </div>
 
-      {/* Hours */}
-      <div className="space-y-2">
-        <Label htmlFor="hours">Hours/day</Label>
-        <Input
-          id="hours"
-          name="hours"
-          value={tour.hours || ""}
-          onChange={handleChange}
-          placeholder="e.g., 5 hours"
-        />
-      </div>
-    </div>
-  </CardContent>
-</Card>
-
-
-      {/* Tags & Related Trips */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader className="bg-gray-50">
-            <CardTitle className="flex items-center">
-              <Tag className="w-5 h-5 mr-2" />
-              Tags
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {tour.tags.map((tag, index) => (
-              <div key={index} className="flex items-center mb-2">
-                <Input
-                  value={tag}
-                  onChange={(e) => handleArrayChange(e, index, "tags")}
-                  className="flex-grow"
-                  placeholder="Enter tag"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removeArrayItem(index, "tags")}
-                >
-                  <MinusCircle className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => addArrayItem("tags")}
-              className="w-full mt-2"
-            >
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add Tag
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="bg-gray-50">
-            <CardTitle className="flex items-center">
-              <Link className="w-5 h-5 mr-2" />
-              Related Trips
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {tour.relatedTrips.map((trip, index) => (
-              <div key={index} className="flex items-center mb-2">
-                <Input
-                  value={trip}
-                  onChange={(e) => handleArrayChange(e, index, "relatedTrips")}
-                  className="flex-grow"
-                  placeholder="Enter related trip slug or ID"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removeArrayItem(index, "relatedTrips")}
-                >
-                  <MinusCircle className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => addArrayItem("relatedTrips")}
-              className="w-full mt-2"
-            >
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add Related Trip
-            </Button>
-          </CardContent>
-        </Card>
-      </div> */}
+            {/* Hours */}
+            <div className="space-y-2">
+              <Label htmlFor="hours">Hours/day</Label>
+              <Input
+                id="hours"
+                name="hours"
+                value={tour.hours || ""}
+                onChange={handleChange}
+                placeholder="e.g., 5 hours"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Location & Submit Section */}
       <Card>
@@ -1726,12 +1297,18 @@ export default function TourForm({
           </div>
         </CardContent>
       </Card>
-      <div className="flex flex-col justify-end">
+      <div className="flex justify-end pt-4 pb-12">
         <Button
           type="submit"
-          className="w-full h-full bg-primary hover:bg-primary-dark text-white py-2 text-lg"
+          size="lg"
+          className="bg-primary hover:bg-primary-dark text-white px-8"
+          disabled={isSubmitting}
         >
-          {tourId ? "Update Tour" : "Create Tour"}
+          {isSubmitting
+            ? "Saving..."
+            : tourId || tour.id
+              ? "Update Tour"
+              : "Add Tour"}
         </Button>
       </div>
     </form>
