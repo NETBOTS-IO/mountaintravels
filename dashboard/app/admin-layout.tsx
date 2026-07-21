@@ -24,7 +24,6 @@ import { isAuthenticated, logout } from "@/lib/auth-utils";
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
   { icon: PackageSearch, label: "Tour Packages", href: "/admin/tours" },
-  { icon: Camera, label: "Gallery", href: "/admin/gallery" },
   { icon: FileText, label: "Blogs", href: "/admin/blogs" },
   { icon: Quote, label: "Testimonials", href: "/admin/testimonials" },
   {
@@ -72,7 +71,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 transition-all duration-300",
-          sidebarOpen ? "w-64" : "w-16"
+          sidebarOpen ? "w-64" : "w-16",
         )}
       >
         {/* Sidebar content */}
@@ -81,11 +80,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             href="/admin"
             className={cn(
               "text-xl font-bold text-primary transition-opacity italic",
-              sidebarOpen ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
+              sidebarOpen ? "opacity-100" : "opacity-0 w-0 overflow-hidden",
             )}
           >
             <span className="text-secondary">Toursssss</span>
-            <span className="text-green-600">Maker</span> <span className="not-italic">Admin</span>
+            <span className="text-green-600">Maker</span>{" "}
+            <span className="not-italic">Admin</span>
           </Link>
           <Button
             variant="ghost"
@@ -112,7 +112,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                   "flex items-center px-4 py-3 mx-2 rounded-lg transition-colors",
                   "hover:text-orange-600 transition-colors duration-300 ease-in-out",
                   pathname === item.href && "bg-orange-100 text-orange-600",
-                  !sidebarOpen && "justify-center px-2 mx-1"
+                  !sidebarOpen && "justify-center px-2 mx-1",
                 )}
               >
                 <item.icon className={cn("h-5 w-5", sidebarOpen && "mr-3")} />
@@ -139,7 +139,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <div
         className={cn(
           "flex flex-col flex-1 transition-all duration-300",
-          sidebarOpen ? "ml-64" : "ml-16"
+          sidebarOpen ? "ml-64" : "ml-16",
         )}
       >
         <header className="sticky top-0 z-40 h-16 bg-white border-b flex items-center px-4">

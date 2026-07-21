@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Mail,
   Phone,
@@ -270,14 +271,23 @@ export default function ContactPage() {
                     href={`mailto:${quickContacts.secondaryEmail}`}
                     className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
                   >
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
-                      <Mail className="w-4 h-4" />
+                    <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border-2 border-primary/20 group-hover:border-primary transition-colors">
+                      <Image
+                        src="/assets/team/staff1.webp"
+                        alt="Ghulam Ahmad, Founder & Chairman"
+                        width={40}
+                        height={40}
+                        className="object-cover w-full h-full"
+                      />
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-foreground">
-                        Founder Direct Email
+                        Ghulam Ahmad
                       </p>
-                      <p className="break-all">
+                      <p className="text-[10px] uppercase tracking-wider text-primary mb-0.5">
+                        Founder & Chairman
+                      </p>
+                      <p className="break-all text-xs">
                         {quickContacts.secondaryEmail}
                       </p>
                     </div>

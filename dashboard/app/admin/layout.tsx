@@ -27,7 +27,6 @@ import { useAuthStore } from "@/store/authStore";
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
   { icon: PackageSearch, label: "Tour Packages", href: "/admin/tours" },
-  { icon: Camera, label: "Gallery", href: "/admin/gallery" },
   { icon: Film, label: "Media", href: "/admin/media" },
   { icon: FileText, label: "Blogs", href: "/admin/blogs" },
   { icon: Quote, label: "Testimonials", href: "/admin/testimonials" },
