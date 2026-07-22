@@ -1,5 +1,6 @@
 // app/blogs/[id]/page.tsx
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Share2, Mail, MessageCircle } from "lucide-react";
@@ -9,7 +10,7 @@ import { BASE_URL } from "@/app/Var";
 async function getBlog(id: string) {
   try {
     const res = await fetch(`${BASE_URL}/api/blogs/${id}`, {
-      cache: "no-store",
+      next: { revalidate: 3600 },
     });
     const data = await res.json();
 
@@ -22,12 +23,40 @@ async function getBlog(id: string) {
   return null;
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const blog = await getBlog(resolvedParams.id);
+
+  if (!blog) return { title: "Blog Not Found | Mountain Travels Pakistan" };
+
+  return {
+    title: `${blog.title} - Mountain Travels Pakistan`,
+    description: blog.shortDescription?.substring(0, 155) || blog.title,
+    openGraph: {
+      title: blog.title,
+      description: blog.shortDescription?.substring(0, 155),
+      images: blog.coverImage
+        ? [
+            blog.coverImage.startsWith("http")
+              ? blog.coverImage
+              : `${BASE_URL}${blog.coverImage}`,
+          ]
+        : [],
+    },
+  };
+}
+
 export default async function BlogDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const post = await getBlog(params.id);
+  const resolvedParams = await params;
+  const post = await getBlog(resolvedParams.id);
 
   if (!post) {
     notFound();
@@ -133,10 +162,12 @@ export default async function BlogDetailPage({
                   : `${BASE_URL}${imageUrl || ""}`;
                 return (
                   <figure key={block.id} className="my-8">
-                    <img
+                    <Image
                       src={src}
                       alt={block.data.caption || "Blog Image"}
-                      className="w-full rounded-lg shadow-md"
+                      width={800}
+                      height={400}
+                      className="w-full h-auto object-cover rounded-lg shadow-md"
                     />
                     {block.data.caption && (
                       <figcaption className="text-center text-sm text-gray-500 mt-2">

@@ -22,7 +22,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import TourIcons from "@/app/touricons";
-import CustomItineraryModal from "@/components/customItineraryModal";
+import dynamic from "next/dynamic";
+const CustomItineraryModal = dynamic(
+  () => import("@/components/customItineraryModal"),
+  { ssr: false },
+);
 
 import {
   heroSection,

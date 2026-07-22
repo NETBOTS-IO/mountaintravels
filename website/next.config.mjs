@@ -14,8 +14,18 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+      {
+        protocol: "https",
+        hostname: "api.mountaintravels.com",
+      },
+    ],
   },
+  productionBrowserSourceMaps: true,
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,

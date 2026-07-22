@@ -149,6 +149,7 @@ export default function TourForm({
   const [itineraryImagePreviews, setItineraryImagePreviews] = useState<{
     [dayIndex: number]: string[];
   }>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   useEffect(() => {

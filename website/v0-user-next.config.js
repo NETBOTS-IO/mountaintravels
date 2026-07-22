@@ -1,4 +1,4 @@
-import { NextConfig } from 'next';
+import { NextConfig } from "next";
 
 /** @type {NextConfig} */
 const nextConfig = {
@@ -21,8 +21,12 @@ const nextConfig = {
       {
         source: "/(.*)",
         headers: [
-          { key: "Cache-Control", value: "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0" },
-          { key: "Pragma", value: "no-cache" },
+          // We allow static assets to be cached by the CDN and browser
+          {
+            key: "Cache-Control",
+            value:
+              "public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400",
+          },
           { key: "Expires", value: "0" },
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-Content-Type-Options", value: "nosniff" },

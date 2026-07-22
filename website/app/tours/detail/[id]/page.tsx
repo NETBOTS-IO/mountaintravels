@@ -70,6 +70,7 @@ export default function TourPage() {
   const [activeImage, setActiveImage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tour, setTour] = useState<any>();
+  const [relatedTours, setRelatedTours] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAnimation, setShowAnimation] = useState(true);
   const [departures, setDepartures] = useState<any[]>([]);
@@ -91,6 +92,15 @@ export default function TourPage() {
       try {
         const response = await axios.get(`${BASE_URL}/api/tours/${id}`);
         setTour(response.data.data);
+
+        // Fetch all tours for related section
+        const allToursRes = await axios.get(`${BASE_URL}/api/tours`);
+        const allTours = allToursRes.data.data || [];
+        // Filter out current tour and pick 3
+        const related = allTours
+          .filter((t: any) => t._id !== response.data.data?._id)
+          .slice(0, 3);
+        setRelatedTours(related);
       } catch (error) {
         console.error("Error fetching tour:", error);
       } finally {
@@ -353,18 +363,18 @@ export default function TourPage() {
             {/* Overviews / Descriptions */}
             <div className="bg-card border rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
               <div>
-                <h3 className="text-lg font-bold text-[#45919c] mb-2">
+                <h2 className="text-lg font-bold text-[#45919c] mb-2">
                   About This Journey
-                </h3>
+                </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {tour.shortDescription}
                 </p>
               </div>
               {tour.overview && (
                 <div className="border-t pt-4">
-                  <h4 className="text-sm font-semibold text-[#2596be] mb-1.5">
+                  <h3 className="text-sm font-semibold text-[#2596be] mb-1.5">
                     Overview
-                  </h4>
+                  </h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     {tour.overview}
                   </p>
@@ -372,9 +382,9 @@ export default function TourPage() {
               )}
               {tour.highlights?.length > 0 && (
                 <div className="border-t pt-4">
-                  <h4 className="text-sm font-semibold text-foreground mb-3">
+                  <h3 className="text-sm font-semibold text-foreground mb-3">
                     Highlights
-                  </h4>
+                  </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {tour.highlights.map((h: string, i: number) => (
                       <div
@@ -571,9 +581,9 @@ export default function TourPage() {
             <div className="bg-card border rounded-2xl p-6 shadow-sm space-y-6">
               {/* Headings */}
               <div>
-                <h3 className="text-lg font-extrabold text-foreground">
+                <h2 className="text-lg font-extrabold text-foreground">
                   Book Your Trip
-                </h3>
+                </h2>
                 <p className="text-xs text-muted-foreground">
                   Complete the form below to secure your spaces
                 </p>
@@ -851,6 +861,48 @@ export default function TourPage() {
           </div>
         </div>
       </div>
+
+      {/* Related Tours Section */}
+      {relatedTours.length > 0 && (
+        <div className="container mx-auto px-4 max-w-7xl pb-24">
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8">
+            Related Tours
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {relatedTours.map((t: any) => (
+              <Link
+                key={t._id}
+                href={`/tours/detail/${t.id || t._id}`}
+                className="group block"
+              >
+                <div className="bg-card rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="aspect-[4/3] relative">
+                    <Image
+                      src={
+                        t.coverImage?.startsWith("http")
+                          ? t.coverImage
+                          : `${BASE_URL}${t.coverImage}`
+                      }
+                      alt={t.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-5 space-y-2">
+                    <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                      {t.name}
+                    </h3>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <MapPin className="w-4 h-4" />
+                      <span>{t.destination}</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Confirmation Dialog with animated elements */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

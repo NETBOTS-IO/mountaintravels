@@ -130,15 +130,18 @@ export function Header() {
               alt={siteConfig.name}
               width={100}
               height={50}
+              priority
               className="h-9 w-auto md:h-12"
             />
           </Link>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden flex items-center transition-colors text-gray-800 relative z-20"
+            className="md:hidden flex items-center transition-colors text-gray-800 relative z-20 min-h-[44px] min-w-[44px] justify-center"
             onClick={toggleMenu}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
           >
             {isMenuOpen ? (
               <X className="h-6 w-6" />

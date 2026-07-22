@@ -45,6 +45,10 @@ export const metadata: Metadata = {
     creator: "@MTPakistan",
     images: [`${process.env.NEXT_PUBLIC_SITE_URL}/og-image.jpg`],
   },
+  alternates: {
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL || "https://mountaintravels.com",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -82,6 +86,47 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${outfit.variable} font-sans antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "TravelAgency",
+              name: siteConfig.name,
+              url:
+                process.env.NEXT_PUBLIC_SITE_URL ||
+                "https://mountaintravels.com",
+              logo: `${process.env.NEXT_PUBLIC_SITE_URL || "https://mountaintravels.com"}/assets/logo/logo.webp`,
+              description: siteConfig.description,
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Main Bazaar",
+                addressLocality: "Skardu",
+                addressRegion: "Gilgit-Baltistan",
+                addressCountry: "PK",
+              },
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item:
+                    process.env.NEXT_PUBLIC_SITE_URL ||
+                    "https://mountaintravels.com",
+                },
+              ],
+            }),
+          }}
+        />
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-grow">{children}</main>

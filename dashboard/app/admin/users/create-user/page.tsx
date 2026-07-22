@@ -15,8 +15,13 @@ const CreateUserPage = () => {
   const { isAdmin, hasPermission } = useAuthStore();
 
   // Check permissions
+  React.useEffect(() => {
+    if (!isAdmin() && !hasPermission("userManagement")) {
+      router.push("/admin/users");
+    }
+  }, [isAdmin, hasPermission, router]);
+
   if (!isAdmin() && !hasPermission("userManagement")) {
-    router.push("/admin/users");
     return null;
   }
 
@@ -68,7 +73,7 @@ const CreateUserPage = () => {
       if (response.status === 201 || response.status === 200) {
         toast.success(
           "Admin created successfully! Welcome email with temporary password has been sent.",
-          { duration: 5000 }
+          { duration: 5000 },
         );
         router.push("/dashboard/users");
       } else {
@@ -87,7 +92,7 @@ const CreateUserPage = () => {
           toast.error("Please check all required fields and try again");
         } else {
           toast.error(
-            error.response.data?.message || "Invalid admin data provided"
+            error.response.data?.message || "Invalid admin data provided",
           );
         }
       } else if (error.response?.status === 401) {
@@ -101,7 +106,7 @@ const CreateUserPage = () => {
         toast.error("Server error occurred. Please try again later.");
       } else {
         toast.error(
-          error.response?.data?.message || "Failed to create admin account"
+          error.response?.data?.message || "Failed to create admin account",
         );
       }
     } finally {
@@ -119,7 +124,7 @@ const CreateUserPage = () => {
 
     if (hasChanges) {
       const confirmLeave = window.confirm(
-        "You have unsaved changes. Are you sure you want to leave?"
+        "You have unsaved changes. Are you sure you want to leave?",
       );
       if (!confirmLeave) return;
     }

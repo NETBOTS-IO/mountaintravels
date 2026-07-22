@@ -29,7 +29,7 @@
 
     /* Muted / subtle backgrounds */
     --muted: 196 20% 93%;
-    --muted-foreground: 210 15% 45%;
+    --muted-foreground: 210 15% 38%;
 
     /* Accent — deeper teal for dark backgrounds */
     --accent: 188 45% 18%;
@@ -63,7 +63,7 @@
     --secondary-foreground: 0 0% 100%;
 
     --muted: 188 30% 15%;
-    --muted-foreground: 196 15% 60%;
+    --muted-foreground: 196 15% 65%;
 
     --accent: 188 30% 15%;
     --accent-foreground: 196 20% 95%;

@@ -208,7 +208,7 @@ export function Footer() {
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#ff9800] text-gray-400 transition-colors"
+                    className="hover:text-[#ff9800] text-gray-400 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                     aria-label={item.name}
                   >
                     {getIcon(item.icon)}

@@ -37,7 +37,7 @@ async function getTravelGuides(subMenuSlug: string) {
     const res = await fetch(
       `${BASE_URL}/api/blogs?category=Travel Guide&subMenuSlug=${subMenuSlug}`,
       {
-        cache: "no-store",
+        next: { revalidate: 3600 },
       },
     );
     const data = await res.json();

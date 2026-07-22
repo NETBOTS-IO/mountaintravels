@@ -182,7 +182,7 @@ export default function AboutPage() {
             <RevealStagger delayOffset={0.05} className="md:col-span-4">
               <div className="relative rounded-2xl overflow-hidden border border-border bg-muted aspect-[3/4] shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <Image
-                  src="/assets/about/team/ghulam.jpg"
+                  src="/assets/team/staff1.webp"
                   alt="Ghulam Ahmad"
                   fill
                   className="object-cover group-hover:scale-103 transition-transform duration-500"

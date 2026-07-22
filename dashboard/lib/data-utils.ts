@@ -936,3 +936,13 @@ export const fetchBookingStats = async (): Promise<BookingStats> => {
     throw error;
   }
 };
+
+export const getCustomItineraries = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/api/custom-itineraries`);
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching custom itineraries:", error);
+    return [];
+  }
+};

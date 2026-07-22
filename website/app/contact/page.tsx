@@ -230,6 +230,32 @@ export default function ContactPage() {
                 </div>
               </div>
 
+              {/* Founder Profile */}
+              <div className="bg-card border border-border p-6 rounded-lg shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden shrink-0 border-4 border-primary/20 shadow-md">
+                  <Image
+                    src="/assets/team/staff1.webp"
+                    alt="Ghulam Ahmad, Founder & Chairman"
+                    width={128}
+                    height={128}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <div className="text-center sm:text-left">
+                  <h3 className="font-display font-bold text-xl text-foreground">
+                    Ghulam Ahmad
+                  </h3>
+                  <p className="text-sm font-semibold uppercase tracking-wider text-primary mb-3">
+                    Founder & Chairman
+                  </p>
+                  <p className="text-sm text-muted-foreground font-light leading-relaxed">
+                    With over 45 years of experience in the tourism industry,
+                    Ghulam founded MTP to share his passion for Pakistan's
+                    mountains and the Silk Road with the world.
+                  </p>
+                </div>
+              </div>
+
               {/* Quick Contacts */}
               <div className="bg-card border border-border p-6 rounded-lg shadow-sm">
                 <h3 className="font-display font-bold text-lg mb-4 text-primary flex items-center gap-2">
@@ -271,23 +297,14 @@ export default function ContactPage() {
                     href={`mailto:${quickContacts.secondaryEmail}`}
                     className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border-2 border-primary/20 group-hover:border-primary transition-colors">
-                      <Image
-                        src="/assets/team/staff1.webp"
-                        alt="Ghulam Ahmad, Founder & Chairman"
-                        width={40}
-                        height={40}
-                        className="object-cover w-full h-full"
-                      />
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
+                      <Mail className="w-4 h-4" />
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-foreground">
-                        Ghulam Ahmad
+                        Founder Direct Email
                       </p>
-                      <p className="text-[10px] uppercase tracking-wider text-primary mb-0.5">
-                        Founder & Chairman
-                      </p>
-                      <p className="break-all text-xs">
+                      <p className="break-all">
                         {quickContacts.secondaryEmail}
                       </p>
                     </div>
