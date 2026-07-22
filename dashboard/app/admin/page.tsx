@@ -32,7 +32,7 @@ export default function AdminDashboard() {
         setLoading(true);
         const [bookingsRes, inquiriesRes] = await Promise.all([
           fetch(`${BASE_URL}/api/bookings`),
-          fetch(`${BASE_URL}/api/inquiries`),
+          fetch(`${BASE_URL}/api/contacts`),
         ]);
 
         const bookingsData = await bookingsRes.json();
