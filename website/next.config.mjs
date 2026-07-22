@@ -23,6 +23,18 @@ const nextConfig = {
         protocol: "https",
         hostname: "api.mountaintravels.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "mountaintravels.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.mountaintravels.com",
+      },
     ],
   },
   productionBrowserSourceMaps: true,
