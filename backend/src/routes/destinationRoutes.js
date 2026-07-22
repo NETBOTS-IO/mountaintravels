@@ -1,5 +1,5 @@
 import express from "express";
-import upload, { convertToWebp } from "../utils/multerConfig.js";
+import upload, { convertToAvif } from "../utils/multerConfig.js";
 import {
   getAllDestinations,
   getDestinationBySlug,
@@ -23,7 +23,7 @@ router.post(
     { name: "image", maxCount: 1 },
     { name: "images", maxCount: 10 },
   ]),
-  convertToWebp,
+  convertToAvif,
   createDestination,
 );
 router.put(
@@ -32,7 +32,7 @@ router.put(
     { name: "image", maxCount: 1 },
     { name: "images", maxCount: 10 },
   ]),
-  convertToWebp,
+  convertToAvif,
   updateDestination,
 );
 router.delete("/:id", deleteDestination);

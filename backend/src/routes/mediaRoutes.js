@@ -9,7 +9,7 @@ import {
 } from "../controllers/mediaController.js";
 import { galleryValidation } from "../middlewares/validation.js";
 import { handleValidationErrors } from "../middlewares/errorHandler.js";
-import upload, { convertToWebp } from "../utils/multerConfig.js";
+import upload, { convertToAvif } from "../utils/multerConfig.js";
 
 const router = express.Router();
 
@@ -22,7 +22,7 @@ router.get("/:id", getMediaById);
 router.post(
   "/",
   upload.fields([{ name: "src", maxCount: 10 }]),
-  convertToWebp, // Optimized handler for both WebP conversion and Video compression
+  convertToAvif, // Optimized handler for both AVIF conversion and Video compression
   galleryValidation,
   handleValidationErrors,
   createMedia,
@@ -31,7 +31,7 @@ router.post(
 router.put(
   "/:id",
   upload.fields([{ name: "src", maxCount: 10 }]),
-  convertToWebp, // Optimized handler for both WebP conversion and Video compression
+  convertToAvif, // Optimized handler for both AVIF conversion and Video compression
   galleryValidation,
   handleValidationErrors,
   updateMedia,
