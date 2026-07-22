@@ -2,7 +2,7 @@ import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs/promises"; // use promises API
-import fsSync from "fs";       // for synchronous existence checks
+import fsSync from "fs"; // for synchronous existence checks
 import sharp from "sharp";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,9 +23,10 @@ const storage = multer.diskStorage({
       let uploadPath = path.join(__dirname, "../uploads/popular");
 
       if (req.originalUrl.includes("/tours")) {
-        uploadPath = file.fieldname === "images"
-          ? path.join(__dirname, "../uploads/tours")
-          : path.join(__dirname, "../uploads/itineraries");
+        uploadPath =
+          file.fieldname === "images"
+            ? path.join(__dirname, "../uploads/tours")
+            : path.join(__dirname, "../uploads/itineraries");
       } else if (req.originalUrl.includes("/blogs")) {
         uploadPath = path.join(__dirname, "../uploads/blogs");
       } else if (req.originalUrl.includes("/gallery")) {
@@ -48,7 +49,10 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
+    cb(
+      null,
+      `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`,
+    );
   },
 });
 
@@ -59,7 +63,8 @@ const fileFilter = (req, file, cb) => {
     allowedTypes.test(path.extname(file.originalname).toLowerCase()) &&
     allowedTypes.test(file.mimetype);
 
-  if (!isValid) return cb(new Error("Only JPEG, JPG, PNG, GIF allowed!"), false);
+  if (!isValid)
+    return cb(new Error("Only JPEG, JPG, PNG, GIF allowed!"), false);
   cb(null, true);
 };
 
@@ -70,22 +75,24 @@ const upload = multer({
 });
 
 // Convert uploaded images to AVIF
-export const convertToAvif = async (req, res, next) => {
+export const convertToWebp = async (req, res, next) => {
   try {
     // Single file
     if (req.file) {
       const filePath = req.file.path;
-      const avifPath = filePath.replace(path.extname(filePath), ".avif");
+      const webpPath = filePath.replace(path.extname(filePath), ".webp");
 
-      await sharp(filePath).toFormat("avif", { quality: 50 }).toFile(avifPath);
+      await sharp(filePath).toFormat("webp", { quality: 80 }).toFile(webpPath);
 
-      try { await fs.unlink(filePath); } catch (err) {
+      try {
+        await fs.unlink(filePath);
+      } catch (err) {
         console.warn("Could not delete original file:", err.message);
       }
 
-      req.file.filename = path.basename(avifPath);
-      req.file.path = avifPath;
-      req.body.image = `/uploads/${path.basename(path.dirname(avifPath))}/${req.file.filename}`;
+      req.file.filename = path.basename(webpPath);
+      req.file.path = webpPath;
+      req.body.image = `/uploads/${path.basename(path.dirname(webpPath))}/${req.file.filename}`;
     }
 
     // Multiple files
@@ -94,21 +101,25 @@ export const convertToAvif = async (req, res, next) => {
         req.files[field] = await Promise.all(
           req.files[field].map(async (file) => {
             const filePath = file.path;
-            const avifPath = filePath.replace(path.extname(filePath), ".avif");
+            const webpPath = filePath.replace(path.extname(filePath), ".webp");
 
-            await sharp(filePath).toFormat("avif", { quality: 50 }).toFile(avifPath);
+            await sharp(filePath)
+              .toFormat("webp", { quality: 80 })
+              .toFile(webpPath);
 
-            try { await fs.unlink(filePath); } catch (err) {
+            try {
+              await fs.unlink(filePath);
+            } catch (err) {
               console.warn("Could not delete original file:", err.message);
             }
 
             return {
               ...file,
-              filename: path.basename(avifPath),
-              path: avifPath,
-              url: `/uploads/${path.basename(path.dirname(avifPath))}/${path.basename(avifPath)}`,
+              filename: path.basename(webpPath),
+              path: webpPath,
+              url: `/uploads/${path.basename(path.dirname(webpPath))}/${path.basename(webpPath)}`,
             };
-          })
+          }),
         );
       }
     }

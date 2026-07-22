@@ -1,5 +1,8 @@
-import express from 'express';
-import { BookingController, DepartureController } from '../controllers/bookingController.js';
+import express from "express";
+import {
+  BookingController,
+  DepartureController,
+} from "../controllers/bookingController.js";
 import {
   validateCreateBooking,
   validateUpdateBooking,
@@ -9,16 +12,16 @@ import {
   validateBookingQuery,
   validateCancelBooking,
   bookingRateLimit,
-  sanitizeBookingInput
-} from '../middlewares/validation.js';
+  sanitizeBookingInput,
+} from "../middlewares/validation.js";
 // import { authenticateAdmin, authenticateUser } from '../middleware/auth.js'; // Implement as needed
 
 const router = express.Router();
 
 // Apply rate limiting to booking creation
-router.use('/bookings', (req, res, next) => {
+router.use("/bookings", (req, res, next) => {
   // More lenient rate limit for GET requests (read operations)
-  if (req.method === 'GET') {
+  if (req.method === "GET") {
     return bookingRateLimit(100, 15 * 60 * 1000)(req, res, next); // 100 requests per 15 minutes
   }
   // Stricter rate limit for POST/PUT/PATCH/DELETE requests (write operations)
@@ -34,10 +37,11 @@ router.use('/bookings', (req, res, next) => {
  * @desc    Create a new booking
  * @access  Public
  */
-router.post('/bookings',
+router.post(
+  "/bookings",
   sanitizeBookingInput,
   validateCreateBooking,
-  BookingController.createBooking
+  BookingController.createBooking,
 );
 
 /**
@@ -45,10 +49,11 @@ router.post('/bookings',
  * @desc    Get all bookings with filtering and pagination (admin only)
  * @access  Private/Admin
  */
-router.get('/bookings',
+router.get(
+  "/bookings",
   // authenticateAdmin, // Uncomment when auth is implemented
   validateBookingQuery,
-  BookingController.getAllBookings
+  BookingController.getAllBookings,
 );
 
 /**
@@ -56,9 +61,10 @@ router.get('/bookings',
  * @desc    Get booking statistics (admin only)
  * @access  Private/Admin
  */
-router.get('/bookings/stats',
+router.get(
+  "/bookings/stats",
   // authenticateAdmin, // Uncomment when auth is implemented
-  BookingController.getBookingStats
+  BookingController.getBookingStats,
 );
 
 /**
@@ -66,9 +72,10 @@ router.get('/bookings/stats',
  * @desc    Get booking by booking number
  * @access  Public (could be protected with email verification)
  */
-router.get('/bookings/number/:bookingNumber',
+router.get(
+  "/bookings/number/:bookingNumber",
   validateBookingNumberParam,
-  BookingController.getBookingByNumber
+  BookingController.getBookingByNumber,
 );
 
 /**
@@ -76,9 +83,10 @@ router.get('/bookings/number/:bookingNumber',
  * @desc    Get all bookings for a customer by email
  * @access  Public (could be protected with email verification)
  */
-router.get('/bookings/customer/:email',
+router.get(
+  "/bookings/customer/:email",
   // Add email validation in params
-  BookingController.getCustomerBookings
+  BookingController.getCustomerBookings,
 );
 
 /**
@@ -86,10 +94,11 @@ router.get('/bookings/customer/:email',
  * @desc    Get booking by ID (admin only)
  * @access  Private/Admin
  */
-router.get('/bookings/:id',
-  validateObjectIdParam('id'),
+router.get(
+  "/bookings/:id",
+  validateObjectIdParam("id"),
   // authenticateAdmin, // Uncomment when auth is implemented
-  BookingController.getBooking
+  BookingController.getBooking,
 );
 
 /**
@@ -97,11 +106,12 @@ router.get('/bookings/:id',
  * @desc    Update booking status (admin only)
  * @access  Private/Admin
  */
-router.patch('/bookings/:id',
-  validateObjectIdParam('id'),
+router.patch(
+  "/bookings/:id",
+  validateObjectIdParam("id"),
   validateUpdateBooking,
   // authenticateAdmin, // Uncomment when auth is implemented
-  BookingController.updateBooking
+  BookingController.updateBooking,
 );
 
 /**
@@ -109,11 +119,12 @@ router.patch('/bookings/:id',
  * @desc    Cancel booking
  * @access  Private (user or admin)
  */
-router.post('/bookings/:id/cancel',
-  validateObjectIdParam('id'),
+router.post(
+  "/bookings/:id/cancel",
+  validateObjectIdParam("id"),
   validateCancelBooking,
   // Add authentication to ensure user can only cancel their own bookings
-  BookingController.cancelBooking
+  BookingController.cancelBooking,
 );
 
 // ============================================
@@ -125,10 +136,11 @@ router.post('/bookings/:id/cancel',
  * @desc    Create a new departure (admin only)
  * @access  Private/Admin
  */
-router.post('/departures',
+router.post(
+  "/departures",
   validateCreateDeparture,
   // authenticateAdmin, // Uncomment when auth is implemented
-  DepartureController.createDeparture
+  DepartureController.createDeparture,
 );
 
 /**
@@ -136,9 +148,10 @@ router.post('/departures',
  * @desc    Get all departures with filtering (admin only)
  * @access  Private/Admin
  */
-router.get('/departures',
+router.get(
+  "/departures",
   // authenticateAdmin, // Uncomment when auth is implemented
-  DepartureController.getAllDepartures
+  DepartureController.getAllDepartures,
 );
 
 /**
@@ -146,9 +159,10 @@ router.get('/departures',
  * @desc    Get departures for a specific trip
  * @access  Public
  */
-router.get('/trips/:tripId/departures',
-  validateObjectIdParam('tripId'),
-  DepartureController.getTripDepartures
+router.get(
+  "/trips/:tripId/departures",
+  validateObjectIdParam("tripId"),
+  DepartureController.getTripDepartures,
 );
 
 /**
@@ -156,10 +170,11 @@ router.get('/trips/:tripId/departures',
  * @desc    Update departure (admin only)
  * @access  Private/Admin
  */
-router.patch('/departures/:id',
-  validateObjectIdParam('id'),
+router.patch(
+  "/departures/:id",
+  validateObjectIdParam("id"),
   // authenticateAdmin, // Uncomment when auth is implemented
-  DepartureController.updateDeparture
+  DepartureController.updateDeparture,
 );
 
 /**
@@ -167,10 +182,11 @@ router.patch('/departures/:id',
  * @desc    Delete departure (admin only)
  * @access  Private/Admin
  */
-router.delete('/departures/:id',
-  validateObjectIdParam('id'),
+router.delete(
+  "/departures/:id",
+  validateObjectIdParam("id"),
   // authenticateAdmin, // Uncomment when auth is implemented
-  DepartureController.deleteDeparture
+  DepartureController.deleteDeparture,
 );
 
 // ============================================
@@ -179,50 +195,50 @@ router.delete('/departures/:id',
 
 // Global error handler for booking routes
 router.use((error, req, res, next) => {
-  console.error('Booking Route Error:', error);
-  
+  console.error("Booking Route Error:", error);
+
   // Handle MongoDB/Mongoose errors
-  if (error.name === 'ValidationError') {
-    const errors = Object.values(error.errors).map(err => ({
+  if (error.name === "ValidationError") {
+    const errors = Object.values(error.errors).map((err) => ({
       field: err.path,
-      message: err.message
+      message: err.message,
     }));
-    
+
     return res.status(400).json({
       success: false,
-      message: 'Validation error',
-      errors
+      message: "Validation error",
+      errors,
     });
   }
-  
-  if (error.name === 'CastError') {
+
+  if (error.name === "CastError") {
     return res.status(400).json({
       success: false,
-      message: 'Invalid ID format'
+      message: "Invalid ID format",
     });
   }
-  
+
   if (error.code === 11000) {
     const field = Object.keys(error.keyValue)[0];
     return res.status(400).json({
       success: false,
-      message: `${field} already exists`
+      message: `${field} already exists`,
     });
   }
-  
+
   // Handle custom errors
-  if (error.name === 'BookingError') {
+  if (error.name === "BookingError") {
     return res.status(400).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
-  
+
   // Default error response
   res.status(error.status || 500).json({
     success: false,
-    message: error.message || 'Internal server error',
-    ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
+    message: error.message || "Internal server error",
+    ...(process.env.NODE_ENV === "development" && { stack: error.stack }),
   });
 });
 

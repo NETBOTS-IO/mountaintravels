@@ -10,7 +10,7 @@ import {
   getPopularBlogs,
   getRelatedBlogs,
 } from "../controllers/blogController.js";
-import upload, { convertToAvif } from "../utils/multerConfig.js";
+import upload, { convertToWebp } from "../utils/multerConfig.js";
 
 import { parseJSONFields } from "../middlewares/parseJSONFields.js";
 import { blogValidation } from "../middlewares/validation.js";
@@ -56,7 +56,7 @@ router.get("/related/:id", getRelatedBlogs);
 router.post(
   "/upload-editor-image",
   upload.single("image"),
-  convertToAvif,  // ✅ convert editor images to AVIF
+  convertToWebp, // ✅ convert editor images to AVIF
   (req, res) => {
     if (!req.file) {
       return res.status(400).json({
@@ -72,7 +72,7 @@ router.post(
         url: imageUrl,
       },
     });
-  }
+  },
 );
 
 // Create blog post with cover image and author image
@@ -82,11 +82,11 @@ router.post(
     { name: "coverImage", maxCount: 1 },
     { name: "authorImage", maxCount: 1 },
   ]),
-  convertToAvif,            // ✅ run AVIF conversion for cover/author images
+  convertToWebp, // ✅ run AVIF conversion for cover/author images
   parseJSONFields,
   blogValidation,
   handleValidationErrors,
-  createBlog
+  createBlog,
 );
 
 // Update blog post (optionally update cover image and author image)
@@ -96,10 +96,10 @@ router.put(
     { name: "coverImage", maxCount: 1 },
     { name: "authorImage", maxCount: 1 },
   ]),
-  convertToAvif,            // ✅ run AVIF conversion if new images uploaded
+  convertToWebp, // ✅ run AVIF conversion if new images uploaded
   parseJSONFields,
   handleValidationErrors,
-  updateBlog
+  updateBlog,
 );
 
 // Delete blog post

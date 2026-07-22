@@ -1,5 +1,5 @@
 import express from "express";
-import upload, { convertToAvif } from "../utils/multerConfig.js";
+import upload, { convertToWebp } from "../utils/multerConfig.js";
 import {
   createTravelTip,
   getTravelTips,
@@ -12,12 +12,7 @@ import {
 const router = express.Router();
 
 // CRUD routes
-router.post(
-  "/create",
-  upload.single("image"),
-  convertToAvif,
-  createTravelTip
-);
+router.post("/create", upload.single("image"), convertToWebp, createTravelTip);
 
 router.get("/", getTravelTips); // Get all
 router.get("/getby/:id", getTravelTipById); // Get by ID
@@ -26,8 +21,8 @@ router.get("/slug/:slug", getTravelTipBySlug); // Get by slug
 router.put(
   "/update/:id",
   upload.single("image"),
-  convertToAvif,
-  updateTravelTip
+  convertToWebp,
+  updateTravelTip,
 );
 
 router.delete("/delete/:id", deleteTravelTip);

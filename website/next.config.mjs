@@ -43,6 +43,14 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/uploads/:path*",
+        destination: `${process.env.NODE_ENV === "production" ? "https://api.mountaintravels.com" : "http://localhost:5000"}/uploads/:path*`,
+      },
+    ];
+  },
 }
 
 mergeConfig(nextConfig, userConfig)

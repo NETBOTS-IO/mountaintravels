@@ -1,5 +1,5 @@
 import express from "express";
-import upload, { convertToAvif } from "../utils/multerConfig.js";
+import upload, { convertToWebp } from "../utils/multerConfig.js";
 import {
   createDestination,
   getDestinations,
@@ -10,10 +10,15 @@ import {
 
 const router = express.Router();
 
-router.post("/create", upload.single("image"), convertToAvif, createDestination);
+router.post(
+  "/create",
+  upload.single("image"),
+  convertToWebp,
+  createDestination,
+);
 router.get("/", getDestinations);
 router.get("/:id", getDestinationById);
-router.put("/:id", upload.single("image"), convertToAvif, updateDestination);
+router.put("/:id", upload.single("image"), convertToWebp, updateDestination);
 router.delete("/:id", deleteDestination);
 
 export default router;

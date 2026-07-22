@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {
   login,
   refreshToken,
@@ -25,8 +25,8 @@ import {
   updateUserPermissions,
   updateUserStatus,
   deleteUser,
-  getUserPermissions
-} from '../controllers/authController.js';
+  getUserPermissions,
+} from "../controllers/authController.js";
 import {
   authenticateToken,
   requireAdmin,
@@ -34,8 +34,8 @@ import {
   authRateLimit,
   requireAllPermissions,
   requireAnyPermission,
-  requireUserManagement
-} from '../middlewares/auth.js';
+  requireUserManagement,
+} from "../middlewares/auth.js";
 
 import {
   loginValidation,
@@ -47,154 +47,207 @@ import {
   updatePermissionsValidation,
   updateStatusValidation,
   emailVerificationValidation,
-  resendVerificationValidation
-} from '../middlewares/validation.js';
+  resendVerificationValidation,
+} from "../middlewares/validation.js";
 
 const router = express.Router();
 
 // Public routes (no authentication required)
-router.post('/login', loginValidation, authRateLimit, login);
-router.post('/forgot-password', forgotPasswordValidation, authRateLimit, forgotPassword);
-router.post('/reset-password', resetPasswordValidation, resetPassword);
-router.post('/verify-email', emailVerificationValidation, verifyEmail);
-router.post('/resend-verification', resendVerificationValidation, authRateLimit, resendVerification);
+router.post("/login", loginValidation, authRateLimit, login);
+router.post(
+  "/forgot-password",
+  forgotPasswordValidation,
+  authRateLimit,
+  forgotPassword,
+);
+router.post("/reset-password", resetPasswordValidation, resetPassword);
+router.post("/verify-email", emailVerificationValidation, verifyEmail);
+router.post(
+  "/resend-verification",
+  resendVerificationValidation,
+  authRateLimit,
+  resendVerification,
+);
 
 // Protected routes (authentication required)
 router.use(authenticateToken); // Apply authentication middleware to all routes below
 
 // Admin profile routes
-router.get('/profile', getProfile);
-router.put('/profile', profileUpdateValidation, updateProfile);
-router.put('/change-password', passwordChangeValidation, changePassword);
-router.get('/permissions', getAdminPermissions);
-router.post('/logout', logout);
+router.get("/profile", getProfile);
+router.put("/profile", profileUpdateValidation, updateProfile);
+router.put("/change-password", passwordChangeValidation, changePassword);
+router.get("/permissions", getAdminPermissions);
+router.post("/logout", logout);
 
 // Token refresh
-router.post('/refresh-token', refreshToken);
+router.post("/refresh-token", refreshToken);
 
 // Permission verification
-router.get('/verify-permission/:permission', verifyPermission);
+router.get("/verify-permission/:permission", verifyPermission);
 
 // Admin management routes (requires userManagement permission)
-router.post('/admins', createAdminValidation, requireUserManagement, createAdmin);
-router.get('/admins', requireUserManagement, getAllAdmins);
-router.get('/admins/:id', requireUserManagement, getAdminById);
-router.put('/admins/:id/permissions', updatePermissionsValidation, requireUserManagement, updateAdminPermissions);
-router.put('/admins/:id/status', updateStatusValidation, requireUserManagement, updateAdminStatus);
-router.delete('/admins/:id', requireUserManagement, deleteAdmin);
+router.post(
+  "/admins",
+  createAdminValidation,
+  requireUserManagement,
+  createAdmin,
+);
+router.get("/admins", requireUserManagement, getAllAdmins);
+router.get("/admins/:id", requireUserManagement, getAdminById);
+router.put(
+  "/admins/:id/permissions",
+  updatePermissionsValidation,
+  requireUserManagement,
+  updateAdminPermissions,
+);
+router.put(
+  "/admins/:id/status",
+  updateStatusValidation,
+  requireUserManagement,
+  updateAdminStatus,
+);
+router.delete("/admins/:id", requireUserManagement, deleteAdmin);
 
 // Backward compatibility routes (map to admin endpoints)
-router.post('/users', createAdminValidation, requireUserManagement, createUser);
-router.get('/users', requireUserManagement, getAllUsers);
-router.get('/users/:id', requireUserManagement, getUserById);
-router.put('/users/:id/permissions', updatePermissionsValidation, requireUserManagement, updateUserPermissions);
-router.put('/users/:id/status', updateStatusValidation, requireUserManagement, updateUserStatus);
-router.delete('/users/:id', requireUserManagement, deleteUser);
-router.get('/user-permissions', getUserPermissions); // Alias for backward compatibility
+router.post("/users", createAdminValidation, requireUserManagement, createUser);
+router.get("/users", requireUserManagement, getAllUsers);
+router.get("/users/:id", requireUserManagement, getUserById);
+router.put(
+  "/users/:id/permissions",
+  updatePermissionsValidation,
+  requireUserManagement,
+  updateUserPermissions,
+);
+router.put(
+  "/users/:id/status",
+  updateStatusValidation,
+  requireUserManagement,
+  updateUserStatus,
+);
+router.delete("/users/:id", requireUserManagement, deleteUser);
+router.get("/user-permissions", getUserPermissions); // Alias for backward compatibility
 
 // Permission-based feature access routes
-router.get('/tours/access', requirePermission('tours'), (req, res) => {
-  res.json({ 
-    success: true, 
-    message: 'Tours access granted',
-    data: { hasAccess: true, feature: 'tours' }
+router.get("/tours/access", requirePermission("tours"), (req, res) => {
+  res.json({
+    success: true,
+    message: "Tours access granted",
+    data: { hasAccess: true, feature: "tours" },
   });
 });
 
-router.get('/blogs/access', requirePermission('blogs'), (req, res) => {
-  res.json({ 
-    success: true, 
-    message: 'Blogs access granted',
-    data: { hasAccess: true, feature: 'blogs' }
+router.get("/blogs/access", requirePermission("blogs"), (req, res) => {
+  res.json({
+    success: true,
+    message: "Blogs access granted",
+    data: { hasAccess: true, feature: "blogs" },
   });
 });
 
-router.get('/gallery/access', requirePermission('gallery'), (req, res) => {
-  res.json({ 
-    success: true, 
-    message: 'Gallery access granted',
-    data: { hasAccess: true, feature: 'gallery' }
+router.get("/gallery/access", requirePermission("gallery"), (req, res) => {
+  res.json({
+    success: true,
+    message: "Gallery access granted",
+    data: { hasAccess: true, feature: "gallery" },
   });
 });
 
-router.get('/testimonials/access', requirePermission('testimonials'), (req, res) => {
-  res.json({ 
-    success: true, 
-    message: 'Testimonials access granted',
-    data: { hasAccess: true, feature: 'testimonials' }
+router.get(
+  "/testimonials/access",
+  requirePermission("testimonials"),
+  (req, res) => {
+    res.json({
+      success: true,
+      message: "Testimonials access granted",
+      data: { hasAccess: true, feature: "testimonials" },
+    });
+  },
+);
+
+router.get(
+  "/partner-feedbacks/access",
+  requirePermission("partnerFeedbacks"),
+  (req, res) => {
+    res.json({
+      success: true,
+      message: "Partner feedbacks access granted",
+      data: { hasAccess: true, feature: "partnerFeedbacks" },
+    });
+  },
+);
+
+router.get("/inquiries/access", requirePermission("inquiries"), (req, res) => {
+  res.json({
+    success: true,
+    message: "Inquiries access granted",
+    data: { hasAccess: true, feature: "inquiries" },
   });
 });
 
-router.get('/partner-feedbacks/access', requirePermission('partnerFeedbacks'), (req, res) => {
-  res.json({ 
-    success: true, 
-    message: 'Partner feedbacks access granted',
-    data: { hasAccess: true, feature: 'partnerFeedbacks' }
-  });
-});
+router.get(
+  "/system-settings/access",
+  requirePermission("systemSettings"),
+  (req, res) => {
+    res.json({
+      success: true,
+      message: "System settings access granted",
+      data: { hasAccess: true, feature: "systemSettings" },
+    });
+  },
+);
 
-router.get('/inquiries/access', requirePermission('inquiries'), (req, res) => {
-  res.json({ 
-    success: true, 
-    message: 'Inquiries access granted',
-    data: { hasAccess: true, feature: 'inquiries' }
-  });
-});
-
-router.get('/system-settings/access', requirePermission('systemSettings'), (req, res) => {
-  res.json({ 
-    success: true, 
-    message: 'System settings access granted',
-    data: { hasAccess: true, feature: 'systemSettings' }
-  });
-});
-
-router.get('/user-management/access', requirePermission('userManagement'), (req, res) => {
-  res.json({ 
-    success: true, 
-    message: 'User management access granted',
-    data: { hasAccess: true, feature: 'userManagement' }
-  });
-});
+router.get(
+  "/user-management/access",
+  requirePermission("userManagement"),
+  (req, res) => {
+    res.json({
+      success: true,
+      message: "User management access granted",
+      data: { hasAccess: true, feature: "userManagement" },
+    });
+  },
+);
 
 // Example of multiple permission requirements
-router.get('/content-management/access', 
-  requireAnyPermission(['tours', 'blogs', 'gallery']), 
+router.get(
+  "/content-management/access",
+  requireAnyPermission(["tours", "blogs", "gallery"]),
   (req, res) => {
-    res.json({ 
-      success: true, 
-      message: 'Content management access granted',
-      data: { hasAccess: true, feature: 'contentManagement' }
+    res.json({
+      success: true,
+      message: "Content management access granted",
+      data: { hasAccess: true, feature: "contentManagement" },
     });
-  }
+  },
 );
 
 // Example of requiring all permissions for super admin features
-router.get('/super-admin/access', 
-  requireAllPermissions(['userManagement', 'systemSettings']), 
+router.get(
+  "/super-admin/access",
+  requireAllPermissions(["userManagement", "systemSettings"]),
   (req, res) => {
-    res.json({ 
-      success: true, 
-      message: 'Super admin access granted',
-      data: { hasAccess: true, feature: 'superAdmin' }
+    res.json({
+      success: true,
+      message: "Super admin access granted",
+      data: { hasAccess: true, feature: "superAdmin" },
     });
-  }
+  },
 );
 
 // Health check endpoint
-router.get('/health', (req, res) => {
+router.get("/health", (req, res) => {
   res.json({
     success: true,
-    message: 'Auth service is healthy',
+    message: "Auth service is healthy",
     data: {
       timestamp: new Date().toISOString(),
       user: {
         id: req.user._id,
         email: req.user.email,
         role: req.user.role,
-        isActive: req.user.isActive
-      }
-    }
+        isActive: req.user.isActive,
+      },
+    },
   });
 });
 
@@ -204,7 +257,7 @@ export default router;
 
 // ### Authentication
 // - `POST /api/auth/login` - Admin login
-// - `POST /api/auth/logout` - Admin logout  
+// - `POST /api/auth/logout` - Admin logout
 // - `POST /api/auth/refresh-token` - Refresh access token
 // - `POST /api/auth/forgot-password` - Request password reset
 // - `POST /api/auth/reset-password` - Reset password with token

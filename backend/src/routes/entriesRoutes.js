@@ -1,6 +1,12 @@
 // routes/unifiedRoutes.js
 import express from "express";
-import { createEntry, getEntries, getEntryById, updateEntry, deleteEntry } from "../controllers/entriesController.js";
+import {
+  createEntry,
+  getEntries,
+  getEntryById,
+  updateEntry,
+  deleteEntry,
+} from "../controllers/entriesController.js";
 
 const router = express.Router();
 

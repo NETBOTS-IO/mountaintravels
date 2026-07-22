@@ -10,7 +10,7 @@ import {
   getTourCategories,
 } from "../controllers/tourController.js";
 import { tourValidation } from "../middlewares/validation.js";
-import upload, { convertToAvif } from "../utils/multerConfig.js";
+import upload, { convertToWebp } from "../utils/multerConfig.js";
 
 const router = express.Router();
 
@@ -30,8 +30,8 @@ router.post(
     { name: "images", maxCount: 10 },
     { name: "itineraryImages", maxCount: 20 },
   ]),
-  convertToAvif,   // ✅ convert uploaded images to AVIF
-  createTour
+  convertToWebp, // ✅ convert uploaded images to AVIF
+  createTour,
 );
 
 router.put(
@@ -40,8 +40,8 @@ router.put(
     { name: "images", maxCount: 10 },
     { name: "itineraryImages", maxCount: 20 },
   ]),
-  convertToAvif,   // ✅ run AVIF conversion if new images uploaded
-  updateTour
+  convertToWebp, // ✅ run AVIF conversion if new images uploaded
+  updateTour,
 );
 
 router.delete("/:id", deleteTour);

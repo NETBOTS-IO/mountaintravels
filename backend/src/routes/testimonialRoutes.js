@@ -1,5 +1,5 @@
 import express from "express";
-import upload from '../utils/multerConfig.js';
+import upload from "../utils/multerConfig.js";
 import {
   getTestimonials,
   getTestimonial,
@@ -30,32 +30,24 @@ router.post(
   upload.single("image"),
   testimonialValidation,
   handleValidationErrors,
-  createTestimonial
+  createTestimonial,
 );
 
 router.put(
   "/:id",
   upload.single("image"),
   handleValidationErrors,
-  updateTestimonial
+  updateTestimonial,
 );
 
-router.delete(
-  "/:id",
-  handleValidationErrors,
-  deleteTestimonial
-);
+router.delete("/:id", handleValidationErrors, deleteTestimonial);
 
-router.patch(
-  "/:id/verify",
-  handleValidationErrors,
-  toggleVerification
-);
+router.patch("/:id/verify", handleValidationErrors, toggleVerification);
 
 export default router;
 
 // GET    /api/testimonials           - Get all testimonials (with filters)
-// GET    /api/testimonials/featured  - Get featured testimonials  
+// GET    /api/testimonials/featured  - Get featured testimonials
 // GET    /api/testimonials/stats     - Get statistics
 // GET    /api/testimonials/:id       - Get single testimonial
 // POST   /api/testimonials           - Create testimonial (with image)
