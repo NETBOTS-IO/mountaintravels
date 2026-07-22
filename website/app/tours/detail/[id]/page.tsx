@@ -879,9 +879,11 @@ export default function TourPage() {
                   <div className="aspect-[4/3] relative">
                     <Image
                       src={
-                        t.coverImage?.startsWith("http")
-                          ? t.coverImage
-                          : `${BASE_URL}${t.coverImage}`
+                        t.images && t.images.length > 0
+                          ? t.images[0].startsWith("http")
+                            ? t.images[0]
+                            : `${BASE_URL}${t.images[0]}`
+                          : "https://images.unsplash.com/photo-1469521669194-babb45599def?w=1000&q=80"
                       }
                       alt={t.name}
                       fill

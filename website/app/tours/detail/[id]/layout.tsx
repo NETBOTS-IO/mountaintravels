@@ -26,13 +26,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       openGraph: {
         title: tour.name,
         description: tour.overview?.substring(0, 155),
-        images: tour.coverImage
-          ? [
-              tour.coverImage.startsWith("http")
-                ? tour.coverImage
-                : `${BASE_URL}${tour.coverImage}`,
-            ]
-          : [],
+        images:
+          tour.images && tour.images.length > 0
+            ? [
+                tour.images[0].startsWith("http")
+                  ? tour.images[0]
+                  : `${BASE_URL}${tour.images[0]}`,
+              ]
+            : [
+                "https://images.unsplash.com/photo-1469521669194-babb45599def?w=1000&q=80",
+              ],
       },
     };
   } catch (error) {
