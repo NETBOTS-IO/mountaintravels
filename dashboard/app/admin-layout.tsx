@@ -168,7 +168,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               target="_blank"
               className="text-primary hover:underline"
             >
-              Netbots (SMC-Private) Limited
+              Net Bots (SMC-Private) Limited
             </a>
           </p>
         </footer>

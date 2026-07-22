@@ -275,7 +275,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               target="_blank"
               className="text-orange-500 hover:text-orange-600 hover:underline transition-colors"
             >
-              Netbots (SMC-Private) Limited
+              Net Bots (SMC-Private) Limited
             </a>
           </p>
         </footer>

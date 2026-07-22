@@ -11,9 +11,13 @@ import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { MapPin, FileText, Hash, ImageIcon, X } from "lucide-react";
 import { BASE_URL } from "@/Var";
-import { createPopularDestination, updatePopularDestination } from "@/lib/data-utils";
+import {
+  createPopularDestination,
+  updatePopularDestination,
+} from "@/lib/data-utils";
 import { type PopularDestination } from "@/lib/types";
 import { ArrowLeft } from "lucide-react";
+import { getImageUrl } from "@/lib/utils";
 
 interface PopularDestinationFormProps {
   destinationId?: string;
@@ -27,7 +31,10 @@ interface DestinationFormState {
   image: File | string | null;
 }
 
-export default function PopularDestinationForm({ destinationId, initialData }: PopularDestinationFormProps) {
+export default function PopularDestinationForm({
+  destinationId,
+  initialData,
+}: PopularDestinationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
   const router = useRouter();
@@ -50,12 +57,14 @@ export default function PopularDestinationForm({ destinationId, initialData }: P
       });
 
       if (typeof initialData.image === "string" && initialData.image) {
-        setImagePreview(`${BASE_URL}${initialData.image}`);
+        setImagePreview(getImageUrl(initialData.image));
       }
     }
   }, [initialData]);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setDestination((prev) => ({
       ...prev,
@@ -109,7 +118,7 @@ export default function PopularDestinationForm({ destinationId, initialData }: P
 
   return (
     <Card>
-         <Button
+      <Button
         type="button"
         variant="outline"
         onClick={() => router.push("/admin/popular-destinations/")}
@@ -119,7 +128,6 @@ export default function PopularDestinationForm({ destinationId, initialData }: P
         Back to Travel Tips List
       </Button>
       <CardContent className="p-6">
-        
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Name */}
@@ -236,8 +244,8 @@ export default function PopularDestinationForm({ destinationId, initialData }: P
               {isSubmitting
                 ? "Saving..."
                 : destinationId
-                ? "Update Destination"
-                : "Create Destination"}
+                  ? "Update Destination"
+                  : "Create Destination"}
             </Button>
           </div>
         </form>

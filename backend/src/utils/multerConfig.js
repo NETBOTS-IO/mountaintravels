@@ -58,7 +58,7 @@ const storage = multer.diskStorage({
 
 // File filter (only images)
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif/;
+  const allowedTypes = /jpeg|jpg|png|gif|webp|avif|heic/;
   const isValid =
     allowedTypes.test(path.extname(file.originalname).toLowerCase()) &&
     allowedTypes.test(file.mimetype);
@@ -80,7 +80,9 @@ export const convertToWebp = async (req, res, next) => {
     // Single file
     if (req.file) {
       const filePath = req.file.path;
-      const webpPath = filePath.replace(path.extname(filePath), ".webp");
+      const originalExt = path.extname(filePath);
+      const webpPath =
+        filePath.replace(originalExt, "") + "-" + Date.now() + ".webp";
 
       await sharp(filePath).toFormat("webp", { quality: 80 }).toFile(webpPath);
 
@@ -101,7 +103,9 @@ export const convertToWebp = async (req, res, next) => {
         req.files[field] = await Promise.all(
           req.files[field].map(async (file) => {
             const filePath = file.path;
-            const webpPath = filePath.replace(path.extname(filePath), ".webp");
+            const originalExt = path.extname(filePath);
+            const webpPath =
+              filePath.replace(originalExt, "") + "-" + Date.now() + ".webp";
 
             await sharp(filePath)
               .toFormat("webp", { quality: 80 })
